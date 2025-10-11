@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,6 +35,7 @@ import me.simoncrafter.de.hamster.editor.view.TextAreaPrintable;
 import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
+import sun.rmi.rmic.iiop.ClassPathLoader;
 
 /**
  * Diese Klasse enthaelt Hilfsmethoden und Konstanten, die im Hamster-Simulator
@@ -235,7 +237,8 @@ public class Utils {
 	 *            Der ue aus dem ResourceBundle
 	 */
 	public static void setData(Action action, String key) {
-		ResourceBundle resources = Utils.getResources();
+		System.out.println(key);
+        ResourceBundle resources = Utils.getResources();
 		action.putValue(Action.NAME, resources.getString(key + ".text"));
 		action.putValue(Action.SMALL_ICON,
 				Utils.getIcon(resources.getString(key + ".icon")));
@@ -316,15 +319,22 @@ public class Utils {
 	 *            Der Name der Datei, aus der das Bild gelesen werden soll.
 	 * @return Das Image
 	 */
-	public static Image getImage(String name) {
-		// TODO: Media Tracker?
+    public static Image getImage(String name) {
+        System.out.println("Trying to fetch: " + name);
+
+        // TODO: Media Tracker?
 		URL url = ClassLoader.getSystemResource("resources/" + name);
+        System.out.println("Trying to path: " + ClassLoader.getSystemResource("resources/" + name));
 		if (url == null) {
 			url = Utils.class.getClassLoader().getResource("resources/" + name);
 		}
         if (url == null) {
-            System.out.println("Oh no, our image, it's broken!\n Bild wurde nicht gefunden! Bitte reperieren");
-            getFileURL("C:\\Coden\\Java\\modded-hamster\\src\\main\\resources\\resources\\backup.png");
+
+            System.err.println("Resource not found: " + name);
+            return new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB); // placeholder
+
+        } else {
+            System.out.println("Successfuly fetched: " + name);
         }
 		return Toolkit.getDefaultToolkit().createImage(url);
 	}

@@ -599,6 +599,7 @@ public class Workbench {
 							Utils.SCHEME = false;
 						}
 					}
+                    System.out.println("run 1");
 				}
 			});
 
