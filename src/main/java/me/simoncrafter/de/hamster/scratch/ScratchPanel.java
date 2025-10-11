@@ -93,7 +93,7 @@ public class ScratchPanel extends JPanel implements MouseListener,
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.setLayout(null);
-		this.setBackground(ScratchPanel.BACKGROUND_COLOR);
+		this.setBackground(new Color(255, 0 ,0));
 		this.loadImages();
 
 		// Context menu on TOP

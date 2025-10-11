@@ -32,6 +32,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import me.simoncrafter.de.hamster.editor.controller.EditorController;
+import me.simoncrafter.de.hamster.mod.ColorManager;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.prolog.controller.PrologController;
 import me.simoncrafter.de.hamster.prolog.model.PrologHamster.TerObject;
@@ -60,6 +61,9 @@ public class FileTree extends JTree implements MouseListener,
 		addMouseListener(this);
 		getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+		setBackground(ColorManager.getCurrent().getEditorFileBackground());
+
 
 		new DropTarget(this, this);
 		dragSource = DragSource.getDefaultDragSource();

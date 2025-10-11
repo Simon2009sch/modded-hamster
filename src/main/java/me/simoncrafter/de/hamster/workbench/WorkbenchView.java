@@ -1,15 +1,7 @@
 package me.simoncrafter.de.hamster.workbench;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.io.PrintStream;
 import java.net.URI;
@@ -18,21 +10,17 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JToolBar;
+import javax.swing.*;
+import javax.swing.plaf.SplitPaneUI;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import me.simoncrafter.de.hamster.compiler.model.CompilerModel;
 import me.simoncrafter.de.hamster.console.Console;
 import me.simoncrafter.de.hamster.debugger.model.DebuggerModel;
 import me.simoncrafter.de.hamster.lego.model.LegoModel;
+import me.simoncrafter.de.hamster.mod.ColorManager;
+import me.simoncrafter.de.hamster.mod.UIElementCollection;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.J3DFrame;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.OpenGLController;
@@ -380,7 +368,74 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		JPanel log = workbench.getSimulation().getLogPanel();
 		log.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		log.setPreferredSize(new Dimension(200, 200));
+
+
 		JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, log);
+
+		sp.setUI(new BasicSplitPaneUI() {    //better splitter
+			@Override
+			public BasicSplitPaneDivider createDefaultDivider() {
+				return new BasicSplitPaneDivider(this) {
+					private boolean hovered = false;
+
+					{
+						// Remove default arrow buttons
+						for (Component c : getComponents()) {
+							c.setVisible(false);
+						}
+						setLayout(null);
+						setBackground(new Color(100, 60, 60));
+
+						// Detect hover to show highlight
+						addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseEntered(MouseEvent e) {
+								hovered = true;
+								repaint();
+							}
+
+							@Override
+							public void mouseExited(MouseEvent e) {
+								hovered = false;
+								repaint();
+							}
+						});
+					}
+
+					@Override
+					public void paint(Graphics g) {
+						Graphics2D g2 = (Graphics2D) g;
+						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+						// Background color
+						g2.setColor(ColorManager.getCurrent().getSliderColor());
+						g2.fillRect(0, 0, getWidth(), getHeight());
+
+						// Hover highlight
+						if (hovered) {
+							g2.setColor(ColorManager.getCurrent().getSliderColor().darker()); // Windows blue highlight
+							if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
+								g2.fillRect(0, 0, getWidth(), getHeight());
+							} else {
+								g2.fillRect(0, 0, getWidth(), getHeight());
+							}
+						}
+
+						// Optional: small grip line in center
+						g2.setColor(ColorManager.getCurrent().getSliderColor().brighter());
+						if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
+							int y = getHeight() / 2 - 10;
+							g2.fillRoundRect(getWidth() / 2 - 1, y, 2, 20, 2, 2);
+						} else {
+							int x = getWidth() / 2 - 10;
+							g2.fillRoundRect(x, getHeight() / 2 - 1, 20, 2, 2, 2);
+						}
+					}
+				};
+			}
+		});
+
+
 		sp.setResizeWeight(1);
 		sp.setOneTouchExpandable(true);
 		sp.setDividerLocation(500);
@@ -470,6 +525,71 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, fileTree, mainPanel);
 		sp.setOneTouchExpandable(true);
 		sp.setDividerLocation(150);
+		fileTree.setBorder(BorderFactory.createEmptyBorder());
+		fileTree.setBackground(ColorManager.getCurrent().getLogPanelBorder());
+
+		sp.setUI(new BasicSplitPaneUI() {     // better splitter
+			@Override
+			public BasicSplitPaneDivider createDefaultDivider() {
+				return new BasicSplitPaneDivider(this) {
+					private boolean hovered = false;
+
+					{
+						// Remove default arrow buttons
+						for (Component c : getComponents()) {
+							c.setVisible(false);
+						}
+						setLayout(null);
+						setBackground(new Color(100, 60, 60));
+
+						// Detect hover to show highlight
+						addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseEntered(MouseEvent e) {
+								hovered = true;
+								repaint();
+							}
+
+							@Override
+							public void mouseExited(MouseEvent e) {
+								hovered = false;
+								repaint();
+							}
+						});
+					}
+
+					@Override
+					public void paint(Graphics g) {
+						Graphics2D g2 = (Graphics2D) g;
+						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+						// Background color
+						g2.setColor(ColorManager.getCurrent().getSliderColor());
+						g2.fillRect(0, 0, getWidth(), getHeight());
+
+						// Hover highlight
+						if (hovered) {
+							g2.setColor(ColorManager.getCurrent().getSliderColor().darker()); // Windows blue highlight
+							if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
+								g2.fillRect(0, 0, getWidth(), getHeight());
+							} else {
+								g2.fillRect(0, 0, getWidth(), getHeight());
+							}
+						}
+
+						// Optional: small grip line in center
+						g2.setColor(ColorManager.getCurrent().getSliderColor().brighter());
+						if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
+							int y = getHeight() / 2 - 10;
+							g2.fillRoundRect(getWidth() / 2 - 1, y, 2, 20, 2, 2);
+						} else {
+							int x = getWidth() / 2 - 10;
+							g2.fillRoundRect(x, getHeight() / 2 - 1, 20, 2, 2, 2);
+						}
+					}
+				};
+			}
+		});
 
 		/*
 		 * editor.getContentPane().add(BorderLayout.WEST, fileTree);
@@ -494,7 +614,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 			toolBar = new JToolBar(resources.getString("toolbar." + id + ".text"));
 			toolBar.setMargin(new Insets(1, 1, 0, 0));
 			toolBar.setFloatable(false);
-			toolBar.setBackground(new Color(255, 215, 180)); // dibo 230309
+			toolBar.setBackground(ColorManager.getCurrent().getTopRow()); // dibo 230309   top bar color
 			toolBars.put(id, toolBar);
 		}
 		return toolBar;

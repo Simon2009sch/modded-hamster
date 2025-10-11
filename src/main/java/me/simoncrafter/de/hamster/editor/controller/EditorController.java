@@ -23,6 +23,7 @@ import me.simoncrafter.de.hamster.flowchart.controller.FlowchartHamsterFile;
 import me.simoncrafter.de.hamster.flowchart.controller.FlowchartProgram;
 import me.simoncrafter.de.hamster.fsm.controller.FsmHamsterFile;
 import me.simoncrafter.de.hamster.fsm.controller.FsmProgram;
+import me.simoncrafter.de.hamster.mod.ColorManager;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.prolog.controller.PrologController;
 import me.simoncrafter.de.hamster.prolog.model.PrologHamster.TerObject;
@@ -79,12 +80,11 @@ public class EditorController implements TreeSelectionListener, ActionListener,
 
 		this.editorTools = new EditorTools(this);
 		this.tabbedTextArea = new TabbedTextArea(this);
-		this.tabbedTextArea.setBackground(new Color(255, 255, 220)); // dibo
 																		// 230309
 		this.fileTree = new FileTree(this);
-		this.fileTree.setBackground(new Color(240, 252, 202)); // dibo 230309
 
 		this.newHamsterDialog = new NewHamsterDialog(this.tabbedTextArea);
+		this.newHamsterDialog.setBackground(Color.RED);
 		this.fileChooser = Utils.getFileChooser();
 		this.fileChooser.setFileFilter(HamsterFileFilter.HAM_FILTER);
 	}

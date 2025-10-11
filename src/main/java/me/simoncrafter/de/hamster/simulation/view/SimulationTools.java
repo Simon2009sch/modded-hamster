@@ -1,18 +1,12 @@
 package me.simoncrafter.de.hamster.simulation.view;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import javax.swing.AbstractAction;
-import javax.swing.Box;
-import javax.swing.ButtonGroup;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
+import javax.swing.*;
 
 import me.simoncrafter.de.hamster.simulation.controller.SimulationController;
 import me.simoncrafter.de.hamster.simulation.model.SimulationModel;
@@ -225,7 +219,7 @@ public class SimulationTools implements MouseListener, MouseMotionListener {
 	public class CornTool extends TerrainTool {
 		public CornTool() {
 			super(true);
-			setImage(Utils.getImage("resources/Corn32.png"));
+			setImage(Utils.getImage("Corn32.png"));
 		}
 		public void done() {
 			try {
@@ -293,7 +287,8 @@ public class SimulationTools implements MouseListener, MouseMotionListener {
 		resetAction.addActionListener(controller);
 		
 		JToolBar toolBar = controller.getWorkbench().getView().findToolBar("simulation");
-		toolBar.add(Utils.createButton(newAction));
+		JButton newActionButton = Utils.createButton(newAction);
+		toolBar.add(newActionButton);
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
 		toolBar.add(Utils.createButton(openAction));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));

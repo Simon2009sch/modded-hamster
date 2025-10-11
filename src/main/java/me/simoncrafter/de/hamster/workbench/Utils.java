@@ -1,10 +1,6 @@
 package me.simoncrafter.de.hamster.workbench;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.print.PrinterJob;
 import java.io.File;
@@ -19,14 +15,8 @@ import java.util.ResourceBundle;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.JobName;
-import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JToggleButton;
-import javax.swing.KeyStroke;
+import javax.swing.*;
+import javax.swing.border.Border;
 
 import me.simoncrafter.de.hamster.editor.view.FSMPanelPrintable;
 import me.simoncrafter.de.hamster.editor.view.FlowchartPanelPrintable;
@@ -34,9 +24,12 @@ import me.simoncrafter.de.hamster.editor.view.ScratchPanelPrintable;
 import me.simoncrafter.de.hamster.editor.view.TextAreaPrintable;
 import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
+import me.simoncrafter.de.hamster.mod.ColorManager;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
 import org.jruby.RubyProcess;
+import sun.java2d.SunGraphics2D;
 import sun.rmi.rmic.iiop.ClassPathLoader;
+import sun.security.provider.Sun;
 
 /**
  * Diese Klasse enthaelt Hilfsmethoden und Konstanten, die im Hamster-Simulator
@@ -277,6 +270,7 @@ public class Utils {
 		JButton b = new JButton(action);
 		b.setText(null);
 		b.setMnemonic(0);
+		b.setBackground(ColorManager.getCurrent().getButtonColor());
 		b.setMargin(TOOLBAR_MARGIN);
 		return b;
 	}
@@ -293,6 +287,10 @@ public class Utils {
 		JToggleButton b = new JToggleButton(action);
 		b.setText(null);
 		b.setMnemonic(0);
+		b.setOpaque(true);
+		b.setContentAreaFilled(true);
+		b.setBorderPainted(true);
+		b.setBackground(ColorManager.getCurrent().getButtonColor());
 		b.setMargin(TOOLBAR_MARGIN);
 		return b;
 	}

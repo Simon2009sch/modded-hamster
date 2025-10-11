@@ -8,16 +8,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.ScrollBarUI;
+import javax.swing.plaf.ScrollPaneUI;
 import javax.swing.text.Element;
 
 import me.simoncrafter.de.hamster.editor.controller.EditorController;
@@ -25,6 +22,7 @@ import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.flowchart.controller.FlowchartHamsterFile;
 import me.simoncrafter.de.hamster.fsm.controller.FsmHamsterFile;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
+import me.simoncrafter.de.hamster.mod.ColorManager;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
 import me.simoncrafter.de.hamster.workbench.Utils;
@@ -73,19 +71,31 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 
 		JTextField line = new JTextField(Utils.getResource("editor.zeile"));
 		line.setEditable(false);
+		line.setBackground(ColorManager.getCurrent().getEditorToolBarInfoBoxes());
 		this.statusBar.add(line);
 
 		this.lineNumber = new JTextField("1");
 		this.lineNumber.setEditable(false);
 		this.statusBar.add(this.lineNumber);
 
+
+
+
 		JTextField col = new JTextField(Utils.getResource("editor.spalte"));
 		col.setEditable(false);
+		col.setBackground(ColorManager.getCurrent().getEditorToolBarInfoBoxes());
 		this.statusBar.add(col);
 
 		this.colNumber = new JTextField("1");
 		this.colNumber.setEditable(false);
 		this.statusBar.add(this.colNumber);
+
+
+		// Set Background
+		this.statusBar.setBackground(ColorManager.getCurrent().getEditorToolBar());
+		this.lineNumber.setBackground(ColorManager.getCurrent().getEditorToolBarInfoBoxes());
+		this.colNumber.setBackground(ColorManager.getCurrent().getEditorToolBarInfoBoxes());
+		setBackground(ColorManager.getCurrent().getEditorBackground());
 
 		this.add(BorderLayout.SOUTH, this.statusBar);
 	}
@@ -218,18 +228,22 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 			}
 
 			scrollPane.setBorder(BorderFactory.createEmptyBorder());
+			scrollPane.getVerticalScrollBar().setBackground(ColorManager.getCurrent().getEditorBackground());
+			JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
 
 			h.addCaretListener(this);
 			h.getDocument().addDocumentListener(this.controller);
+
+			h.setBackground(ColorManager.getCurrent().getEditorBackground());
+
 			file.addPropertyChangeListener(this);
 			this.textAreas.put(file, h);
-
 			this.scrollPanes.put(h, scrollPane);
 
 			h.setEditable(!file.isLocked());
 			if (file.isLocked()) {
 				this.tabbedPane.addTab(file.getName(),
-						Utils.getIcon("resources/Play16.gif"), scrollPane);
+						Utils.getIcon("Play16.gif"), scrollPane);
 				h.setBackground(this.getBackground());
 			} else {
 				this.tabbedPane.addTab(file.getName(), scrollPane);
@@ -309,21 +323,21 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 		int index = this.getIndex(textArea);
 		if (evt.getPropertyName() == HamsterFile.MODIFIED) {
 			if (((Boolean) evt.getNewValue()).booleanValue()) {
-				this.tabbedPane.setIconAt(index, Utils.getIcon("resources/Save16.gif"));
+				this.tabbedPane.setIconAt(index, Utils.getIcon("Save16.gif"));
 			} else {
 				this.tabbedPane.setIconAt(index, null);
 			}
 		} else if (evt.getPropertyName() == HamsterFile.LOCKED) {
 			if (((Boolean) evt.getNewValue()).booleanValue()) {
-				this.tabbedPane.setIconAt(index, Utils.getIcon("resources/Play16.gif"));
+				this.tabbedPane.setIconAt(index, Utils.getIcon("Play16.gif"));
 				textArea.setEditable(false);
-				textArea.setBackground(new Color(230, 230, 230)); // getBackground());
+				textArea.setBackground(ColorManager.getCurrent().getEditorTextBackground()); // getBackground());
 				this.lock(true);
 			} else {
 				this.tabbedPane.setIconAt(index, null);
 				textArea.setEditable(true);
 				textArea.removeLineHighlight();
-				textArea.setBackground(Color.WHITE);
+				textArea.setBackground(ColorManager.getCurrent().getEditorTextPlayingBackground());     // sets the text editor background color back to the default
 				this.lock(false);
 			}
 		}
@@ -348,11 +362,11 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 		} else {
 			if (locked) {
 				textArea.setEditable(false);
-				textArea.setBackground(new Color(230, 230, 230)); // getBackground());
+				textArea.setBackground(new Color(255, 255, 0)); // getBackground());
 			} else {
 				textArea.setEditable(true);
 				textArea.removeLineHighlight();
-				textArea.setBackground(Color.WHITE);
+				textArea.setBackground(Color.BLACK);
 			}
 		}
 		this.lock(locked);
