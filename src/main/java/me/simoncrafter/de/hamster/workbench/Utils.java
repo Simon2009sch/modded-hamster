@@ -35,6 +35,7 @@ import me.simoncrafter.de.hamster.editor.view.TextAreaPrintable;
 import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
+import org.jruby.RubyProcess;
 import sun.rmi.rmic.iiop.ClassPathLoader;
 
 /**
@@ -320,7 +321,13 @@ public class Utils {
 	 * @return Das Image
 	 */
     public static Image getImage(String name) {
-        System.out.println("Trying to fetch: " + name);
+		System.out.println("Trying to fetch: " + name);
+		// fix for random error that is already in origenal zip
+		if (name.startsWith("resources/")) {
+			name = name.substring(9);
+			System.out.println("Removing leading resources/\n   " + name);
+		}
+
 
         // TODO: Media Tracker?
 		URL url = ClassLoader.getSystemResource("resources/" + name);

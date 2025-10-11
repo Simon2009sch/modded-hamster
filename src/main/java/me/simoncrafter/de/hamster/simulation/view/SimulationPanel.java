@@ -64,12 +64,12 @@ public class SimulationPanel extends JPanel implements Observer, MouseMotionList
 		this.hamster = new Image[Utils.COLORS.length][4];
 		Image[] orig = new Image[4];
         //debug
-        System.out.println(ClassLoader.getSystemResource(getName()));
+        System.out.println(ClassLoader.getSystemResource(""));
 
-		orig[0] = Utils.getImage("resources/hamsternorth.png");
-		orig[1] = Utils.getImage("resources/hamstereast.png");
-		orig[2] = Utils.getImage("resources/hamstersouth.png");
-		orig[3] = Utils.getImage("resources/hamsterwest.png");
+		orig[0] = Utils.getImage("hamsternorth.png");
+		orig[1] = Utils.getImage("hamstereast.png");
+		orig[2] = Utils.getImage("hamstersouth.png");
+		orig[3] = Utils.getImage("hamsterwest.png");
 		for (int i = 0; i < this.hamster.length; i++) {
 			ColorFilter c = new ColorFilter(i);
 			for (int j = 0; j < 4; j++) {
@@ -80,9 +80,9 @@ public class SimulationPanel extends JPanel implements Observer, MouseMotionList
 		this.corn = new Image[12];
 		for (int i = 0; i < this.corn.length; i++) {
             int oneMoreI = i+1;
-			this.corn[i] = Utils.getImage("resources/" + oneMoreI + "Corn32.png");
+			this.corn[i] = Utils.getImage(oneMoreI + "Corn32.png");
 		}
-		this.wall = Utils.getImage("resources/Wall32.png");
+		this.wall = Utils.getImage("Wall32.png");
 
 	}
 
