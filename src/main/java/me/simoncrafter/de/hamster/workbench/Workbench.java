@@ -36,6 +36,7 @@ import me.simoncrafter.de.hamster.fsm.controller.FsmHamster;
 import me.simoncrafter.de.hamster.javascript.model.JavaScriptHamster;
 import me.simoncrafter.de.hamster.lego.controller.LegoController;
 import me.simoncrafter.de.hamster.mod.ColorManager;
+import me.simoncrafter.de.hamster.mod.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.prolog.controller.PrologController;
 import me.simoncrafter.de.hamster.prolog.view.PrologKonsole;
@@ -559,11 +560,10 @@ public class Workbench {
 
 					handleLAF();
 
-					//Initialize Color mod
-					ColorManager.initColors();
-
 					// Erzeugen der Werkbank.
 					Workbench wb = getWorkbench();
+
+					UIStyleController.init();
 
 					if (Utils.PYTHON) {
 						if (!PythonHamster.initPython()) {

@@ -1,6 +1,6 @@
 package me.simoncrafter.de.hamster.editor.view;
 
-import java.awt.Cursor;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -33,6 +33,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import me.simoncrafter.de.hamster.editor.controller.EditorController;
 import me.simoncrafter.de.hamster.mod.ColorManager;
+import me.simoncrafter.de.hamster.mod.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.prolog.controller.PrologController;
 import me.simoncrafter.de.hamster.prolog.model.PrologHamster.TerObject;
@@ -62,8 +63,7 @@ public class FileTree extends JTree implements MouseListener,
 		getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-		setBackground(ColorManager.getCurrent().getEditorFileBackground());
-
+		UIStyleController.setFileTree(this);
 
 		new DropTarget(this, this);
 		dragSource = DragSource.getDefaultDragSource();

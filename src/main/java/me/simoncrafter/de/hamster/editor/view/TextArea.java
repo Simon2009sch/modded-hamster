@@ -103,10 +103,10 @@ public class TextArea extends JTextPane implements UndoableEditListener,
 																		false)
 																		: new JavaDocument(
 																				false));
-		setCaretColor(ColorManager.getCurrent().getEditorCursorColor());
-		setSelectionColor(ColorManager.getCurrent().getSelection());
-		setSelectionColor(ColorManager.getCurrent().getSelection());
-		setForeground(ColorManager.getCurrent().getTextColor());
+		setCaretColor(Color.RED);
+		setSelectionColor(Color.RED);
+		setSelectionColor(Color.RED);
+		setForeground(Color.RED);
 		// super(new JavaDocument(false));
 		this.tabbedTextArea = tabbedTextArea;
 		this.file = file;

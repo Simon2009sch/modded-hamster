@@ -1,11 +1,6 @@
 package me.simoncrafter.de.hamster.simulation.view;
 
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.FilteredImageSource;
@@ -55,7 +50,7 @@ public class SimulationPanel extends JPanel implements Observer, MouseMotionList
 		this.loadImages();
 		this.createCursors();
 		this.addMouseMotionListener(this);
-		this.setBackground(ColorManager.getCurrent().getPlayAreaBackground()); // dibo 230309    play area background
+		this.setBackground(Color.RED); // dibo 230309    play area background
 		
 		//font = new Font("SansSerif", Font.BOLD, 12);
 	}

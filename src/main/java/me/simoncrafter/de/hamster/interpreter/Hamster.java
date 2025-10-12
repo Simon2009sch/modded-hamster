@@ -206,6 +206,7 @@ public class Hamster {
 		}
 	}
 
+
 	/**
 	 * Der aufgerufene Hamster dreht sich linksum.
 	 * 

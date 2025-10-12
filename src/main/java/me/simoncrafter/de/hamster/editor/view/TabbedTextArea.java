@@ -7,14 +7,13 @@ import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.ScrollBarUI;
-import javax.swing.plaf.ScrollPaneUI;
 import javax.swing.text.Element;
 
 import me.simoncrafter.de.hamster.editor.controller.EditorController;
@@ -22,7 +21,7 @@ import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.flowchart.controller.FlowchartHamsterFile;
 import me.simoncrafter.de.hamster.fsm.controller.FsmHamsterFile;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
-import me.simoncrafter.de.hamster.mod.ColorManager;
+import me.simoncrafter.de.hamster.mod.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
 import me.simoncrafter.de.hamster.workbench.Utils;
@@ -49,6 +48,9 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 
 	protected EditorController controller;
 
+	protected Consumer<TextArea> onTextAreaLock = (textArea) -> {};
+	protected Consumer<TextArea> onTextAreaUnLock = (textArea) -> {};
+
 	private boolean locked = false; // dibo 290710
 
 	public TabbedTextArea(EditorController controller) {
@@ -71,7 +73,6 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 
 		JTextField line = new JTextField(Utils.getResource("editor.zeile"));
 		line.setEditable(false);
-		line.setBackground(ColorManager.getCurrent().getEditorToolBarInfoBoxes());
 		this.statusBar.add(line);
 
 		this.lineNumber = new JTextField("1");
@@ -83,7 +84,6 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 
 		JTextField col = new JTextField(Utils.getResource("editor.spalte"));
 		col.setEditable(false);
-		col.setBackground(ColorManager.getCurrent().getEditorToolBarInfoBoxes());
 		this.statusBar.add(col);
 
 		this.colNumber = new JTextField("1");
@@ -92,10 +92,14 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 
 
 		// Set Background
-		this.statusBar.setBackground(ColorManager.getCurrent().getEditorToolBar());
-		this.lineNumber.setBackground(ColorManager.getCurrent().getEditorToolBarInfoBoxes());
-		this.colNumber.setBackground(ColorManager.getCurrent().getEditorToolBarInfoBoxes());
-		setBackground(ColorManager.getCurrent().getEditorBackground());
+		UIStyleController.setEditorInfoBarColText(col);
+		UIStyleController.setEditorInfoBarLineText(line);
+		UIStyleController.setEditorInfoBarColVal(this.colNumber);
+		UIStyleController.setEditorInfoBarLineVal(this.lineNumber);
+		UIStyleController.setEditorTextAreaBackground(this);
+		UIStyleController.setEditorInfoBar(this.statusBar);
+
+		UIStyleController.update();
 
 		this.add(BorderLayout.SOUTH, this.statusBar);
 	}
@@ -228,13 +232,11 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 			}
 
 			scrollPane.setBorder(BorderFactory.createEmptyBorder());
-			scrollPane.getVerticalScrollBar().setBackground(ColorManager.getCurrent().getEditorBackground());
-			JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
 
 			h.addCaretListener(this);
 			h.getDocument().addDocumentListener(this.controller);
 
-			h.setBackground(ColorManager.getCurrent().getEditorBackground());
+
 
 			file.addPropertyChangeListener(this);
 			this.textAreas.put(file, h);
@@ -249,6 +251,8 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 				this.tabbedPane.addTab(file.getName(), scrollPane);
 			}
 			this.tabbedPane.setSelectedComponent(scrollPane);
+
+			UIStyleController.update(); // apply the current style
 
 			return h;
 		}
@@ -331,13 +335,15 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 			if (((Boolean) evt.getNewValue()).booleanValue()) {
 				this.tabbedPane.setIconAt(index, Utils.getIcon("Play16.gif"));
 				textArea.setEditable(false);
-				textArea.setBackground(ColorManager.getCurrent().getEditorTextBackground()); // getBackground());
+				//textArea.setBackground(Color.RED); // getBackground());
+				onTextAreaUnLock.accept(textArea);
 				this.lock(true);
 			} else {
 				this.tabbedPane.setIconAt(index, null);
 				textArea.setEditable(true);
 				textArea.removeLineHighlight();
-				textArea.setBackground(ColorManager.getCurrent().getEditorTextPlayingBackground());     // sets the text editor background color back to the default
+				//textArea.setBackground(Color.RED);     // sets the text editor background color back to the default
+				onTextAreaUnLock.accept(textArea);
 				this.lock(false);
 			}
 		}
@@ -396,6 +402,10 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 				.get(textArea));
 	}
 
+	public JScrollPane getActiveScrollPlane() {
+		return (JScrollPane) this.tabbedPane.getComponentAt(this.tabbedPane.getSelectedIndex());
+	}
+
 	@Override
 	public void caretUpdate(CaretEvent e) {
 		this.updateStatusBar();
@@ -417,5 +427,13 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		this.updateStatusBar();
+	}
+
+	public void setOnTextAreaLock(Consumer<TextArea> onTextAreaLock) {
+		this.onTextAreaLock = onTextAreaLock;
+	}
+
+	public void setOnTextAreaUnLock(Consumer<TextArea> onTextAreaUnLock) {
+		this.onTextAreaUnLock = onTextAreaUnLock;
 	}
 }

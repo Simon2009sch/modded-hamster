@@ -1,6 +1,7 @@
 package me.simoncrafter.de.hamster.editor.view;
 
 import me.simoncrafter.de.hamster.mod.ColorManager;
+import me.simoncrafter.de.hamster.mod.UIStyleController;
 
 import java.awt.Color;
 
@@ -15,9 +16,7 @@ public class LineNumberPanel extends JTextPane {
 		this.setDocument(this.doc);
 		this.setBackground(Color.LIGHT_GRAY);
 		this.setEditable(false); // dibo 210110
-		this.setBackground(ColorManager.getCurrent().getEditorLineNumberBar());
-		this.setSelectionColor(ColorManager.getCurrent().getSelection());
-		this.setForeground(ColorManager.getCurrent().getEditorDefaultTextColor());
+		UIStyleController.setLineNumberPanel(this);
 	}
 
 	public void setNumberOfLines(int noOfLines) {

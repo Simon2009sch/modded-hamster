@@ -11,7 +11,6 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javax.swing.*;
-import javax.swing.plaf.SplitPaneUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
@@ -19,8 +18,6 @@ import me.simoncrafter.de.hamster.compiler.model.CompilerModel;
 import me.simoncrafter.de.hamster.console.Console;
 import me.simoncrafter.de.hamster.debugger.model.DebuggerModel;
 import me.simoncrafter.de.hamster.lego.model.LegoModel;
-import me.simoncrafter.de.hamster.mod.ColorManager;
-import me.simoncrafter.de.hamster.mod.UIElementCollection;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.J3DFrame;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.OpenGLController;
@@ -408,12 +405,12 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 						// Background color
-						g2.setColor(ColorManager.getCurrent().getSliderColor());
+						g2.setColor(Color.RED);
 						g2.fillRect(0, 0, getWidth(), getHeight());
 
 						// Hover highlight
 						if (hovered) {
-							g2.setColor(ColorManager.getCurrent().getSliderColor().darker()); // Windows blue highlight
+							g2.setColor(Color.RED); // Windows blue highlight
 							if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
 								g2.fillRect(0, 0, getWidth(), getHeight());
 							} else {
@@ -422,7 +419,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 						}
 
 						// Optional: small grip line in center
-						g2.setColor(ColorManager.getCurrent().getSliderColor().brighter());
+						g2.setColor(Color.RED);
 						if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
 							int y = getHeight() / 2 - 10;
 							g2.fillRoundRect(getWidth() / 2 - 1, y, 2, 20, 2, 2);
@@ -526,7 +523,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		sp.setOneTouchExpandable(true);
 		sp.setDividerLocation(150);
 		fileTree.setBorder(BorderFactory.createEmptyBorder());
-		fileTree.setBackground(ColorManager.getCurrent().getLogPanelBorder());
+		fileTree.setBackground(Color.RED);
 
 		sp.setUI(new BasicSplitPaneUI() {     // better splitter
 			@Override
@@ -564,12 +561,12 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 						// Background color
-						g2.setColor(ColorManager.getCurrent().getSliderColor());
+						g2.setColor(Color.RED);
 						g2.fillRect(0, 0, getWidth(), getHeight());
 
 						// Hover highlight
 						if (hovered) {
-							g2.setColor(ColorManager.getCurrent().getSliderColor().darker()); // Windows blue highlight
+							g2.setColor(Color.RED); // Windows blue highlight
 							if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
 								g2.fillRect(0, 0, getWidth(), getHeight());
 							} else {
@@ -578,7 +575,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 						}
 
 						// Optional: small grip line in center
-						g2.setColor(ColorManager.getCurrent().getSliderColor().brighter());
+						g2.setColor(Color.RED);
 						if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
 							int y = getHeight() / 2 - 10;
 							g2.fillRoundRect(getWidth() / 2 - 1, y, 2, 20, 2, 2);
@@ -614,7 +611,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 			toolBar = new JToolBar(resources.getString("toolbar." + id + ".text"));
 			toolBar.setMargin(new Insets(1, 1, 0, 0));
 			toolBar.setFloatable(false);
-			toolBar.setBackground(ColorManager.getCurrent().getTopRow()); // dibo 230309   top bar color
+			toolBar.setBackground(Color.RED); // dibo 230309   top bar color
 			toolBars.put(id, toolBar);
 		}
 		return toolBar;

@@ -84,8 +84,9 @@ public class EditorController implements TreeSelectionListener, ActionListener,
 		this.fileTree = new FileTree(this);
 
 		this.newHamsterDialog = new NewHamsterDialog(this.tabbedTextArea);
-		this.newHamsterDialog.setBackground(Color.RED);
+		this.newHamsterDialog.setBackground(Color.RED);  // keine ahnung was das is
 		this.fileChooser = Utils.getFileChooser();
+		this.fileChooser.setBackground(Color.GREEN);
 		this.fileChooser.setFileFilter(HamsterFileFilter.HAM_FILTER);
 	}
 

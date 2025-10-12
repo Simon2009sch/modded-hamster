@@ -47,9 +47,9 @@ public class LogPanel extends JPanel implements LogSink {
 		buffer.add(BorderLayout.CENTER, textPane);
 		add(BorderLayout.CENTER, new JScrollPane(buffer));
 
-		textPane.setBackground(ColorManager.getCurrent().getLogPanel());
-		textPane.setForeground(ColorManager.getCurrent().getTextColor());
-		setBackground(ColorManager.getCurrent().getLogPanelBorder());  // the border
+		textPane.setBackground(Color.RED);
+		textPane.setForeground(Color.RED);
+		setBackground(Color.RED);  // the border
 	}
 
 	public void logEntry(LogEntry logEntry) {

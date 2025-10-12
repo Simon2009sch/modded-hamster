@@ -1,11 +1,12 @@
 package me.simoncrafter.de.hamster.editor.view;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 
 import me.simoncrafter.de.hamster.editor.controller.EditorController;
+import me.simoncrafter.de.hamster.mod.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.workbench.ForwardAction;
 import me.simoncrafter.de.hamster.workbench.Utils;
@@ -77,22 +78,32 @@ public class FilePopupMenu extends JPopupMenu {
 
 	public FilePopupMenu(EditorController controller) {
 		openAction = new OpenAction(controller);
-		add(new JMenuItem(openAction));
+		add(createMenuItem(openAction));
 		newFolderAction = new NewFolderAction(controller);
-		add(new JMenuItem(newFolderAction));
+		add(createMenuItem(newFolderAction));
 		deleteAction = new DeleteAction(controller);
-		add(new JMenuItem(deleteAction));
+		add(createMenuItem(deleteAction));
 		copyAction = new CopyAction(controller);
-		add(new JMenuItem(copyAction));
+		add(createMenuItem(copyAction));
 		pasteAction = new PasteAction(controller);
-		add(new JMenuItem(pasteAction));
+		add(createMenuItem(pasteAction));
 		renameAction = new RenameAction(controller);
-		add(new JMenuItem(renameAction));
+		add(createMenuItem(renameAction));
 		generateAction = new GenerateAction(controller);
 		if (Utils.SCRATCH || Utils.FSM || Utils.FLOWCHART) {
-			add(new JMenuItem(generateAction));
+			add(createMenuItem(generateAction));
 		}
+		UIStyleController.setFilePopupMenu(this);
+		UIStyleController.update();
 	}
+
+	private JMenuItem createMenuItem(Action action) {
+		JMenuItem item = new JMenuItem(action);
+		item.setBackground(Color.RED);
+		item.setBorder(BorderFactory.createEmptyBorder());
+		return item;
+	}
+
 
 	public void setFile(HamsterFile file) {
 		this.file = file;

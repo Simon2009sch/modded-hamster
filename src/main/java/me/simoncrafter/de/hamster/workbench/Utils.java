@@ -270,7 +270,7 @@ public class Utils {
 		JButton b = new JButton(action);
 		b.setText(null);
 		b.setMnemonic(0);
-		b.setBackground(ColorManager.getCurrent().getButtonColor());
+		b.setBackground(Color.RED);
 		b.setMargin(TOOLBAR_MARGIN);
 		return b;
 	}
@@ -290,7 +290,7 @@ public class Utils {
 		b.setOpaque(true);
 		b.setContentAreaFilled(true);
 		b.setBorderPainted(true);
-		b.setBackground(ColorManager.getCurrent().getButtonColor());
+		b.setBackground(Color.RED);
 		b.setMargin(TOOLBAR_MARGIN);
 		return b;
 	}
