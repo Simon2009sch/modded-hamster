@@ -18,6 +18,7 @@ import me.simoncrafter.de.hamster.compiler.model.CompilerModel;
 import me.simoncrafter.de.hamster.console.Console;
 import me.simoncrafter.de.hamster.debugger.model.DebuggerModel;
 import me.simoncrafter.de.hamster.lego.model.LegoModel;
+import me.simoncrafter.de.hamster.mod.UIStyleController;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.J3DFrame;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.OpenGLController;
@@ -369,76 +370,15 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 
 		JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, log);
 
-		sp.setUI(new BasicSplitPaneUI() {    //better splitter
-			@Override
-			public BasicSplitPaneDivider createDefaultDivider() {
-				return new BasicSplitPaneDivider(this) {
-					private boolean hovered = false;
+        sp.setResizeWeight(1);
+        sp.setOneTouchExpandable(true);
+        sp.setDividerLocation(500);
 
-					{
-						// Remove default arrow buttons
-						for (Component c : getComponents()) {
-							c.setVisible(false);
-						}
-						setLayout(null);
-						setBackground(new Color(100, 60, 60));
+        UIStyleController.addSplitPlane(sp);
 
-						// Detect hover to show highlight
-						addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseEntered(MouseEvent e) {
-								hovered = true;
-								repaint();
-							}
+        main.add(BorderLayout.CENTER, sp);
 
-							@Override
-							public void mouseExited(MouseEvent e) {
-								hovered = false;
-								repaint();
-							}
-						});
-					}
-
-					@Override
-					public void paint(Graphics g) {
-						Graphics2D g2 = (Graphics2D) g;
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-						// Background color
-						g2.setColor(Color.RED);
-						g2.fillRect(0, 0, getWidth(), getHeight());
-
-						// Hover highlight
-						if (hovered) {
-							g2.setColor(Color.RED); // Windows blue highlight
-							if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
-								g2.fillRect(0, 0, getWidth(), getHeight());
-							} else {
-								g2.fillRect(0, 0, getWidth(), getHeight());
-							}
-						}
-
-						// Optional: small grip line in center
-						g2.setColor(Color.RED);
-						if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
-							int y = getHeight() / 2 - 10;
-							g2.fillRoundRect(getWidth() / 2 - 1, y, 2, 20, 2, 2);
-						} else {
-							int x = getWidth() / 2 - 10;
-							g2.fillRoundRect(x, getHeight() / 2 - 1, 20, 2, 2, 2);
-						}
-					}
-				};
-			}
-		});
-
-
-		sp.setResizeWeight(1);
-		sp.setOneTouchExpandable(true);
-		sp.setDividerLocation(500);
-		main.add(BorderLayout.CENTER, sp);
-
-		if (!Utils.DREI_D)
+        if (!Utils.DREI_D)
 			return;
 		// chris: 3D-Ansichtshauptfenster
 		try {
@@ -515,78 +455,17 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		JScrollPane fileTree = new JScrollPane(workbench.getEditor().getFileTree());
 		fileTree.setBorder(
 				BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5), fileTree.getBorder()));
-		fileTree.setPreferredSize(new Dimension(150, 150));
+		fileTree.setPreferredSize(new Dimension(250, 150));
 
 		// Hinzufuegen von Dateibaum und Main-Panel
 		// in SplitPane (dibo)
 		JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, fileTree, mainPanel);
 		sp.setOneTouchExpandable(true);
-		sp.setDividerLocation(150);
+		sp.setDividerLocation(200);
 		fileTree.setBorder(BorderFactory.createEmptyBorder());
 		fileTree.setBackground(Color.RED);
 
-		sp.setUI(new BasicSplitPaneUI() {     // better splitter
-			@Override
-			public BasicSplitPaneDivider createDefaultDivider() {
-				return new BasicSplitPaneDivider(this) {
-					private boolean hovered = false;
-
-					{
-						// Remove default arrow buttons
-						for (Component c : getComponents()) {
-							c.setVisible(false);
-						}
-						setLayout(null);
-						setBackground(new Color(100, 60, 60));
-
-						// Detect hover to show highlight
-						addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseEntered(MouseEvent e) {
-								hovered = true;
-								repaint();
-							}
-
-							@Override
-							public void mouseExited(MouseEvent e) {
-								hovered = false;
-								repaint();
-							}
-						});
-					}
-
-					@Override
-					public void paint(Graphics g) {
-						Graphics2D g2 = (Graphics2D) g;
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-						// Background color
-						g2.setColor(Color.RED);
-						g2.fillRect(0, 0, getWidth(), getHeight());
-
-						// Hover highlight
-						if (hovered) {
-							g2.setColor(Color.RED); // Windows blue highlight
-							if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
-								g2.fillRect(0, 0, getWidth(), getHeight());
-							} else {
-								g2.fillRect(0, 0, getWidth(), getHeight());
-							}
-						}
-
-						// Optional: small grip line in center
-						g2.setColor(Color.RED);
-						if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
-							int y = getHeight() / 2 - 10;
-							g2.fillRoundRect(getWidth() / 2 - 1, y, 2, 20, 2, 2);
-						} else {
-							int x = getWidth() / 2 - 10;
-							g2.fillRoundRect(x, getHeight() / 2 - 1, 20, 2, 2, 2);
-						}
-					}
-				};
-			}
-		});
+		UIStyleController.addSplitPlane(sp);
 
 		/*
 		 * editor.getContentPane().add(BorderLayout.WEST, fileTree);
@@ -611,7 +490,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 			toolBar = new JToolBar(resources.getString("toolbar." + id + ".text"));
 			toolBar.setMargin(new Insets(1, 1, 0, 0));
 			toolBar.setFloatable(false);
-			toolBar.setBackground(Color.RED); // dibo 230309   top bar color
+            UIStyleController.addToolBar(toolBar);
 			toolBars.put(id, toolBar);
 		}
 		return toolBar;
@@ -630,6 +509,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		JMenuBar menuBar = (JMenuBar) menuBars.get(id);
 		if (menuBar == null) {
 			menuBar = new JMenuBar();
+            UIStyleController.setEditorMenuBar(menuBar);
 			menuBars.put(id, menuBar);
 		}
 		return menuBar;

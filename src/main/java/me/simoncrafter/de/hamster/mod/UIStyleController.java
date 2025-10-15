@@ -26,12 +26,14 @@ public class UIStyleController {
     private static JPanel editorInfoBar;
     private static LogPanel logPanel;
     private static JTextPane logPanelText;
-    private static JToolBar toolBar;
+    private static List<JToolBar> toolBars = new ArrayList<>();
     private static JPopupMenu filePopupMenu;
     private static JToolBar editorToolBar;
     private static SimulationPanel simulationPanel;
     private static List<JButton> buttons = new ArrayList<>();
     private static List<JToggleButton> toggleButtons = new ArrayList<>();
+    private static JMenuBar editorMenuBar;
+    private static List<JSplitPane> splitPlanes = new ArrayList<>();
 
     private static JButton updateButton;
 
@@ -91,9 +93,9 @@ public class UIStyleController {
             editorInfoBar.setBackground(getRandomColor());
         }
 
-        if (toolBar != null) {
+        toolBars.forEach(toolBar -> {
             toolBar.setBackground(getRandomColor());
-        }
+        });
 
         if (filePopupMenu != null) {
             filePopupMenu.setBorder(BorderFactory.createLineBorder(getRandomColor(), 2));
@@ -130,6 +132,14 @@ public class UIStyleController {
         buttons.forEach(button -> {
             button.setBackground(getRandomColor());
         });
+
+        splitPlanes.forEach(plane -> {
+            plane.setUI(getSimpleUISlider(getRandomColor(), getRandomColor(), getRandomColor()));
+        });
+
+        if (editorMenuBar != null) {
+            editorMenuBar.setBackground(getRandomColor());
+        }
     }
 
     public static void update() {
@@ -141,7 +151,7 @@ public class UIStyleController {
         return new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
     }
 
-    public static BasicSplitPaneUI getSimpleUISlider() {
+    public static BasicSplitPaneUI getSimpleUISlider(Color defaultColor, Color highlightColor, Color handleColor) {
         return new BasicSplitPaneUI() {
             @Override
             public BasicSplitPaneDivider createDefaultDivider() {
@@ -177,12 +187,12 @@ public class UIStyleController {
                         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
                         // Background color
-                        g2.setColor(Color.RED);
+                        g2.setColor(defaultColor);
                         g2.fillRect(0, 0, getWidth(), getHeight());
 
                         // Hover highlight
                         if (hovered) {
-                            g2.setColor(Color.RED); // Windows blue highlight
+                            g2.setColor(highlightColor); // Windows blue highlight
                             if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
                                 g2.fillRect(0, 0, getWidth(), getHeight());
                             } else {
@@ -191,7 +201,7 @@ public class UIStyleController {
                         }
 
                         // Optional: small grip line in center
-                        g2.setColor(Color.RED);
+                        g2.setColor(handleColor);
                         if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
                             int y = getHeight() / 2 - 10;
                             g2.fillRoundRect(getWidth() / 2 - 1, y, 2, 20, 2, 2);
@@ -203,6 +213,11 @@ public class UIStyleController {
                 };
             }
         };
+    }
+
+    public static void setEditorMenuBar(JMenuBar editorMenuBar) {
+        UIStyleController.editorMenuBar = editorMenuBar;
+        UIStyleController.update();
     }
 
     public static void setLogPanelText(JTextPane logPanelText) {
@@ -233,14 +248,17 @@ public class UIStyleController {
 
     public static void setButtons(List<JButton> buttons) {
         UIStyleController.buttons = buttons;
+        UIStyleController.update();
     }
 
     public static void addButton(JButton button) {
         UIStyleController.buttons.add(button);
+        UIStyleController.update();
     }
 
     public static void setToggleButtons(List<JToggleButton> toggleButtons) {
         UIStyleController.toggleButtons = toggleButtons;
+        UIStyleController.update();
     }
 
     public static void addToggleButton(JToggleButton button) {
@@ -282,13 +300,26 @@ public class UIStyleController {
         UIStyleController.update();
     }
 
-    public static void setToolBar(JToolBar toolBar) {
-        UIStyleController.toolBar = toolBar;
+    public static void setToolBars(List<JToolBar> toolBars) {
+        UIStyleController.toolBars = toolBars;
+        UIStyleController.update();
+    }
+
+    public static void addToolBar(JToolBar toolBar) {
+        UIStyleController.toolBars.add(toolBar);
         UIStyleController.update();
     }
 
     public static void setEditorInfoBar(JPanel editorInfoBar) {
         UIStyleController.editorInfoBar = editorInfoBar;
         UIStyleController.update();
+    }
+
+    public static void setSplitPlanes(List<JSplitPane> splitPlanes) {
+        UIStyleController.splitPlanes = splitPlanes;
+    }
+
+    public static void addSplitPlane(JSplitPane splitPlane) {
+        UIStyleController.splitPlanes.add(splitPlane);
     }
 }
