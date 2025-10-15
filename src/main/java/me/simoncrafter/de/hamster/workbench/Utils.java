@@ -25,6 +25,7 @@ import me.simoncrafter.de.hamster.editor.view.TextAreaPrintable;
 import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
 import me.simoncrafter.de.hamster.mod.ColorManager;
+import me.simoncrafter.de.hamster.mod.UIStyleController;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
 import org.jruby.RubyProcess;
 import sun.java2d.SunGraphics2D;
@@ -272,6 +273,7 @@ public class Utils {
 		b.setMnemonic(0);
 		b.setBackground(Color.RED);
 		b.setMargin(TOOLBAR_MARGIN);
+        UIStyleController.addButton(b);
 		return b;
 	}
 
@@ -292,13 +294,13 @@ public class Utils {
 		b.setBorderPainted(true);
 		b.setBackground(Color.RED);
 		b.setMargin(TOOLBAR_MARGIN);
+        UIStyleController.addToggleButton(b);
 		return b;
 	}
 
 	/**
 	 * Diese Methode erzeugt einen Menueeintrag zu einer Action.
-	 * 
-	 * @param action
+	 *
 	 *            Die Action, zu der der Menueeintrag erzeugt wird
 	 * @return Der erzeugte Menueeintrag
 	 */

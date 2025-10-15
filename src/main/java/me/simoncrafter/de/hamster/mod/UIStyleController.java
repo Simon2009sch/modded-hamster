@@ -1,10 +1,9 @@
 package me.simoncrafter.de.hamster.mod;
 
-import me.simoncrafter.de.hamster.editor.view.FileTree;
-import me.simoncrafter.de.hamster.editor.view.LineNumberPanel;
-import me.simoncrafter.de.hamster.editor.view.TabbedTextArea;
+import me.simoncrafter.de.hamster.editor.view.*;
 import me.simoncrafter.de.hamster.editor.view.TextArea;
 import me.simoncrafter.de.hamster.simulation.view.LogPanel;
+import me.simoncrafter.de.hamster.simulation.view.SimulationPanel;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
@@ -12,6 +11,8 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class UIStyleController {
@@ -24,8 +25,13 @@ public class UIStyleController {
     private static TabbedTextArea editorTextAreaBackground;
     private static JPanel editorInfoBar;
     private static LogPanel logPanel;
+    private static JTextPane logPanelText;
     private static JToolBar toolBar;
     private static JPopupMenu filePopupMenu;
+    private static JToolBar editorToolBar;
+    private static SimulationPanel simulationPanel;
+    private static List<JButton> buttons = new ArrayList<>();
+    private static List<JToggleButton> toggleButtons = new ArrayList<>();
 
     private static JButton updateButton;
 
@@ -97,6 +103,33 @@ public class UIStyleController {
             }
         }
 
+        if (editorInfoBar != null) {
+            editorInfoBar.setBackground(getRandomColor());
+        }
+
+        if (logPanel != null) {
+            logPanel.setBackground(getRandomColor());
+        }
+
+        if (logPanelText != null) {
+            logPanelText.setBackground(getRandomColor());
+            logPanelText.setForeground(getRandomColor());
+        }
+
+        if (editorToolBar != null) {
+            editorToolBar.setBackground(getRandomColor());
+        }
+
+        if (simulationPanel != null) {
+            simulationPanel.setBackground(getRandomColor());
+        }
+
+        toggleButtons.forEach(button -> {
+            button.setBackground(getRandomColor());
+        });
+        buttons.forEach(button -> {
+            button.setBackground(getRandomColor());
+        });
     }
 
     public static void update() {
@@ -172,47 +205,90 @@ public class UIStyleController {
         };
     }
 
+    public static void setLogPanelText(JTextPane logPanelText) {
+        UIStyleController.logPanelText = logPanelText;
+        UIStyleController.update();
+    }
+
+    public static void setSimulationPanel(SimulationPanel simulationPanel) {
+        UIStyleController.simulationPanel = simulationPanel;
+        UIStyleController.update();
+    }
+
     public static void setLineNumberPanel(LineNumberPanel lineNumberPanel) {
         UIStyleController.lineNumberPanel = lineNumberPanel;
+        UIStyleController.update();
     }
 
     public static void setFilePopupMenu(JPopupMenu filePopupMenu) {
         UIStyleController.filePopupMenu = filePopupMenu;
+        UIStyleController.update();
+
     }
 
     public static void setFileTree(FileTree fileTree) {
         UIStyleController.fileTree = fileTree;
+        UIStyleController.update();
+    }
+
+    public static void setButtons(List<JButton> buttons) {
+        UIStyleController.buttons = buttons;
+    }
+
+    public static void addButton(JButton button) {
+        UIStyleController.buttons.add(button);
+    }
+
+    public static void setToggleButtons(List<JToggleButton> toggleButtons) {
+        UIStyleController.toggleButtons = toggleButtons;
+    }
+
+    public static void addToggleButton(JToggleButton button) {
+        UIStyleController.toggleButtons.add(button);
     }
 
     public static void setEditorInfoBarColText(JTextField editorInfoBarColText) {
         UIStyleController.editorInfoBarColText = editorInfoBarColText;
+        UIStyleController.update();
+    }
+
+    public static void setEditorToolBar(JToolBar editorToolBar) {
+        UIStyleController.editorToolBar = editorToolBar;
+        UIStyleController.update();
     }
 
     public static void setEditorInfoBarColVal(JTextField editorInfoBarColVal) {
         UIStyleController.editorInfoBarColVal = editorInfoBarColVal;
+        UIStyleController.update();
     }
 
     public static void setEditorInfoBarLineText(JTextField editorInfoBarLineText) {
         UIStyleController.editorInfoBarLineText = editorInfoBarLineText;
+        UIStyleController.update();
     }
 
     public static void setEditorInfoBarLineVal(JTextField editorInfoBarLineVal) {
         UIStyleController.editorInfoBarLineVal = editorInfoBarLineVal;
+        UIStyleController.update();
     }
 
     public static void setEditorTextAreaBackground(TabbedTextArea editorTextAreaBackground) {
         UIStyleController.editorTextAreaBackground = editorTextAreaBackground;
+        UIStyleController.update();
     }
 
     public static void setLogPanel(LogPanel logPanel) {
         UIStyleController.logPanel = logPanel;
+        UIStyleController.update();
     }
 
     public static void setToolBar(JToolBar toolBar) {
         UIStyleController.toolBar = toolBar;
+        UIStyleController.update();
     }
 
     public static void setEditorInfoBar(JPanel editorInfoBar) {
         UIStyleController.editorInfoBar = editorInfoBar;
+        UIStyleController.update();
     }
 }

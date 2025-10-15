@@ -10,6 +10,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import me.simoncrafter.de.hamster.mod.ColorManager;
+import me.simoncrafter.de.hamster.mod.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterInstruction;
 import me.simoncrafter.de.hamster.simulation.model.LogEntry;
 import me.simoncrafter.de.hamster.simulation.model.LogSink;
@@ -47,9 +48,8 @@ public class LogPanel extends JPanel implements LogSink {
 		buffer.add(BorderLayout.CENTER, textPane);
 		add(BorderLayout.CENTER, new JScrollPane(buffer));
 
-		textPane.setBackground(Color.RED);
-		textPane.setForeground(Color.RED);
-		setBackground(Color.RED);  // the border
+        UIStyleController.setLogPanel(this);
+        UIStyleController.setLogPanelText(textPane);
 	}
 
 	public void logEntry(LogEntry logEntry) {

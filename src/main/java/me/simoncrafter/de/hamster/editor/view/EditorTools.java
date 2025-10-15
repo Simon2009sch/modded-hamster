@@ -17,6 +17,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 
 import me.simoncrafter.de.hamster.editor.controller.EditorController;
+import me.simoncrafter.de.hamster.mod.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.workbench.ForwardAction;
 import me.simoncrafter.de.hamster.workbench.Utils;

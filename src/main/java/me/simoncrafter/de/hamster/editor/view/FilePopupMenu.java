@@ -94,7 +94,6 @@ public class FilePopupMenu extends JPopupMenu {
 			add(createMenuItem(generateAction));
 		}
 		UIStyleController.setFilePopupMenu(this);
-		UIStyleController.update();
 	}
 
 	private JMenuItem createMenuItem(Action action) {

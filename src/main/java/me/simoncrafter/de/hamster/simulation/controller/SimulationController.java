@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
 import javax.swing.JToggleButton;
 
+import me.simoncrafter.de.hamster.mod.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.prolog.controller.PrologController;
 import me.simoncrafter.de.hamster.prolog.model.PrologHamster.TerObject;
@@ -75,6 +76,8 @@ public class SimulationController implements ActionListener {
 		fileChooser.setFileFilter(HamsterFileFilter.TER_FILTER);
 
 		sizeDialog = new SizeDialog(simulationPanel);
+
+        UIStyleController.setSimulationPanel(simulationPanel);
 	}
 
 	public DialogTerminal getDialogTerminal() {
