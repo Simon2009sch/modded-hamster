@@ -271,10 +271,14 @@ public class Utils {
 		JButton b = new JButton(action);
 		b.setText(null);
 		b.setMnemonic(0);
-		b.setBackground(Color.RED);
 		b.setMargin(TOOLBAR_MARGIN);
-        UIStyleController.addButton(b);
 		return b;
+	}
+
+	public static JButton createStyledButton(Action action, String key) {
+		JButton button = createButton(action);
+		UIStyleController.putUIComponent(key, button);
+		return button;
 	}
 
 	/**
@@ -294,8 +298,13 @@ public class Utils {
 		b.setBorderPainted(true);
 		b.setBackground(Color.RED);
 		b.setMargin(TOOLBAR_MARGIN);
-        UIStyleController.addToggleButton(b);
 		return b;
+	}
+
+	public static JToggleButton createStyledToggleButton(Action action, String key) {
+		JToggleButton button = createToggleButton(action);
+		UIStyleController.putUIComponent(key, button);
+		return button;
 	}
 
 	/**

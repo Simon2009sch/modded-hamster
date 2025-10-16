@@ -1,9 +1,6 @@
 package me.simoncrafter.de.hamster.editor.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
@@ -90,16 +87,13 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 		this.colNumber.setEditable(false);
 		this.statusBar.add(this.colNumber);
 
-
 		// Set Background
-		UIStyleController.setEditorInfoBarColText(col);
-		UIStyleController.setEditorInfoBarLineText(line);
-		UIStyleController.setEditorInfoBarColVal(this.colNumber);
-		UIStyleController.setEditorInfoBarLineVal(this.lineNumber);
-		UIStyleController.setEditorTextAreaBackground(this);
-		UIStyleController.setEditorInfoBar(this.statusBar);
-
-		UIStyleController.update();
+		UIStyleController.putUIComponent("editor.texteditor", this);
+		UIStyleController.putUIComponent("editor.texteditor.infobar", statusBar);
+		UIStyleController.putUIComponent("editor.texteditor.infobar.line.value", this.lineNumber);
+		UIStyleController.putUIComponent("editor.texteditor.infobar.col.value", this.colNumber);
+		UIStyleController.putUIComponent("editor.texteditor.infobar.line.text", line);
+		UIStyleController.putUIComponent("editor.texteditor.infobar.col.text", col);
 
 		this.add(BorderLayout.SOUTH, this.statusBar);
 	}

@@ -106,18 +106,18 @@ public class DebuggerTools implements Observer, ChangeListener {
 
 		JToolBar toolBar = controller.getWorkbench().getView().findToolBar("editor");
 		toolBar.add(Box.createRigidArea(new Dimension(11, 11)));
-		toolBar.add(Utils.createButton(startAction));
+		toolBar.add(Utils.createStyledButton(startAction, "editor.debugger.toolbar.buttons.start"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(pauseAction));
+		toolBar.add(Utils.createStyledButton(pauseAction, "editor.debugger.toolbar.buttons.pause"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(stopAction));
+		toolBar.add(Utils.createStyledButton(stopAction, "editor.debugger.toolbar.buttons.stop"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		enableButton = Utils.createToggleButton(enableAction);
+		enableButton = Utils.createStyledToggleButton(enableAction, "editor.debugger.toolbar.buttons.enable");
 		toolBar.add(enableButton);
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(stepAction));
+		toolBar.add(Utils.createStyledButton(stepAction, "editor.debugger.toolbar.buttons.step"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(stepOverAction));
+		toolBar.add(Utils.createStyledButton(stepOverAction, "editor.debugger.toolbar.buttons.stepover"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
 		delay = new JSlider(0, 1000, 500);
 		delay.setToolTipText(Utils.getResource("debugger.delay.tooltip"));
@@ -132,13 +132,12 @@ public class DebuggerTools implements Observer, ChangeListener {
 		delay.setBackground(toolBar.getBackground());
 		toolBar.add(delay);
 
-        UIStyleController.addSlider(delay);
-        UIStyleController.addSliderToolBar(toolBar);
+		UIStyleController.putUIComponent("editor.debugger.toolbar.delay", delay);
 
 		JToolBar simulationBar = controller.getWorkbench().getView().findToolBar("simulation");
 
 		simulationBar.add(Box.createRigidArea(new Dimension(11, 11)));
-		JButton button = Utils.createButton(startAction);
+		JButton button = Utils.createStyledButton(startAction, "simulation.debugger.toolbar.buttons.start");
 
 		KeyStroke keyM = KeyStroke.getKeyStroke(Utils.getResource("debugger.start.keystroke"));
 		Action actionM = new AbstractAction("start2") {
@@ -154,7 +153,7 @@ public class DebuggerTools implements Observer, ChangeListener {
 
 		simulationBar.add(Box.createRigidArea(new Dimension(2, 2)));
 
-		button = Utils.createButton(pauseAction);
+		button = Utils.createStyledButton(pauseAction, "simulation.debugger.toolbar.buttons.pause");
 
 		keyM = KeyStroke.getKeyStroke(Utils.getResource("debugger.pause.keystroke"));
 		actionM = new AbstractAction("start2") {
@@ -169,7 +168,7 @@ public class DebuggerTools implements Observer, ChangeListener {
 
 		simulationBar.add(Box.createRigidArea(new Dimension(2, 2)));
 
-		button = Utils.createButton(stopAction);
+		button = Utils.createStyledButton(stopAction, "simulation.debugger.toolbar.buttons.stop");
 
 		keyM = KeyStroke.getKeyStroke(Utils.getResource("debugger.stop.keystroke"));
 		actionM = new AbstractAction("start2") {
@@ -195,6 +194,8 @@ public class DebuggerTools implements Observer, ChangeListener {
 		simulationBar.add(Box.createRigidArea(new Dimension(2, 2)));
 		simulationBar.add(delaySim);
 
+		UIStyleController.putUIComponent("simulation.debugger.toolbar.delay", delaySim);
+
 		startAction.addActionListener(controller);
 		stepAction.addActionListener(controller);
 		stepOverAction.addActionListener(controller);
@@ -205,11 +206,11 @@ public class DebuggerTools implements Observer, ChangeListener {
 		// chris
 		JToolBar simulationBar3D = controller.getWorkbench().getView().findToolBar("3dsimulation");
 		simulationBar3D.add(Box.createRigidArea(new Dimension(11, 11)));
-		simulationBar3D.add(Utils.createButton(startAction));
+		simulationBar3D.add(Utils.createStyledButton(startAction, "3dsimulation.debugger.toolbar.buttons.start"));
 		simulationBar3D.add(Box.createRigidArea(new Dimension(2, 2)));
-		simulationBar3D.add(Utils.createButton(pauseAction));
+		simulationBar3D.add(Utils.createStyledButton(pauseAction, "3dsimulation.debugger.toolbar.buttons.pause"));
 		simulationBar3D.add(Box.createRigidArea(new Dimension(2, 2)));
-		simulationBar3D.add(Utils.createButton(stopAction));
+		simulationBar3D.add(Utils.createStyledButton(stopAction, "3dsimulation.debugger.toolbar.buttons.stop"));
 
 		simulationBar3D.add(Box.createRigidArea(new Dimension(2, 2)));
 		delay3D = new JSlider(0, 1000, 500);
@@ -223,6 +224,8 @@ public class DebuggerTools implements Observer, ChangeListener {
 		delay3D.addChangeListener(this);
 		simulationBar3D.add(Box.createRigidArea(new Dimension(2, 2)));
 		simulationBar3D.add(delay3D);
+
+		UIStyleController.putUIComponent("3dsimulation.debugger.toolbar.delay", delay3D);
 
 		updateButtonStates();
 	}

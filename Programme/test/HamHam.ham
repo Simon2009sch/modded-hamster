@@ -1,0 +1,5 @@
+/*class*/class HamHam extends Hamster {
+    public void lol() {
+    	vor();
+    }
+}

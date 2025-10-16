@@ -190,35 +190,35 @@ public class EditorTools implements PropertyChangeListener {
 
 		// Create and add tool bar
 		JToolBar toolbar = workbenchView.findToolBar("editor");
-		toolbar.add(Utils.createButton(newAction));
+		toolbar.add(Utils.createStyledButton(newAction, "editor.toolbar.buttons.new"));
 		toolbar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolbar.add(Utils.createButton(openAction));
+		toolbar.add(Utils.createStyledButton(openAction, "editor.toolbar.buttons.open"));
 		toolbar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolbar.add(Utils.createButton(saveAction));
+		toolbar.add(Utils.createStyledButton(saveAction, "editor.toolbar.buttons.save"));
 		toolbar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolbar.add(Utils.createButton(saveAsAction));
+		toolbar.add(Utils.createStyledButton(saveAsAction, "editor.toolbar.buttons.saveas"));
 		toolbar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolbar.add(Utils.createButton(savePlusAction));
+		toolbar.add(Utils.createStyledButton(savePlusAction, "editor.toolbar.buttons.saveplus"));
 		toolbar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolbar.add(Utils.createButton(saveAsPlusAction));
+		toolbar.add(Utils.createStyledButton(saveAsPlusAction, "editor.toolbar.buttons.saveasplus"));
 		toolbar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolbar.add(Utils.createButton(closeAction));
+		toolbar.add(Utils.createStyledButton(closeAction, "editor.toolbar.buttons.close"));
 		toolbar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolbar.add(Utils.createButton(printAction));
+		toolbar.add(Utils.createStyledButton(printAction, "editor.toolbar.buttons.print"));
 
 		toolbar.add(Box.createRigidArea(new Dimension(11, 11)));
 
-		toolbar.add(Utils.createButton(cutAction));
+		toolbar.add(Utils.createStyledButton(cutAction, "editor.toolbar.buttons.cut"));
 		toolbar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolbar.add(Utils.createButton(copyAction));
+		toolbar.add(Utils.createStyledButton(copyAction, "editor.toolbar.buttons.copy"));
 		toolbar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolbar.add(Utils.createButton(pasteAction));
+		toolbar.add(Utils.createStyledButton(pasteAction, "editor.toolbar.buttons.paste"));
 
 		toolbar.add(Box.createRigidArea(new Dimension(11, 11)));
 
-		toolbar.add(Utils.createButton(undoAction));
+		toolbar.add(Utils.createStyledButton(undoAction, "editor.toolbar.buttons.undo"));
 		toolbar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolbar.add(Utils.createButton(redoAction));
+		toolbar.add(Utils.createStyledButton(redoAction, "editor.toolbar.buttons.redo"));
 
 		saveAction.addActionListener(controller);
 		saveAsAction.addActionListener(controller);

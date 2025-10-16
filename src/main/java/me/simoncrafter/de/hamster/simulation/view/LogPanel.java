@@ -48,8 +48,8 @@ public class LogPanel extends JPanel implements LogSink {
 		buffer.add(BorderLayout.CENTER, textPane);
 		add(BorderLayout.CENTER, new JScrollPane(buffer));
 
-        UIStyleController.setLogPanel(this);
-        UIStyleController.setLogPanelText(textPane);
+		UIStyleController.putUIComponent("simulation.logpanel", this);
+		UIStyleController.putUIComponent("simulation.logpanel.text", textPane);
     }
 
 	public void logEntry(LogEntry logEntry) {

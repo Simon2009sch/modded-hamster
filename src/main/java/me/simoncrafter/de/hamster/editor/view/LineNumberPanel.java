@@ -16,7 +16,7 @@ public class LineNumberPanel extends JTextPane {
 		this.setDocument(this.doc);
 		this.setBackground(Color.LIGHT_GRAY);
 		this.setEditable(false); // dibo 210110
-		UIStyleController.setLineNumberPanel(this);
+		UIStyleController.putUIComponent("editor.texteditor.linenumbers", this);
 	}
 
 	public void setNumberOfLines(int noOfLines) {

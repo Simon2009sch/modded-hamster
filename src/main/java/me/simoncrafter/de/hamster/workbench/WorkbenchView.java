@@ -374,7 +374,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
         sp.setOneTouchExpandable(true);
         sp.setDividerLocation(500);
 
-        UIStyleController.addSplitPlane(sp);
+        UIStyleController.putUIComponent("simulation.splitplane", sp);
 
         main.add(BorderLayout.CENTER, sp);
 
@@ -455,7 +455,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		JScrollPane fileTree = new JScrollPane(workbench.getEditor().getFileTree());
 		fileTree.setBorder(
 				BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5), fileTree.getBorder()));
-		fileTree.setPreferredSize(new Dimension(250, 150));
+		//fileTree.setPreferredSize(new Dimension(250, 150));
 
 		// Hinzufuegen von Dateibaum und Main-Panel
 		// in SplitPane (dibo)
@@ -465,7 +465,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		fileTree.setBorder(BorderFactory.createEmptyBorder());
 		fileTree.setBackground(Color.RED);
 
-		UIStyleController.addSplitPlane(sp);
+		UIStyleController.putUIComponent("editor.splitplane", sp);
 
 		/*
 		 * editor.getContentPane().add(BorderLayout.WEST, fileTree);
@@ -490,7 +490,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 			toolBar = new JToolBar(resources.getString("toolbar." + id + ".text"));
 			toolBar.setMargin(new Insets(1, 1, 0, 0));
 			toolBar.setFloatable(false);
-            UIStyleController.addToolBar(toolBar);
+			UIStyleController.putUIComponent(id + ".toolbar", toolBar);
 			toolBars.put(id, toolBar);
 		}
 		return toolBar;
@@ -509,7 +509,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		JMenuBar menuBar = (JMenuBar) menuBars.get(id);
 		if (menuBar == null) {
 			menuBar = new JMenuBar();
-            UIStyleController.setEditorMenuBar(menuBar);
+			UIStyleController.putUIComponent("editor.menubar", menuBar);
 			menuBars.put(id, menuBar);
 		}
 		return menuBar;

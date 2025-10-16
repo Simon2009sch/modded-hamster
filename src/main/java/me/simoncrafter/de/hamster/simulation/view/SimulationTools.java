@@ -287,25 +287,25 @@ public class SimulationTools implements MouseListener, MouseMotionListener {
 		resetAction.addActionListener(controller);
 		
 		JToolBar toolBar = controller.getWorkbench().getView().findToolBar("simulation");
-		JButton newActionButton = Utils.createButton(newAction);
+		JButton newActionButton = Utils.createStyledButton(newAction, "simulation.toolbar.buttons.new");
 		toolBar.add(newActionButton);
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(openAction));
+		toolBar.add(Utils.createStyledButton(openAction, "simulation.toolbar.buttons.open"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(saveAsAction));
+		toolBar.add(Utils.createStyledButton(saveAsAction, "simulation.toolbar.buttons.save"));
 
 		toolBar.add(Box.createRigidArea(new Dimension(11, 11)));
 
-		JToggleButton corn = Utils.createToggleButton(selectCornAction);
-		JToggleButton hamster = Utils.createToggleButton(selectHamsterAction);
-		JToggleButton wall = Utils.createToggleButton(selectWallAction);
-		JToggleButton delete = Utils.createToggleButton(selectDeleteAction);
+		JToggleButton corn = Utils.createStyledToggleButton(selectCornAction, "simulation.toolbar.buttons.corn");
+		JToggleButton hamster = Utils.createStyledToggleButton(selectHamsterAction, "simulation.toolbar.buttons.hamster");
+		JToggleButton wall = Utils.createStyledToggleButton(selectWallAction, "simulation.toolbar.buttons.wall");
+		JToggleButton delete = Utils.createStyledToggleButton(selectDeleteAction, "simulation.toolbar.buttons.delete");
 
 		toolBar.add(hamster);
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(turnHamsterAction));
+		toolBar.add(Utils.createStyledButton(turnHamsterAction, "simulation.toolbar.buttons.turn"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(hamsterCornAction));
+		toolBar.add(Utils.createStyledButton(hamsterCornAction, "simulation.toolbar.buttons.hamstercron"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
 		toolBar.add(corn);
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
@@ -321,12 +321,12 @@ public class SimulationTools implements MouseListener, MouseMotionListener {
 
 		toolBar.add(Box.createRigidArea(new Dimension(11, 11)));
 
-		toolBar.add(Utils.createButton(zoomInAction));
+		toolBar.add(Utils.createStyledButton(zoomInAction, "simulation.toolbar.buttons.zoomin"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(zoomOutAction));
+		toolBar.add(Utils.createStyledButton(zoomOutAction, "simulation.toolbar.buttons.zoomout"));
 
 		toolBar.add(Box.createRigidArea(new Dimension(11, 11)));
-		toolBar.add(Utils.createButton(resetAction));
+		toolBar.add(Utils.createStyledButton(resetAction, "simulation.toolbar.buttons.reset"));
 		
 		
 		//chris
@@ -344,35 +344,35 @@ public class SimulationTools implements MouseListener, MouseMotionListener {
 		toolBar = controller.getWorkbench().getView().findToolBar(
 		"3dsimulation");
 		
-		toolBar.add(Utils.createButton(zoomInAction3D));
+		toolBar.add(Utils.createStyledButton(zoomInAction3D, "3dsimulation.toolbar.buttons.zoomin"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(zoomOutAction3D));
+		toolBar.add(Utils.createStyledButton(zoomOutAction3D, "3dsimulation.toolbar.buttons.zoomout"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));		
-		toolBar.add(Utils.createButton(rotateRightAction3D));
+		toolBar.add(Utils.createStyledButton(rotateRightAction3D, "3dsimulation.toolbar.buttons.rotateright"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(rotateLeftAction3D));
+		toolBar.add(Utils.createStyledButton(rotateLeftAction3D, "3dsimulation.toolbar.buttons.rotateleft"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));			
-		toolBar.add(Utils.createButton(lookUpAction3D));
+		toolBar.add(Utils.createStyledButton(lookUpAction3D, "3dsimulation.toolbar.buttons.lookup"));
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		toolBar.add(Utils.createButton(lookDownAction3D));		
+		toolBar.add(Utils.createStyledButton(lookDownAction3D, "3dsimulation.toolbar.buttons.lookdown"));
 		toolBar.add(Box.createRigidArea(new Dimension(11, 11)));		
 
-		toolBar.add(Utils.createButton(perspectiveAction3D));
+		toolBar.add(Utils.createStyledButton(perspectiveAction3D, "3dsimulation.toolbar.buttons.persoective"));
 			
 		toolBar.add(Box.createRigidArea(new Dimension(11, 11)));
-		JToggleButton b = Utils.createToggleButton(toggleGridAction3D);		
+		JToggleButton b = Utils.createStyledToggleButton(toggleGridAction3D, "3dsimulation.toolbar.buttons.grid");
 		String s = controller.getWorkbench().getProperty("grid", "true");
 		if (s.equals("true")) b.setSelected(true); else b.setSelected(false); 
 		toolBar.add(b);
 		
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		b = Utils.createToggleButton(toggleSoundAction3D);
+		b = Utils.createStyledToggleButton(toggleSoundAction3D, "3dsimulation.toolbar.buttons.sound");
 		s = controller.getWorkbench().getProperty("sound", "true");
 		if (s.equals("true")) b.setSelected(true); else b.setSelected(false); 
 		toolBar.add(b);
 		
 		toolBar.add(Box.createRigidArea(new Dimension(2, 2)));
-		b = Utils.createToggleButton(toggleMusicAction3D);
+		b = Utils.createStyledToggleButton(toggleMusicAction3D, "3dsimulation.toolbar.buttons.music");
 		s = controller.getWorkbench().getProperty("music", "true");
 		if (s.equals("true")) b.setSelected(true); else b.setSelected(false); 
 		toolBar.add(b);

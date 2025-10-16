@@ -1,5 +1,6 @@
 package me.simoncrafter.de.hamster.workbench;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -8,21 +9,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.Locale;
 import java.util.Properties;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.KeyStroke;
-import javax.swing.LookAndFeel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
@@ -124,6 +115,8 @@ public class Workbench {
 						JOptionPane.ERROR_MESSAGE, null);
 			}
 		}
+
+
 		model = new WorkbenchModel(simulatorOnly, simModel);
 
 		view = new WorkbenchView(this);
@@ -548,6 +541,16 @@ public class Workbench {
 	 */
 	public static void main(String[] args) {
         System.out.println("Hii!");
+
+		JFrame splashScreen = new JFrame("Hamster Splashscreen");
+		URL url = ClassLoader.getSystemResource("splashscreen.gif");
+		Image splashscreenImage = Toolkit.getDefaultToolkit().createImage(url);
+		splashScreen.add(new JLabel(new ImageIcon(splashscreenImage)));
+		splashScreen.setUndecorated(true);
+		splashScreen.pack();
+		splashScreen.setLocationRelativeTo(null);
+		splashScreen.setVisible(true);
+
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
@@ -559,6 +562,9 @@ public class Workbench {
 					// Sicherstellen, dass die noetigen Verzeichnisse
 					// existieren, in
 					// denen die Hamsterprogramme abgelegt werden.
+
+
+
 
 					Utils.loadProperties(); // dibo
 					if (Utils.language.equals("en")) {
@@ -631,6 +637,8 @@ public class Workbench {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		splashScreen.setVisible(false);
 	}
 
 	private static boolean checkVersion() {

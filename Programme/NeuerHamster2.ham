@@ -1,0 +1,9 @@
+/*class*/class MeinHamster extends Hamster {
+    public MeinHamster() {
+    	super(2, 3, 1, 2);
+    }
+    
+    public void lol() {
+    	vor();
+    }
+}

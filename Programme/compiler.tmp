@@ -1,0 +1,6 @@
+C:\Coden\INTELIJ\modded-hamster\Programme\test\run.java:2: error: cannot find symbol
+    HamHma.lol();
+    ^
+  symbol:   variable HamHma
+  location: class run
+1 error

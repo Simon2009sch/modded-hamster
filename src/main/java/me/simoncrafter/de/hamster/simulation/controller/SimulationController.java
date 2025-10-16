@@ -76,8 +76,6 @@ public class SimulationController implements ActionListener {
 		fileChooser.setFileFilter(HamsterFileFilter.TER_FILTER);
 
 		sizeDialog = new SizeDialog(simulationPanel);
-
-        UIStyleController.setSimulationPanel(simulationPanel);
 	}
 
 	public DialogTerminal getDialogTerminal() {

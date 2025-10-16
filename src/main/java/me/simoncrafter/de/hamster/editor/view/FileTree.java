@@ -57,13 +57,14 @@ public class FileTree extends JTree implements MouseListener,
 		super(new FileTreeNode(HamsterFile.getHamsterFile(Utils.HOME)));
 		this.controller = controller;
 		filePopupMenu = new FilePopupMenu(controller);
+		UIStyleController.putUIComponent("editor.filetree.pupupmenu", filePopupMenu);
 
 		setCellRenderer(new FileTreeCellRenderer());
 		addMouseListener(this);
 		getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-		UIStyleController.setFileTree(this);
+		UIStyleController.putUIComponent("editor.filetree", this);
 
 		new DropTarget(this, this);
 		dragSource = DragSource.getDefaultDragSource();

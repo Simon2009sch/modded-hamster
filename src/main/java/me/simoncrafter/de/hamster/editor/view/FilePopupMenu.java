@@ -93,7 +93,6 @@ public class FilePopupMenu extends JPopupMenu {
 		if (Utils.SCRATCH || Utils.FSM || Utils.FLOWCHART) {
 			add(createMenuItem(generateAction));
 		}
-		UIStyleController.setFilePopupMenu(this);
 	}
 
 	private JMenuItem createMenuItem(Action action) {
