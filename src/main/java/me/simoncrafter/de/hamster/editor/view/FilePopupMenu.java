@@ -92,7 +92,7 @@ public class FilePopupMenu extends JPopupMenu {
 		generateAction = new GenerateAction(controller);
 		if (Utils.SCRATCH || Utils.FSM || Utils.FLOWCHART) {
 			add(createMenuItem(generateAction));
-		}
+		}// test
 	}
 
 	private JMenuItem createMenuItem(Action action) {
