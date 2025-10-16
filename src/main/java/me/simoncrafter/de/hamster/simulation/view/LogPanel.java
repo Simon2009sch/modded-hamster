@@ -50,7 +50,7 @@ public class LogPanel extends JPanel implements LogSink {
 
         UIStyleController.setLogPanel(this);
         UIStyleController.setLogPanelText(textPane);
-	}
+    }
 
 	public void logEntry(LogEntry logEntry) {
 		String text = logEntry.getInstruction().toString();

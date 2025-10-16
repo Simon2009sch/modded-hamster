@@ -1,6 +1,6 @@
 package me.simoncrafter.de.hamster.debugger.view;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Observer;
@@ -22,6 +22,7 @@ import javax.swing.event.ChangeListener;
 
 import me.simoncrafter.de.hamster.debugger.controller.DebuggerController;
 import me.simoncrafter.de.hamster.debugger.model.DebuggerModel;
+import me.simoncrafter.de.hamster.mod.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.workbench.ForwardAction;
 import me.simoncrafter.de.hamster.workbench.Utils;
@@ -122,6 +123,7 @@ public class DebuggerTools implements Observer, ChangeListener {
 		delay.setToolTipText(Utils.getResource("debugger.delay.tooltip"));
 		delay.addChangeListener(controller);
 		delay.setInverted(true);
+
 		// delay.setSnapToTicks(true);
 		delay.setMajorTickSpacing(100);
 		delay.setPaintTicks(true);
@@ -129,6 +131,9 @@ public class DebuggerTools implements Observer, ChangeListener {
 		delay.setName("delay");
 		delay.setBackground(toolBar.getBackground());
 		toolBar.add(delay);
+
+        UIStyleController.addSlider(delay);
+        UIStyleController.addSliderToolBar(toolBar);
 
 		JToolBar simulationBar = controller.getWorkbench().getView().findToolBar("simulation");
 

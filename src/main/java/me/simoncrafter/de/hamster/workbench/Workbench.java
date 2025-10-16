@@ -416,6 +416,14 @@ public class Workbench {
 
 		Console frame;
 
+
+
+
+
+
+
+
+
 		ConsoleVisible(Console f) {
 			this.frame = f;
 		}
