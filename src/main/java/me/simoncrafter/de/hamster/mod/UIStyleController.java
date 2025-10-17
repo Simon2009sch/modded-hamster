@@ -8,6 +8,7 @@ import me.simoncrafter.de.hamster.simulation.view.SimulationPanel;
 
 import javax.swing.*;
 import javax.swing.plaf.SliderUI;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.plaf.basic.BasicSliderUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
@@ -66,9 +67,14 @@ public class UIStyleController {
             if (ac != null) {
                 ac.setBackground(getRandomColor());
                 JScrollPane scrollPane = editorText.getActiveScrollPlane();
+
                 scrollPane.setBackground(getRandomColor());
-                scrollPane.getVerticalScrollBar().setBackground(getRandomColor());
-                scrollPane.getHorizontalScrollBar().setBackground(getRandomColor());
+
+                scrollPane.getVerticalScrollBar().setUI(getBasicScrollBar());
+                scrollPane.getHorizontalScrollBar().setUI(getBasicScrollBar());
+
+
+
             }
             editorText.setOnTextAreaLock(textArea -> textArea.setBackground(Color.GRAY));
             editorText.setOnTextAreaUnLock(textArea -> textArea.setBackground(Color.WHITE));
@@ -147,6 +153,108 @@ public class UIStyleController {
     private static Color getRandomColor() {
         Random random = new Random();
         return new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+    }
+
+    public static BasicScrollBarUI getBasicScrollBar() {
+        return new BasicScrollBarUI() {
+            private final Color THUMB_COLOR = new Color(255, 255, 255, 100);
+            private final int MIN_SIZE = 10;       // Minimum thumb dimension
+            private final double SIZE_SCALE = 0.6; // Makes thumb larger overall
+            private final int TRACK_THICKNESS = 5; // Width/thickness of scrollbar track
+
+            @Override
+            protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+                if (!c.isEnabled() || thumbBounds.isEmpty()) return;
+
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(THUMB_COLOR);
+
+                if (scrollbar.getOrientation() == Adjustable.VERTICAL) {
+                    int range = scrollbar.getMaximum() - scrollbar.getVisibleAmount();
+                    int trackHeight = thumbBounds.height;
+
+                    // Scale thumb height
+                    int thumbHeight = (int) (scrollbar.getVisibleAmount() * SIZE_SCALE);
+                    thumbHeight = Math.max(MIN_SIZE, Math.min(thumbHeight, trackHeight));
+
+                    // Position so it's anchored top/bottom properly
+                    int y;
+                    if (range <= 0) {
+                        y = thumbBounds.y;
+                        thumbHeight = trackHeight;
+                    } else {
+                        float scrollRatio = (float) scrollbar.getValue() / range;
+                        int available = trackHeight - thumbHeight;
+                        y = thumbBounds.y + Math.round(available * scrollRatio);
+                    }
+
+                    // Make the thumb wider — override its width
+                    int barWidth = Math.max(TRACK_THICKNESS, thumbBounds.width);
+                    int x = thumbBounds.x + (thumbBounds.width - barWidth) / 2;
+
+                    // Draw larger, rounder handle
+                    g2.fillRoundRect(x, y, barWidth, thumbHeight, 8, 8);
+
+                } else { // Horizontal scrollbar
+                    int range = scrollbar.getMaximum() - scrollbar.getVisibleAmount();
+                    int trackWidth = thumbBounds.width;
+
+                    int thumbWidth = (int) (scrollbar.getVisibleAmount() * SIZE_SCALE);
+                    thumbWidth = Math.max(MIN_SIZE, Math.min(thumbWidth, trackWidth));
+
+                    int x;
+                    if (range <= 0) {
+                        x = thumbBounds.x;
+                        thumbWidth = trackWidth;
+                    } else {
+                        float scrollRatio = (float) scrollbar.getValue() / range;
+                        int available = trackWidth - thumbWidth;
+                        x = thumbBounds.x + Math.round(available * scrollRatio);
+                    }
+
+                    int barHeight = Math.max(TRACK_THICKNESS, thumbBounds.height);
+                    int y = thumbBounds.y + (thumbBounds.height - barHeight) / 2;
+
+                    g2.fillRoundRect(x, y, thumbWidth, barHeight, 8, 8);
+                }
+                scrollbar.setOpaque(false);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+                //g.setColor(new Color(235, 235, 235));
+                //g.fillRect(trackBounds.x, trackBounds.y, trackBounds.width, trackBounds.height);
+            }
+
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            private JButton createZeroButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));
+                button.setMinimumSize(new Dimension(0, 0));
+                button.setMaximumSize(new Dimension(0, 0));
+                return button;
+            }
+
+            @Override
+            protected void installComponents() {
+                super.installComponents();
+                if (scrollbar != null) {
+                    scrollbar.setOpaque(false);
+                    scrollbar.setBackground(new Color(0, 0, 0, 0));
+                }
+            }
+        };
     }
 
     public static BasicSliderUI getSimpleSliderUI(JSlider slider, Color fillColor, Color edgeColor) {
