@@ -5,7 +5,12 @@ import java.awt.image.BufferedImage;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -23,6 +28,7 @@ import me.simoncrafter.de.hamster.editor.view.ScratchPanelPrintable;
 import me.simoncrafter.de.hamster.editor.view.TextAreaPrintable;
 import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
+import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
 import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
 
@@ -374,8 +380,55 @@ public class Utils {
 
 	public static void ensureSettings() {
 		File file = new File(SETTINGS);
-		if (!file.exists())
+		if (!file.exists()) {
 			file.mkdirs();
+		}
+	}
+
+	/**
+	 * Diese Methode extrahiert eine Ressource aus dem JAR-File und speichert sie
+	 * im angegebenen Verzeichnis.
+	 *
+	 * @param resourcePath file name im jar file
+	 * @param outputPath file name und path
+	 * @return
+	 */
+	public static File extractResource(String resourcePath, String outputPath) {
+		try {
+
+			URL url = StyleSettings.class.getClassLoader().getResource(resourcePath);
+			if (url == null) {
+				System.err.println("Resource not found: " + resourcePath);
+				return null;
+			}
+
+			Path target = Paths.get(outputPath);
+			Files.createDirectories(target.getParent());
+
+			String protocol = url.getProtocol();
+
+			if ("file".equals(protocol)) {
+				// Resource is on disk (running from IDE)
+				Files.copy(Paths.get(url.toURI()), target, StandardCopyOption.REPLACE_EXISTING);
+			} else if ("jar".equals(protocol)) {
+				// Resource is inside a JAR
+				try (InputStream in = url.openStream()) {
+					Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
+				}
+			} else {
+				// Fallback (e.g., in some modular classloaders)
+				try (InputStream in = url.openStream()) {
+					Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
+				}
+			}
+
+			System.out.println("✅ Extracted: " + resourcePath + " → " + target.toAbsolutePath());
+			return target.toFile();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public static boolean ask(Component c, String key) {
