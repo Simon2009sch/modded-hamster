@@ -23,7 +23,6 @@ import me.simoncrafter.de.hamster.flowchart.controller.FlowchartHamsterFile;
 import me.simoncrafter.de.hamster.flowchart.controller.FlowchartProgram;
 import me.simoncrafter.de.hamster.fsm.controller.FsmHamsterFile;
 import me.simoncrafter.de.hamster.fsm.controller.FsmProgram;
-import me.simoncrafter.de.hamster.mod.ColorManager;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.prolog.controller.PrologController;
 import me.simoncrafter.de.hamster.prolog.model.PrologHamster.TerObject;

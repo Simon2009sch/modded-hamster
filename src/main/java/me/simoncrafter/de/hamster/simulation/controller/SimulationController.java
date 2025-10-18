@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
 import javax.swing.JToggleButton;
 
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.prolog.controller.PrologController;
 import me.simoncrafter.de.hamster.prolog.model.PrologHamster.TerObject;
@@ -232,6 +232,8 @@ public class SimulationController implements ActionListener {
 			if (size != null) {
 				simulationModel.setTerrain(new Terrain((int) size.getWidth(),
 						(int) size.getHeight()));
+
+				UIStyleController.update(); // update for the scrollbars
 
 				// Prolog
 				if (Utils.PROLOG) {

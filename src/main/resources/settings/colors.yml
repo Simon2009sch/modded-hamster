@@ -1,0 +1,17 @@
+presetColors:
+  black: "#000000"
+  white: "#ffffff"
+  darkGray: "#333333"
+  gray: "#666666"
+  lightGray: "#999999"
+  dark_white: "#cccccc"
+  blue: "0 0 255"
+
+
+
+uiStyles:
+  darkMode:
+    name: "Dark Mode"
+    colors:
+      "simulation.panel.background": "#000000"
+      "!^.+\.logpanel.text": "_black"

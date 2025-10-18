@@ -26,8 +26,8 @@ import me.simoncrafter.de.hamster.flowchart.controller.FlowchartHamster;
 import me.simoncrafter.de.hamster.fsm.controller.FsmHamster;
 import me.simoncrafter.de.hamster.javascript.model.JavaScriptHamster;
 import me.simoncrafter.de.hamster.lego.controller.LegoController;
-import me.simoncrafter.de.hamster.mod.ColorManager;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.prolog.controller.PrologController;
 import me.simoncrafter.de.hamster.prolog.view.PrologKonsole;
@@ -571,13 +571,14 @@ public class Workbench {
 						Locale.setDefault(Locale.ENGLISH);
 					}
 					Utils.ensureHome();
+					Utils.ensureSettings();
+					StyleSettings.init();
 
 					handleLAF();
 
 					// Erzeugen der Werkbank.
 					Workbench wb = getWorkbench();
 
-					UIStyleController.init();
 
 					if (Utils.PYTHON) {
 						if (!PythonHamster.initPython()) {
@@ -639,6 +640,7 @@ public class Workbench {
 		}
 
 		splashScreen.setVisible(false);
+		UIStyleController.init();
 	}
 
 	private static boolean checkVersion() {

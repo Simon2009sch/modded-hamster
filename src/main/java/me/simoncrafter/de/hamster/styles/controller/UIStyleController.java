@@ -1,13 +1,10 @@
-package me.simoncrafter.de.hamster.mod;
+package me.simoncrafter.de.hamster.styles.controller;
 
-import jscheme.JS;
 import me.simoncrafter.de.hamster.editor.view.*;
 import me.simoncrafter.de.hamster.editor.view.TextArea;
-import me.simoncrafter.de.hamster.simulation.view.LogPanel;
 import me.simoncrafter.de.hamster.simulation.view.SimulationPanel;
 
 import javax.swing.*;
-import javax.swing.plaf.SliderUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.plaf.basic.BasicSliderUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
@@ -15,11 +12,8 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.GeneralPath;
 import java.util.*;
-import java.util.List;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UIStyleController {
@@ -122,7 +116,22 @@ public class UIStyleController {
         });
 
         modifyUIProperties("simulation.panel", (ui) -> {
-            ui.setBackground(getRandomColor());
+            SimulationPanel simPanel = (SimulationPanel) ui;
+            simPanel.setBackground(getRandomColor());
+        });
+
+        modifyUIProperties("simulation.panel.scroll", (ui) -> {
+            JScrollPane scrollPane = (JScrollPane) ui;
+            JScrollBar vScroll = scrollPane.getVerticalScrollBar();
+            JScrollBar hScroll = scrollPane.getHorizontalScrollBar();
+
+            vScroll.setUI(getBasicScrollBar());
+            vScroll.setUnitIncrement(16);
+
+            hScroll.setUI(getBasicScrollBar());
+            hScroll.setUnitIncrement(16);
+
+            scrollPane.setBackground(getRandomColor());
         });
 
         modifyUIPropertiesForPattern("^.+\\.splitplane$", (ui) -> {
@@ -392,7 +401,7 @@ public class UIStyleController {
 
     public static void putUIComponent(String key, JComponent component) {
         uiComponents.put(key, component);
-        UIStyleController.update();
+        //UIStyleController.update();
     }
 
 }

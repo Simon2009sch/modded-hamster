@@ -16,7 +16,6 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.JobName;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import me.simoncrafter.de.hamster.editor.view.FSMPanelPrintable;
 import me.simoncrafter.de.hamster.editor.view.FlowchartPanelPrintable;
@@ -24,13 +23,8 @@ import me.simoncrafter.de.hamster.editor.view.ScratchPanelPrintable;
 import me.simoncrafter.de.hamster.editor.view.TextAreaPrintable;
 import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
-import me.simoncrafter.de.hamster.mod.ColorManager;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
-import org.jruby.RubyProcess;
-import sun.java2d.SunGraphics2D;
-import sun.rmi.rmic.iiop.ClassPathLoader;
-import sun.security.provider.Sun;
 
 /**
  * Diese Klasse enthaelt Hilfsmethoden und Konstanten, die im Hamster-Simulator
@@ -57,6 +51,7 @@ public class Utils {
 
 	// TODO: Umlegen von HOME ins aktuelle Verzeichnis
 	public static String HOME = System.getProperty("user.dir") + FSEP + "Programme";
+	public static String SETTINGS = System.getProperty("user.dir") + FSEP + "Settings";
 
 	public static String LOGFOLDER = "";
 
@@ -373,6 +368,12 @@ public class Utils {
 	 */
 	public static void ensureHome() {
 		File file = new File(HOME);
+		if (!file.exists())
+			file.mkdirs();
+	}
+
+	public static void ensureSettings() {
+		File file = new File(SETTINGS);
 		if (!file.exists())
 			file.mkdirs();
 	}

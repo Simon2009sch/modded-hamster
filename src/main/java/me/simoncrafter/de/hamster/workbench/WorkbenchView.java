@@ -11,14 +11,12 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import me.simoncrafter.de.hamster.compiler.model.CompilerModel;
 import me.simoncrafter.de.hamster.console.Console;
 import me.simoncrafter.de.hamster.debugger.model.DebuggerModel;
 import me.simoncrafter.de.hamster.lego.model.LegoModel;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.J3DFrame;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.OpenGLController;
@@ -352,17 +350,18 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		simulation.getContentPane().add(BorderLayout.NORTH, simulationBar);
 
 		/*
-		 * JScrollPane scrollPane = new JScrollPane(workbench.getSimulation()
-		 * .getSimulationPanel()); main.add(BorderLayout.CENTER, scrollPane);
-		 * 
-		 * JPanel log = workbench.getSimulation().getLogPanel();
-		 * log.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		 * log.setPreferredSize(new Dimension(200, 200));
-		 * 
-		 * main.add(BorderLayout.EAST, log);
+		JScrollPane scrollPane = new JScrollPane(workbench.getSimulation().getSimulationPanel()); main.add(BorderLayout.CENTER, scrollPane);
+
+		JPanel log = workbench.getSimulation().getLogPanel();
+		log.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		log.setPreferredSize(new Dimension(200, 200));
+
+		main.add(BorderLayout.EAST, log);
 		 */
 
+
 		JScrollPane scrollPane = new JScrollPane(workbench.getSimulation().getSimulationPanel());
+		UIStyleController.putUIComponent("simulation.panel.scroll", scrollPane);
 		JPanel log = workbench.getSimulation().getLogPanel();
 		log.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		log.setPreferredSize(new Dimension(200, 200));

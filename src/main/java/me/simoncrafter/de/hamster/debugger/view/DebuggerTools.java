@@ -22,7 +22,7 @@ import javax.swing.event.ChangeListener;
 
 import me.simoncrafter.de.hamster.debugger.controller.DebuggerController;
 import me.simoncrafter.de.hamster.debugger.model.DebuggerModel;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.workbench.ForwardAction;
 import me.simoncrafter.de.hamster.workbench.Utils;
