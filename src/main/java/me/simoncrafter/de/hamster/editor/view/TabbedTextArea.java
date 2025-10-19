@@ -329,14 +329,12 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 			if (((Boolean) evt.getNewValue()).booleanValue()) {
 				this.tabbedPane.setIconAt(index, Utils.getIcon("Play16.gif"));
 				textArea.setEditable(false);
-				//textArea.setBackground(Color.RED); // getBackground());
 				onTextAreaUnLock.accept(textArea);
 				this.lock(true);
 			} else {
 				this.tabbedPane.setIconAt(index, null);
 				textArea.setEditable(true);
 				textArea.removeLineHighlight();
-				//textArea.setBackground(Color.RED);     // sets the text editor background color back to the default
 				onTextAreaUnLock.accept(textArea);
 				this.lock(false);
 			}

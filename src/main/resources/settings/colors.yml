@@ -4,9 +4,9 @@ presetColors:
   darkGray: "#333333"
   gray: "#666666"
   lightGray: "#999999"
-  dark_white: "#cccccc"
+  dark_white: "100100100"
   blue: "0 0 255"
-  red: 000200000
+  red: "#ff0000"
 
 
 
@@ -14,5 +14,78 @@ uiStyles:
   darkMode:
     name: "Dark Mode"
     colors:
-      'simulation.panel.background': "#000000"
-      '!^.+\.logpanel.text': "_black"
+      'editor.filetree':
+        bg: "_red"
+        fg: "_red"
+
+      'editor.texteditor.linenumbers':
+        bg: "_red"
+        fg: "_red"
+      'editor.texteditor.linenumbers.selection':
+        bg: "_red"
+        fg: "_red"
+
+      'editor.texteditor.infobar.col.text':
+        bg: "_red"
+      'editor.texteditor.infobar.col.value':
+        bg: "_red"
+      'editor.texteditor.infobar.line.value':
+        bg: "_red"
+      'editor.texteditor.infobar.line.text':
+        bg: "_red"
+
+      'editor.texteditor':
+        bg: "_red"
+        fg: "_red"
+      'editor.texteditor.textarea':
+        bg.active: "_red"
+        locked:
+          bg: "_red"
+        unlocked:
+          bg: "_red"
+      'editor.texteditor.scrollpane':
+        bg: "_red"
+
+      'editor.texteditor.infobar':
+        bg: "_red"
+        update_button:
+          text: "_red"
+          action: "_red"
+
+      '!^.+\.toolbar':
+        bg: "_red"
+      '!^.+\.toolbar\.buttons\.[^\.]+':
+        bg: "_red"
+
+      'editor.filetree.popupmenu':
+        item:
+          bg: "_red"
+          fg: "_red"
+        border:
+          th: 5
+          color: "_red"
+
+      '!^.+\.logpanel':
+        bg: "_red"
+      '!^.+\.logpanel.text':
+        bg: "_red"
+        fg: "_red"
+
+      'simulation.panel':
+        bg: "_red"
+      'simulation.panel.scroll':
+        bg: "_red"
+        vscroll:
+          ui: "_red"
+        hscroll:
+          ui: "_red"
+
+      '!^.+\.splitplane':
+        ui: "_red"
+
+      'editor.menubar':
+        bg: "_red"
+
+      '!^.+\.debugger\.toolbar\.delay':
+        ui: "_red"
+        bg: "_red"

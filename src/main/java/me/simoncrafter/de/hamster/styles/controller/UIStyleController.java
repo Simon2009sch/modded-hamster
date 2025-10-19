@@ -3,6 +3,8 @@ package me.simoncrafter.de.hamster.styles.controller;
 import me.simoncrafter.de.hamster.editor.view.*;
 import me.simoncrafter.de.hamster.editor.view.TextArea;
 import me.simoncrafter.de.hamster.simulation.view.SimulationPanel;
+import me.simoncrafter.de.hamster.styles.model.UIColorStyle;
+import org.jruby.RubyProcess;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -13,15 +15,52 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UIStyleController {
     private static Map<String, JComponent> uiComponents = new HashMap<>();
 
     private static JButton updateButton;
+    private static int styleIndex = 0;
 
     public static void init() {
+
+        Pattern pattern = Pattern.compile("^(?<key>.+?)(?<brackets>\\[(?<obj>[^\\]]*)\\])?$");
+        for (String key : new ArrayList<>(StyleSettings.getColorStyles().entrySet()).get(styleIndex).getValue().getColors().keySet()) {
+            UIColorStyle style = StyleSettings.getColorStyles().get(key);
+            if (key.startsWith("!")) {
+                modifyUIPropertiesForPattern(key.substring(1), (ui) -> {
+                    style.apply(ui, key.substring(1));
+                });
+            } else {
+                modifyUIProperties(key, (ui) -> {
+                    style.apply(ui, key);
+                });
+            }
+
+        }
+
+
+        // adding button
+        if (updateButton == null) {
+            updateButton = new JButton();
+            updateButton.setText("Update");
+            updateButton.setVisible(true);
+            updateButton.addActionListener(e -> UIStyleController.init());
+        }
+
+        modifyUIProperties("editor.texteditor.infobar", (ui) -> {
+            ui.add(updateButton, 0);
+        });
+    }
+
+
+
+    public static void setRandomColorToEverything() {
         modifyUIProperties("editor.filetree", (ui) -> {
             ui.setBackground(getRandomColor());
             ui.setForeground(getRandomColor());
@@ -103,6 +142,7 @@ public class UIStyleController {
             for (Component component : popupMenu.getComponents()) {
                 component.setBackground(getRandomColor());
                 component.setForeground(getRandomColor());
+
             }
         });
 
@@ -152,7 +192,6 @@ public class UIStyleController {
             slider.setUI(getSimpleSliderUI(slider, getRandomColor(), getRandomColor()));
             slider.setBackground(getRandomColor());
         });
-
     }
 
     public static void update() {
@@ -382,6 +421,7 @@ public class UIStyleController {
 
     private static void modifyUIProperties(String key, Consumer<JComponent> operation) {
         if (uiComponents == null || uiComponents.get(key) == null) {
+            System.out.println("Key not found: " + key);
             return;
         }
         operation.accept(uiComponents.get(key));

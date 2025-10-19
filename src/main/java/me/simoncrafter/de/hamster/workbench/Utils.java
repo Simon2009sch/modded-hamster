@@ -297,7 +297,6 @@ public class Utils {
 		b.setOpaque(true);
 		b.setContentAreaFilled(true);
 		b.setBorderPainted(true);
-		b.setBackground(Color.RED);
 		b.setMargin(TOOLBAR_MARGIN);
 		return b;
 	}
