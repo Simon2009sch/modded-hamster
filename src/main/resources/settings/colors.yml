@@ -62,6 +62,7 @@ uiStyles:
           bg: "_red"
           fg: "_red"
         border:
+          style: "line"
           th: 5
           color: "_red"
 

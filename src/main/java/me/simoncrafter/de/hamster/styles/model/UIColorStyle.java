@@ -56,7 +56,7 @@ public class UIColorStyle {
         apply(component, key, false);
     }
 
-    private Consumer<JComponent> createApplierFunction(boolean addToList, Map<String, Object> map, String key, Consumer<JComponent> parent) {
+    private Consumer<JComponent> createApplierFunction(boolean addToList, Map<String, Object> map, String key, Consumer<Consumer<JComponent>> parent) {
         if ((map.get(key)) instanceof Color) {
             Consumer<JComponent> consumer = (ui) -> {
                 ui.setBackground((Color) map.get(key));
@@ -76,20 +76,27 @@ public class UIColorStyle {
             switch (eKey) {
                 case "bg": {
                     Consumer<JComponent> consumer = (ui) -> {
-                        ui.setBackground((Color) eObj);
+                        parent.accept(pui -> pui.setBackground((Color) eObj));
                     };
                     if (addToList) addToAplierViaKey(key, consumer);
                     return consumer;
                 }
                 case "fg": {
                     Consumer<JComponent> consumer = (ui) -> {
-                        parent.accept(ui -> ui.setForeground((Color) eObj));
+                        parent.accept(pui -> pui.setForeground((Color) eObj));
                     };
                     if (addToList) addToAplierViaKey(key, consumer);
                     return consumer;
                 }
                 case "item": {
                     Consumer<JComponent> child = createApplierFunction(false, (Map<String, Object>) eObj, "item", parent);
+                    Consumer<JComponent> consumer = (ui) -> {
+                        parent.accept(child::accept);
+                    };
+                    if (addToList) addToAplierViaKey(key, consumer);
+                    return consumer;
+                }
+                case "border": {
 
                 }
             }
@@ -103,23 +110,23 @@ public class UIColorStyle {
     }
 
 
-    private void applyBorder(Map<String, Object> map) {
+    private Consumer<JComponent> applyBorder(Map<String, Object> map) {
         if (map.isEmpty()) {
-            applyFunctions.add(ui -> {ui.setBorder(BorderFactory.createEmptyBorder());});
-            return;
+            return (ui) -> ui.setBorder(BorderFactory.createEmptyBorder());
         }
 
-        Object th = map.get("th");
-        Object color = map.get("color");
-        if (!(th instanceof Integer)) {
-            th = 2;
+        Object style = map.get("style");
+        switch ((String) style) {
+            case "empty": {
+
+            }
+            case "line": {
+                int thickness = Integer.parseInt(map.get("thickness").toString());
+                Color color = (Color) map.get("color");
+
+                return (ui) -> ui.setBorder(BorderFactory.createLineBorder(color, thickness));
+            }
         }
-        if (!(color instanceof Color)) {
-            color = Color.BLACK;
-        }
-        Object finalColor = color;
-        Object finalTh = th;
-        applyFunctions.add(ui -> {ui.setBorder(BorderFactory.createLineBorder((Color) finalColor, (Integer) finalTh));});
     }
 
 }
