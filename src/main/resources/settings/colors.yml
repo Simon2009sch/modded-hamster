@@ -65,6 +65,8 @@ uiStyles:
           th: 5
           color: "_red"
 
+      'test.123': "_red"
+
       '!^.+\.logpanel':
         bg: "_red"
       '!^.+\.logpanel.text':

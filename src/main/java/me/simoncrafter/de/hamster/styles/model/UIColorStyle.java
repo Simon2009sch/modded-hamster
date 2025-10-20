@@ -8,6 +8,7 @@ import org.python.antlr.op.In;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -16,7 +17,7 @@ import java.util.function.Function;
 public class UIColorStyle {
     private Map<String, Object> colors;
     private String name;
-    private List<Consumer<JComponent>> applyFunctions = new ArrayList<>();
+    private Map<String, List<Consumer<JComponent>>> applyFunctions = new HashMap<>();
 
     public UIColorStyle(Map<String, Object> colors, String name) {
         this.colors = colors;
@@ -45,9 +46,9 @@ public class UIColorStyle {
 
     public void apply(JComponent component, String key, boolean reload) {
         if (applyFunctions.isEmpty() || reload) {
-            applyRecursive(key, colors);
+            createApplierFunction((Map<String, Object>) colors.get(key), key, );
         }
-        for (Consumer<JComponent> consumer : applyFunctions) {
+        for (Consumer<JComponent> consumer : applyFunctions.get(key)) {
             consumer.accept(component);
         }
     }
@@ -55,38 +56,52 @@ public class UIColorStyle {
         apply(component, key, false);
     }
 
-    private void applyRecursive(Map<String, Object> map, Function<Consumer<JComponent>, Consumer<JComponent>> parent) {
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
+    private Consumer<JComponent> createApplierFunction(boolean addToList, Map<String, Object> map, String key, Consumer<JComponent> parent) {
+        if ((map.get(key)) instanceof Color) {
+            Consumer<JComponent> consumer = (ui) -> {
+                ui.setBackground((Color) map.get(key));
+            };
+            if (addToList) addToAplierViaKey(key, consumer);
+            return consumer;
+        } else if (!((map.get(key)) instanceof Color)) {
+            return (ui) -> {};
+        }
 
-            switch (key) {
+        Map<String, Object> colorableObject = (Map<String, Object>) map.get(key);
+
+        for (Map.Entry<String, Object> entry : colorableObject.entrySet()) {
+            Object eObj = entry.getValue();
+            String eKey = entry.getKey();
+
+            switch (eKey) {
                 case "bg": {
-                    if (value instanceof Color) {
-                        applyFunctions.add(parent.apply(ui -> ui.setBackground((Color) value)));
-                    }
+                    Consumer<JComponent> consumer = (ui) -> {
+                        ui.setBackground((Color) eObj);
+                    };
+                    if (addToList) addToAplierViaKey(key, consumer);
+                    return consumer;
                 }
                 case "fg": {
-                    if (value instanceof Color) {
-                        applyFunctions.add(parent.apply(ui -> ui.setForeground((Color) value)));
-                    }
-                }
-                case "border": {
-                    if (value instanceof Map<?, ?>) {
-                        applyBorder((Map<String, Object>) value);
-                    }
+                    Consumer<JComponent> consumer = (ui) -> {
+                        parent.accept(ui -> ui.setForeground((Color) eObj));
+                    };
+                    if (addToList) addToAplierViaKey(key, consumer);
+                    return consumer;
                 }
                 case "item": {
-                    if (value instanceof Map<?, ?>) {
-                        applyRecursive((Map<String, Object>) value, parent);
-                    }
-                }
-                default: {
-                    // handle other keys if needed
+                    Consumer<JComponent> child = createApplierFunction(false, (Map<String, Object>) eObj, "item", parent);
+
                 }
             }
         }
     }
+
+    private void addToAplierViaKey(String key, Consumer<JComponent> consumer) {
+        List<Consumer<JComponent>> conList = applyFunctions.get(key);
+        conList.add(consumer);
+        applyFunctions.put(key, conList);
+    }
+
 
     private void applyBorder(Map<String, Object> map) {
         if (map.isEmpty()) {
