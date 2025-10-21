@@ -46,8 +46,12 @@ public class UIColorStyle {
 
     public void apply(JComponent component, String key, boolean reload) {
         if (applyFunctions.isEmpty() || reload) {
-            createApplierFunction((Map<String, Object>) colors.get(key), key, );
+            Consumer<Consumer<JComponent>> parent = con -> con.accept(component);
+
+            // now call createApplierFunction properly
+            createApplierFunction(true, (Map<String, Object>) colors.get(key), key, parent);
         }
+
         for (Consumer<JComponent> consumer : applyFunctions.get(key)) {
             consumer.accept(component);
         }
@@ -97,10 +101,13 @@ public class UIColorStyle {
                     return consumer;
                 }
                 case "border": {
-
+                    Consumer<JComponent> consumer = applyBorder((Map<String, Object>) ((Map<String, Object>) eObj).get("border"));
+                    if (addToList) addToAplierViaKey(key, consumer);
+                    return consumer;
                 }
             }
         }
+        return (ui) -> {};
     }
 
     private void addToAplierViaKey(String key, Consumer<JComponent> consumer) {
@@ -118,7 +125,7 @@ public class UIColorStyle {
         Object style = map.get("style");
         switch ((String) style) {
             case "empty": {
-
+                return (ui) -> ui.setBorder(BorderFactory.createEmptyBorder());
             }
             case "line": {
                 int thickness = Integer.parseInt(map.get("thickness").toString());
@@ -127,6 +134,7 @@ public class UIColorStyle {
                 return (ui) -> ui.setBorder(BorderFactory.createLineBorder(color, thickness));
             }
         }
+        return (ui) -> {};
     }
 
 }

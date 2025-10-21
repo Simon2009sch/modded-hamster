@@ -1,12 +1,12 @@
 presetColors:
-  black: "#000000"
-  white: "#ffffff"
-  darkGray: "#333333"
-  gray: "#666666"
-  lightGray: "#999999"
-  dark_white: "100100100"
-  blue: "0 0 255"
-  red: "#ff0000"
+  black: !color "#000000"
+  white: !color "#ffffff"
+  darkGray: !color "#333333"
+  gray: !color "#666666"
+  lightGray: !color "#999999"
+  dark_white: !color "100100100"
+  blue: !color "0 0 255"
+  red: !color "#ff0000"
 
 
 
@@ -15,80 +15,80 @@ uiStyles:
     name: "Dark Mode"
     colors:
       'editor.filetree':
-        bg: "_red"
-        fg: "_red"
+        bg: !color "_red"
+        fg: !color "_red"
 
       'editor.texteditor.linenumbers':
-        bg: "_red"
-        fg: "_red"
+        bg: !color "_red"
+        fg: !color "_red"
       'editor.texteditor.linenumbers.selection':
-        bg: "_red"
-        fg: "_red"
+        bg: !color "_red"
+        fg: !color "_red"
 
       'editor.texteditor.infobar.col.text':
-        bg: "_red"
+        bg: !color "_red"
       'editor.texteditor.infobar.col.value':
-        bg: "_red"
+        bg: !color "_red"
       'editor.texteditor.infobar.line.value':
-        bg: "_red"
+        bg: !color "_red"
       'editor.texteditor.infobar.line.text':
-        bg: "_red"
+        bg: !color "_red"
 
       'editor.texteditor':
-        bg: "_red"
-        fg: "_red"
+        bg: !color "_red"
+        fg: !color "_red"
       'editor.texteditor.textarea':
-        bg.active: "_red"
+        bg.active: !color "_red"
         locked:
-          bg: "_red"
+          bg: !color "_red"
         unlocked:
-          bg: "_red"
+          bg: !color "_red"
       'editor.texteditor.scrollpane':
-        bg: "_red"
+        bg: !color "_red"
 
       'editor.texteditor.infobar':
-        bg: "_red"
+        bg: !color "_red"
         update_button:
-          text: "_red"
-          action: "_red"
+          text: !color "_red"
+          action: !color "_red"
 
       '!^.+\.toolbar':
-        bg: "_red"
+        bg: !color "_red"
       '!^.+\.toolbar\.buttons\.[^\.]+':
-        bg: "_red"
+        bg: !color "_red"
 
       'editor.filetree.popupmenu':
         item:
-          bg: "_red"
-          fg: "_red"
+          bg: !color "_red"
+          fg: !color "_red"
         border:
           style: "line"
           th: 5
-          color: "_red"
+          color: !color "_red"
 
-      'test.123': "_red"
+      'test.123': !color "_red"
 
       '!^.+\.logpanel':
-        bg: "_red"
+        bg: !color "_red"
       '!^.+\.logpanel.text':
-        bg: "_red"
-        fg: "_red"
+        bg: !color "_red"
+        fg: !color "_red"
 
       'simulation.panel':
-        bg: "_red"
+        bg: !color "_red"
       'simulation.panel.scroll':
-        bg: "_red"
+        bg: !color "_red"
         vscroll:
-          ui: "_red"
+          ui: !color "_red"
         hscroll:
-          ui: "_red"
+          ui: !color "_red"
 
       '!^.+\.splitplane':
-        ui: "_red"
+        ui: !color "_red"
 
       'editor.menubar':
-        bg: "_red"
+        bg: !color "_red"
 
       '!^.+\.debugger\.toolbar\.delay':
-        ui: "_red"
-        bg: "_red"
+        ui: !color "_red"
+        bg: !color "_red"
