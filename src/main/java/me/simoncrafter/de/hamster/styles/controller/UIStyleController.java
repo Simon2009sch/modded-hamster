@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -30,20 +31,27 @@ public class UIStyleController {
     public static void init() {
 
         Pattern pattern = Pattern.compile("^(?<key>.+?)(?<brackets>\\[(?<obj>[^\\]]*)\\])?$");
-        for (String key : new ArrayList<>(StyleSettings.getColorStyles().entrySet()).get(styleIndex).getValue().getColors().keySet()) {
-            UIColorStyle style = StyleSettings.getColorStyles().get(key);
-            if (key.startsWith("!")) {
-                modifyUIPropertiesForPattern(key.substring(1), (ui) -> {
-                    style.apply(ui, key.substring(1));
-                });
-            } else {
-                modifyUIProperties(key, (ui) -> {
-                    style.apply(ui, key);
-                });
+
+        Map<String, UIColorStyle> styleMap = StyleSettings.getColorStyles();
+        // Apply all styles in the map
+        for (Map.Entry<String, UIColorStyle> styleEntry : styleMap.entrySet()) {
+            UIColorStyle style = styleEntry.getValue();
+            for (Map.Entry<String, Object> entry : style.getColors().entrySet()) {
+                //JComponent comp = uiComponents.get(entry.getKey());
+                //style.apply(uiComponents.get(entry.getKey()), entry.getKey(), true);
+                System.out.println("Applying " + entry.getKey() + " to " + styleEntry.getKey());
+                if (entry.getKey().startsWith("!")) {
+                    modifyUIPropertiesForPattern(entry.getKey().substring(1), (ui, key) -> {
+                        style.apply(ui, key, entry.getKey());
+                    });
+                } else {
+                    modifyUIProperties(entry.getKey(), (ui) -> {
+                        style.apply(ui, entry.getKey());
+                    });
+                }
+
             }
-
         }
-
 
         // adding button
         if (updateButton == null) {
@@ -54,8 +62,10 @@ public class UIStyleController {
         }
 
         modifyUIProperties("editor.texteditor.infobar", (ui) -> {
+            ui.remove(updateButton);
             ui.add(updateButton, 0);
         });
+
     }
 
 
@@ -100,7 +110,6 @@ public class UIStyleController {
             if (ac != null) {
                 ac.setBackground(getRandomColor());
                 JScrollPane scrollPane = editorText.getActiveScrollPlane();
-
                 scrollPane.setBackground(getRandomColor());
 
                 scrollPane.getVerticalScrollBar().setUI(getBasicScrollBar());
@@ -128,11 +137,11 @@ public class UIStyleController {
             ui.add(updateButton, 0);
         });
 
-        modifyUIPropertiesForPattern(".+\\.toolbar", (ui) -> {
+        modifyUIPropertiesForPattern(".+\\.toolbar", (ui, key) -> {
             ui.setBackground(getRandomColor());
         });
 
-        modifyUIPropertiesForPattern("^.+\\.toolbar\\.buttons\\.[^\\.]+$", (ui) -> {
+        modifyUIPropertiesForPattern("^.+\\.toolbar\\.buttons\\.[^\\.]+$", (ui, key) -> {
             ui.setBackground(getRandomColor());
         });
 
@@ -146,11 +155,11 @@ public class UIStyleController {
             }
         });
 
-        modifyUIPropertiesForPattern("^.+\\.logpanel", (ui) -> {
+        modifyUIPropertiesForPattern("^.+\\.logpanel", (ui, key) -> {
             ui.setBackground(getRandomColor());
         });
 
-        modifyUIPropertiesForPattern("^.+\\.logpanel.text", (ui) -> {
+        modifyUIPropertiesForPattern("^.+\\.logpanel.text", (ui, key) -> {
             ui.setBackground(getRandomColor());
             ui.setForeground(getRandomColor());
         });
@@ -174,7 +183,7 @@ public class UIStyleController {
             scrollPane.setBackground(getRandomColor());
         });
 
-        modifyUIPropertiesForPattern("^.+\\.splitplane$", (ui) -> {
+        modifyUIPropertiesForPattern("^.+\\.splitplane$", (ui, key) -> {
             JSplitPane plane = (JSplitPane) ui;
             plane.setUI(getSimpleUISlider(getRandomColor(), getRandomColor(), getRandomColor()));
         });
@@ -187,7 +196,7 @@ public class UIStyleController {
             ui.setBackground(getRandomColor());
         });
 
-        modifyUIPropertiesForPattern("^.+\\.debugger\\.toolbar\\.delay$", (ui) -> {
+        modifyUIPropertiesForPattern("^.+\\.debugger\\.toolbar\\.delay$", (ui, key) -> {
             JSlider slider = (JSlider) ui;
             slider.setUI(getSimpleSliderUI(slider, getRandomColor(), getRandomColor()));
             slider.setBackground(getRandomColor());
@@ -427,13 +436,13 @@ public class UIStyleController {
         operation.accept(uiComponents.get(key));
     }
 
-    private static void modifyUIPropertiesForPattern(String regex, Consumer<JComponent> operation) {
+    private static void modifyUIPropertiesForPattern(String regex, BiConsumer<JComponent, String> operation) {
         if (uiComponents == null) {
             return;
         }
         for (String key : uiComponents.keySet()) {
             if (Pattern.matches(regex, key) && uiComponents.get(key) != null) {
-                operation.accept(uiComponents.get(key));
+                operation.accept(uiComponents.get(key), key);
             }
         }
     }

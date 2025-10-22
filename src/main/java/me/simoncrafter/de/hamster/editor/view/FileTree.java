@@ -79,6 +79,7 @@ public class FileTree extends JTree implements MouseListener,
 		((DefaultTreeModel) getModel()).reload();
 		while (expanded != null && expanded.hasMoreElements()) {
 			TreePath tp = (TreePath) expanded.nextElement();
+
 			expandPath(tp);
 		}
 		setSelectionPath(t);

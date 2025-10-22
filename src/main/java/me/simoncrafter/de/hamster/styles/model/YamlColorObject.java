@@ -10,6 +10,8 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.Tag;
 
 import java.awt.*;
+import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +33,9 @@ public class YamlColorObject extends Constructor {
         @Override
         public Object construct(Node node) {
             String value = ((ScalarNode) node).getValue();
-            return readColor(value);
+            Color color = readColor(value);
+            System.out.println("YAML COLOR PARSER: value = " + value + "  Color " + color.getRed() + " " + color.getGreen() + " " + color.getBlue()); // debug
+            return color;
         }
     }
 
@@ -60,7 +64,12 @@ public class YamlColorObject extends Constructor {
             return new Color(Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue));
 
         } else if (color.startsWith("_")) {
-            return StyleSettings.getPresetColors().get(color.substring(1));
+            Map<String, Color> map = StyleSettings.getPresetColors();
+            Color c = map.get(color.substring(1));
+            if (c == null) {
+                c = Color.BLACK;
+            }
+            return c;
         }else {
             return null;
         }

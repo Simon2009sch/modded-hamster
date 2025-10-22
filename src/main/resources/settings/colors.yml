@@ -1,14 +1,81 @@
 presetColors:
+  # chatGPT lässt grüßen ;)
+  # --- Grayscale ---
   black: !color "#000000"
-  white: !color "#ffffff"
   darkGray: !color "#333333"
   gray: !color "#666666"
   lightGray: !color "#999999"
-  dark_white: !color "100100100"
-  blue: !color "0 0 255"
-  red: !color "#ff0000"
+  white: !color "#ffffff"
 
+  # --- Red ---
+  red_dark: !color "#8B0000"
+  red: !color "#FF0000"
+  red_light: !color "#FFA07A"
 
+  # --- Blue ---
+  blue_dark: !color "#00008B"
+  blue: !color "#0000FF"
+  blue_light: !color "#87CEFA"
+
+  # --- Green ---
+  green_dark: !color "#006400"
+  green: !color "#00FF00"
+  green_light: !color "#90EE90"
+
+  # --- Yellow ---
+  yellow_dark: !color "#CCCC00"
+  yellow: !color "#FFFF00"
+  yellow_light: !color "#FFFFE0"
+
+  # --- Orange ---
+  orange_dark: !color "#FF8C00"
+  orange: !color "#FFA500"
+  orange_light: !color "#FFD580"
+
+  # --- Purple ---
+  purple_dark: !color "#4B0082"
+  purple: !color "#800080"
+  purple_light: !color "#D8BFD8"
+
+  # --- Pink ---
+  pink_dark: !color "#C71585"
+  pink: !color "#FF69B4"
+  pink_light: !color "#FFB6C1"
+
+  # --- Brown ---
+  brown_dark: !color "#5C4033"
+  brown: !color "#A52A2A"
+  brown_light: !color "#D2B48C"
+
+  # --- Cyan / Teal ---
+  cyan_dark: !color "#008B8B"
+  cyan: !color "#00FFFF"
+  cyan_light: !color "#E0FFFF"
+
+  teal_dark: !color "#004C4C"
+  teal: !color "#008080"
+  teal_light: !color "#66B2B2"
+
+  # --- Gold ---
+  gold_dark: !color "#B8860B"
+  gold: !color "#FFD700"
+  gold_light: !color "#FFECB3"
+
+  # --- Violet ---
+  violet_dark: !color "#6A0DAD"
+  violet: !color "#8A2BE2"
+  violet_light: !color "#CBA0E3"
+
+  # --- Misc / Accent ---
+  sky_blue: !color "#87CEEB"
+  mint: !color "#98FF98"
+  turquoise: !color "#40E0D0"
+  indigo: !color "#4B0082"
+  maroon: !color "#800000"
+  silver: !color "#C0C0C0"
+  charcoal: !color "#2F4F4F"
+  cream: !color "#FFFDD0"
+  lavender: !color "#E6E6FA"
 
 uiStyles:
   darkMode:
@@ -17,40 +84,51 @@ uiStyles:
       'editor.filetree':
         bg: !color "_red"
         fg: !color "_red"
+        file_tree:
+          selected:
+            fg: !color "_blue"
+            bg: !color "_pink"
+          non_selected:
+            fg: !color "_red"
+            bg: !color "_blue"
 
       'editor.texteditor.linenumbers':
         bg: !color "_red"
-        fg: !color "_red"
-      'editor.texteditor.linenumbers.selection':
-        bg: !color "_red"
-        fg: !color "_red"
+        fg: !color "_black"
+        selection:
+          text: !color "_black"
+          color: !color "_red"
 
-      'editor.texteditor.infobar.col.text':
-        bg: !color "_red"
-      'editor.texteditor.infobar.col.value':
-        bg: !color "_red"
-      'editor.texteditor.infobar.line.value':
-        bg: !color "_red"
-      'editor.texteditor.infobar.line.text':
-        bg: !color "_red"
+      #'editor.texteditor.infobar.col.text':
+      #  bg: !color "_red"
+      #'editor.texteditor.infobar.col.value':
+      #  bg: !color "_red"
+      #'editor.texteditor.infobar.line.value':
+      #  bg: !color "_red"
+      #'editor.texteditor.infobar.line.text':
+      #  bg: !color "_red"
 
       'editor.texteditor':
-        bg: !color "_red"
+        bg: !color "_blue"
         fg: !color "_red"
-      'editor.texteditor.textarea':
-        bg.active: !color "_red"
-        locked:
-          bg: !color "_red"
-        unlocked:
-          bg: !color "_red"
+        border:
+          style: "line"
+          thickness: 10
+          color: !color "_green"
+        active_textarea:
+          bg: !color "_blue"
+          fg: !color "_black"
+          cursor: !color "_red"
+          selection:
+            text: !color "_purple"
+            color: !color "_red"
       'editor.texteditor.scrollpane':
         bg: !color "_red"
 
       'editor.texteditor.infobar':
         bg: !color "_red"
-        update_button:
-          text: !color "_red"
-          action: !color "_red"
+        item:
+          bg: !color "_blue"
 
       '!^.+\.toolbar':
         bg: !color "_red"
@@ -59,12 +137,12 @@ uiStyles:
 
       'editor.filetree.popupmenu':
         item:
-          bg: !color "_red"
+          bg: !color "#00ff00"
           fg: !color "_red"
         border:
           style: "line"
-          th: 5
-          color: !color "_red"
+          thickness: 10
+          color: !color "#0000ff"
 
       'test.123': !color "_red"
 

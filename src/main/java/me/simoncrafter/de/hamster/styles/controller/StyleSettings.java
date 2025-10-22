@@ -2,9 +2,11 @@ package me.simoncrafter.de.hamster.styles.controller;
 
 import com.kenai.jaffl.struct.Struct;
 import com.sun.istack.internal.Nullable;
+import jsint.E;
 import me.simoncrafter.de.hamster.styles.model.UIColorStyle;
 import me.simoncrafter.de.hamster.styles.model.YamlColorObject;
 import me.simoncrafter.de.hamster.workbench.Utils;
+import org.jruby.RubyProcess;
 import org.python.antlr.ast.Str;
 import org.python.antlr.op.In;
 import org.yaml.snakeyaml.LoaderOptions;
@@ -48,32 +50,35 @@ public class StyleSettings {
         try (InputStream input = Files.newInputStream(settingsFile.toPath())) {
             Yaml yaml = new Yaml(new YamlColorObject(new LoaderOptions()));
             Map<String, Object> data = yaml.load(input);
-            Map<String, Object> styles = (Map<String, Object>) data.get("uiStyles");
+
             Map<String, Object> presets = (Map<String, Object>) data.get("presetColors");
 
-            for (Map.Entry<String, Object> entry : presets.entrySet()) { // read preset colors
-                if (!(entry.getValue() instanceof String || entry.getValue() instanceof Integer)) {
-                    continue;
+            // Phase 1 – load presets normally (simple hex or numbers, no references)
+            for (Map.Entry<String, Object> entry : presets.entrySet()) {
+                Object v = entry.getValue();
+                if (v instanceof Color) {
+                    presetColors.put(entry.getKey(), (Color) v);
                 }
-                Color createdColor = (Color) entry.getValue();
-                if (createdColor == null) {
-                    createdColor = Color.RED;
-                }
-                presetColors.put(entry.getKey(), createdColor);
             }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Finished loading presets");
+        System.out.println("Now loading colors");
 
-            for (Map.Entry<String, Object> entry : styles.entrySet()) { // read color styles
-                if (entry.getValue() instanceof Map<?, ?>) {
+        // Phase 2 – reparse file (now _red etc. can be resolved)
+        try (InputStream input = Files.newInputStream(settingsFile.toPath())) {
+            Yaml yaml = new Yaml(new YamlColorObject(new LoaderOptions()));
+            Map<String, Object> data = yaml.load(input);
+
+            Map<String, Object> styles = (Map<String, Object>) data.get("uiStyles");
+            for (Map.Entry<String, Object> entry : styles.entrySet()) {
+                if (entry.getValue() instanceof Map<?, ?> ) {
                     UIColorStyle style = readStyle((Map<String, Object>) entry.getValue());
-                    System.out.println("Read Style " + style.getName());
-                    if (styles != null) colorStyles.put(entry.getKey(), style);
+                    colorStyles.put(entry.getKey(), style);
                 }
             }
-
-
-        } catch (Exception e) {
-            System.out.println("Error while loading style file!");
-            System.out.println("You may have removed \"!color\" from one of the colors");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -95,7 +100,12 @@ public class StyleSettings {
         Map<String, Object> map = new HashMap<>(input);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if (entry.getValue() instanceof Map<?, ?>) {
-                map.put(entry.getKey(), (Map<String, Object>) entry.getValue());
+                map.put(entry.getKey(), readColors((Map<String, Object>) entry.getValue()));
+                continue;
+            }
+            if (entry.getValue() instanceof Color) {
+                map.put(entry.getKey(), (Color) entry.getValue());
+                continue;
             }
             map.put(entry.getKey(), entry.getValue());
         }
