@@ -40,6 +40,7 @@ public class CHamster extends Application {
     public DebuggerController dbgBody;
     public WorkbenchModel wbModel;
     public WorkbenchView wbView;
+    public DebuggerController dbgController;
 
     public static void Log(String tLog)
     {
@@ -59,9 +60,9 @@ public class CHamster extends Application {
         wbModel = wbBody.getModel();
         simBody = wbBody.getSimulation();
         wbView = wbBody.getView();
+        dbgController = wbBody.getDebuggerController();
 
         hamster = Hamster.getStandardHamster();
-        wbView.createConsole();
 
         int reiheHamster = hamster.getReihe();
         int spalteHamster = hamster.getSpalte();
