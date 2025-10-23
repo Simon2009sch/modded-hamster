@@ -13,6 +13,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
+import me.simoncrafter.de.hamster.compiler.controller.CompilerController;
+import me.simoncrafter.de.hamster.debugger.controller.DebuggerController;
 import me.simoncrafter.de.hamster.editor.controller.EditorController;
 import me.simoncrafter.de.hamster.interpreter.Hamster;
 import me.simoncrafter.de.hamster.interpreter.Territorium;
@@ -21,6 +23,8 @@ import me.simoncrafter.de.hamster.simulation.controller.SimulationController;
 import me.simoncrafter.de.hamster.simulation.model.LogEntry;
 import me.simoncrafter.de.hamster.simulation.model.SimulationModel;
 import me.simoncrafter.de.hamster.workbench.Workbench;
+import me.simoncrafter.de.hamster.workbench.WorkbenchModel;
+import me.simoncrafter.de.hamster.workbench.WorkbenchView;
 import org.jruby.RubyProcess;
 
 import javax.swing.*;
@@ -29,8 +33,13 @@ public class CHamster extends Application {
     public Hamster hamster;
     public SimulationModel simModel;
     public SimulationController simController;
+    public SimulationController simBody;
     public Workbench wbBody;
     public EditorController editorBody;
+    public CompilerController compilerBody;
+    public DebuggerController dbgBody;
+    public WorkbenchModel wbModel;
+    public WorkbenchView wbView;
 
     public static void Log(String tLog)
     {
@@ -43,11 +52,16 @@ public class CHamster extends Application {
     public void start(Stage primaryStage) {
         wbBody = Workbench.getWorkbench();
         editorBody = wbBody.getEditor();
-        hamster = Hamster.getStandardHamster();
         simModel = wbBody.getSimulation().getSimulationModel();
         simController = wbBody.getSimulationController();
+        compilerBody = wbBody.getComiler();
+        dbgBody = wbBody.getDebugger();
+        wbModel = wbBody.getModel();
+        simBody = wbBody.getSimulation();
+        wbView = wbBody.getView();
 
-
+        hamster = Hamster.getStandardHamster();
+        wbView.createConsole();
 
         int reiheHamster = hamster.getReihe();
         int spalteHamster = hamster.getSpalte();
