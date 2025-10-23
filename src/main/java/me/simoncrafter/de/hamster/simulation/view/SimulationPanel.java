@@ -49,8 +49,8 @@ public class SimulationPanel extends JPanel implements Observer, MouseMotionList
 		this.zoom = 32;  // 3
 		this.loadImages();
 		this.createCursors();
-		this.addMouseMotionListener(this);
-		this.setBackground(Color.RED); // dibo 230309    play area background
+		this.addMouseMotionListener(this); // dibo 230309    play area background
+
 
 		UIStyleController.putUIComponent("simulation.panel", this);
 

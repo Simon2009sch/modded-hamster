@@ -4,7 +4,6 @@ import me.simoncrafter.de.hamster.editor.view.*;
 import me.simoncrafter.de.hamster.editor.view.TextArea;
 import me.simoncrafter.de.hamster.simulation.view.SimulationPanel;
 import me.simoncrafter.de.hamster.styles.model.UIColorStyle;
-import org.jruby.RubyProcess;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -15,23 +14,23 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
-import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UIStyleController {
     private static Map<String, JComponent> uiComponents = new HashMap<>();
 
-    private static JButton updateButton;
     private static int styleIndex = 0;
 
     public static void init() {
 
         Pattern pattern = Pattern.compile("^(?<key>.+?)(?<brackets>\\[(?<obj>[^\\]]*)\\])?$");
 
+        applyStyle(false);
+    }
+
+    public static void applyStyle(boolean reload) {
         Map<String, UIColorStyle> styleMap = StyleSettings.getColorStyles();
         // Apply all styles in the map
         for (Map.Entry<String, UIColorStyle> styleEntry : styleMap.entrySet()) {
@@ -42,31 +41,19 @@ public class UIStyleController {
                 System.out.println("Applying " + entry.getKey() + " to " + styleEntry.getKey());
                 if (entry.getKey().startsWith("!")) {
                     modifyUIPropertiesForPattern(entry.getKey().substring(1), (ui, key) -> {
-                        style.apply(ui, key, entry.getKey());
+                        style.apply(ui, key, entry.getKey(), reload);
                     });
                 } else {
                     modifyUIProperties(entry.getKey(), (ui) -> {
-                        style.apply(ui, entry.getKey());
+                        style.apply(ui, entry.getKey(), entry.getKey(), reload);
                     });
                 }
 
             }
         }
-
-        // adding button
-        if (updateButton == null) {
-            updateButton = new JButton();
-            updateButton.setText("Update");
-            updateButton.setVisible(true);
-            updateButton.addActionListener(e -> UIStyleController.init());
-        }
-
-        modifyUIProperties("editor.texteditor.infobar", (ui) -> {
-            ui.remove(updateButton);
-            ui.add(updateButton, 0);
-        });
-
     }
+
+
 
 
 
@@ -112,8 +99,8 @@ public class UIStyleController {
                 JScrollPane scrollPane = editorText.getActiveScrollPlane();
                 scrollPane.setBackground(getRandomColor());
 
-                scrollPane.getVerticalScrollBar().setUI(getBasicScrollBar());
-                scrollPane.getHorizontalScrollBar().setUI(getBasicScrollBar());
+                scrollPane.getVerticalScrollBar().setUI(getBasicScrollBar(getRandomColor(), 5));
+                scrollPane.getHorizontalScrollBar().setUI(getBasicScrollBar(getRandomColor(), 5));
 
 
 
@@ -122,20 +109,6 @@ public class UIStyleController {
             editorText.setOnTextAreaUnLock(textArea -> textArea.setBackground(Color.WHITE));
         });
 
-
-
-        if (updateButton == null) {
-            updateButton = new JButton();
-            updateButton.setText("Update");
-            updateButton.setVisible(true);
-            updateButton.addActionListener(e -> UIStyleController.init());
-        }
-
-        modifyUIProperties("editor.texteditor.infobar", (ui) -> {
-            ui.setBackground(getRandomColor());
-            ui.remove(updateButton);
-            ui.add(updateButton, 0);
-        });
 
         modifyUIPropertiesForPattern(".+\\.toolbar", (ui, key) -> {
             ui.setBackground(getRandomColor());
@@ -174,10 +147,10 @@ public class UIStyleController {
             JScrollBar vScroll = scrollPane.getVerticalScrollBar();
             JScrollBar hScroll = scrollPane.getHorizontalScrollBar();
 
-            vScroll.setUI(getBasicScrollBar());
+            vScroll.setUI(getBasicScrollBar(getRandomColor(), 5));
             vScroll.setUnitIncrement(16);
 
-            hScroll.setUI(getBasicScrollBar());
+            hScroll.setUI(getBasicScrollBar(getRandomColor(), 5));
             hScroll.setUnitIncrement(16);
 
             scrollPane.setBackground(getRandomColor());
@@ -185,7 +158,7 @@ public class UIStyleController {
 
         modifyUIPropertiesForPattern("^.+\\.splitplane$", (ui, key) -> {
             JSplitPane plane = (JSplitPane) ui;
-            plane.setUI(getSimpleUISlider(getRandomColor(), getRandomColor(), getRandomColor()));
+            plane.setUI(getSimpleSplitPlane(getRandomColor(), getRandomColor(), getRandomColor()));
         });
 
         modifyUIProperties("editor.menubar", (ui) -> {
@@ -212,12 +185,12 @@ public class UIStyleController {
         return new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
     }
 
-    public static BasicScrollBarUI getBasicScrollBar() {
+    public static BasicScrollBarUI getBasicScrollBar(Color thunb, int thickness) {
         return new BasicScrollBarUI() {
-            private final Color THUMB_COLOR = new Color(255, 255, 255, 100);
+            private final Color THUMB_COLOR = thunb;
             private final int MIN_SIZE = 10;       // Minimum thumb dimension
             private final double SIZE_SCALE = 0.6; // Makes thumb larger overall
-            private final int TRACK_THICKNESS = 5; // Width/thickness of scrollbar track
+            private final int TRACK_THICKNESS = thickness; // Width/thickness of scrollbar track
 
             @Override
             protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
@@ -364,7 +337,7 @@ public class UIStyleController {
         };
     }
 
-    public static BasicSplitPaneUI getSimpleUISlider(Color defaultColor, Color highlightColor, Color handleColor) {
+    public static BasicSplitPaneUI getSimpleSplitPlane(Color defaultColor, Color highlightColor, Color handleColor) {
         return new BasicSplitPaneUI() {
             @Override
             public BasicSplitPaneDivider createDefaultDivider() {

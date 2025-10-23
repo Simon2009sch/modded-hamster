@@ -43,10 +43,14 @@ public class StyleSettings {
 
     private static void ensureSettingsFile() {
         Utils.ensureSettings();
-        settingsFile = Utils.extractResource(settingsFileName, Utils.SETTINGS + Utils.FSEP + "colors.yml");
+        settingsFile = new File(Utils.SETTINGS + Utils.FSEP + "colors.yml");
+        if (!settingsFile.exists()) settingsFile = Utils.extractResource(settingsFileName, Utils.SETTINGS + Utils.FSEP + "colors.yml");
     }
 
     private static void loadConfig() {
+        presetColors = new HashMap<>();
+        colorStyles = new HashMap<>();
+
         try (InputStream input = Files.newInputStream(settingsFile.toPath())) {
             Yaml yaml = new Yaml(new YamlColorObject(new LoaderOptions()));
             Map<String, Object> data = yaml.load(input);

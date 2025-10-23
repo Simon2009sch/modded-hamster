@@ -1,27 +1,18 @@
 package me.simoncrafter.de.hamster.styles.model;
 
 
-import com.intel.bluetooth.obex.OBEXClientOperation;
 import com.sun.istack.internal.Nullable;
-import jsint.E;
-import me.simoncrafter.de.hamster.editor.view.FileTree;
-import me.simoncrafter.de.hamster.editor.view.FileTreeCellRenderer;
-import me.simoncrafter.de.hamster.editor.view.TabbedTextArea;
+import me.simoncrafter.de.hamster.editor.view.*;
 import me.simoncrafter.de.hamster.editor.view.TextArea;
-import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.objects.Obj;
-import org.apache.bcel.classfile.ConstantUtf8;
-import org.jruby.RubyProcess;
-import org.python.antlr.op.In;
+import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class UIColorStyle {
     private Map<String, Object> colors;
@@ -103,6 +94,10 @@ public class UIColorStyle {
             String eKey = entry.getKey();
             Object eObj = entry.getValue();
 
+            if (key.contains("simulation.panel.scroll")) {
+                System.out.println("oisfjuölas");
+            }
+
             switch (eKey) {
                 case "bg": {
                     if (eObj instanceof Color) {
@@ -139,7 +134,6 @@ public class UIColorStyle {
                     break;
                 }
                 case "active_textarea": {
-                    // Recursively create a sub-applier
                     try {
                         Consumer<JComponent> child = createApplierFunction(false, (Map<String, Object>) colorableObject, "active_textarea", "active_textarea", parent);
                         Color textCursor;
@@ -185,6 +179,27 @@ public class UIColorStyle {
                     }
                     break;
                 }
+                case "scroll": {
+                    if (eObj instanceof Map<?, ?>) {
+                        Consumer<JComponent> consumer = applyScrollBar((Map<String, Object>) eObj);
+                        applyList.add(consumer);
+                    }
+                    break;
+                }
+                case "split": {
+                    if (eObj instanceof Map<?, ?>) {
+                        Consumer<JComponent> consumer = applySplitPlane((Map<String, Object>) eObj);
+                        applyList.add(consumer);
+                    }
+                    break;
+                }
+                case "opaque": {
+                    if (eObj instanceof Boolean) {
+                        Consumer<JComponent> consumer = ui -> ui.setOpaque((Boolean) eObj);
+                        applyList.add(consumer);
+                    }
+                    break;
+                }
             }
         }
 
@@ -210,7 +225,96 @@ public class UIColorStyle {
     }
 
     private Consumer<JComponent> applyScrollBar(Map<String, Object> map) {
+        Object style = map.get("style");
+        try {
+            if (!(style instanceof String)) {
+                return (ui) -> {};
+            }
+            Consumer<JComponent> viewPort = (ui) -> {};
+            if (map.get("viewport") instanceof Map<?, ?>) {
+                viewPort = createApplierFunction(false, map, "viewport", "viewport", null);
+            }
 
+
+            switch ((String) style) {
+                case "simple": {
+                    Object bg = map.get("bg");
+                    Object color = map.get("color");
+                    Object inc = map.get("increment");
+
+                    if (!(color instanceof Color && bg instanceof Color && inc instanceof Integer)) {
+                        return (ui) -> {};
+                    }
+                    Consumer<JComponent> finalViewPort = viewPort; // make it final because lamdas are wired
+                    return (ui) -> {
+                        JScrollPane scrollPane;
+
+                        if (ui instanceof TabbedTextArea) {
+                            TabbedTextArea textArea = (TabbedTextArea) ui;
+                            if (textArea.getActiveTextArea() == null) {
+                                return;
+                            }
+                            scrollPane = textArea.getActiveScrollPlane();
+                        } else if (ui instanceof JScrollPane) {
+                            scrollPane = (JScrollPane) ui;
+                        } else {
+                            return;
+                        }
+                        finalViewPort.accept(scrollPane.getViewport());
+
+                        JScrollBar vScroll = scrollPane.getVerticalScrollBar();
+                        JScrollBar hScroll = scrollPane.getHorizontalScrollBar();
+                        scrollPane.setBackground((Color) bg);
+
+                        vScroll.setUI(UIStyleController.getBasicScrollBar((Color) color, 5));
+                        vScroll.setUnitIncrement((Integer) inc);
+
+                        hScroll.setUI(UIStyleController.getBasicScrollBar((Color) color, 5));
+                        hScroll.setUnitIncrement((Integer) inc);
+                    };
+
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error while applying Scrollbar style");
+        }
+        return (ui) -> {};
+    }
+
+    private Consumer<JComponent> applySplitPlane(Map<String, Object> map) {
+        Object style = map.get("style");
+        try {
+            if (!(style instanceof String)) {
+                System.out.println("Style of split plane has to be string!");
+                return (ui) -> {};
+            }
+
+            switch ((String) style) {
+                case "simple": {
+                    Object color = map.get("color");
+                    Object hover = map.get("hover");
+                    Object handle = map.get("handle");
+
+                    if (!(color instanceof Color && hover instanceof Color && handle instanceof Color)) {
+                        System.out.println("Color of split plane has to be color!");
+                        return (ui) -> {};
+                    }
+
+                    return (ui) -> {
+                        if (!(ui instanceof JSplitPane)) {
+                            return;
+                        }
+                        JSplitPane splitPlane = (JSplitPane) ui;
+                        splitPlane.setUI(UIStyleController.getSimpleSplitPlane((Color) color, (Color) hover, (Color) handle));
+                    };
+                }
+            }
+
+        }catch (Exception e) {
+            System.out.println("Error while loading splitplane style");
+        }
+        return (ui) -> {};
     }
 
     private Consumer<JComponent> applyBorder(Map<String, Object> map) {

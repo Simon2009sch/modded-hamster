@@ -40,6 +40,7 @@ import me.simoncrafter.de.hamster.scratch.ScratchHamster;
 import me.simoncrafter.de.hamster.simulation.controller.SimulationController;
 import me.simoncrafter.de.hamster.simulation.model.SimulationModel;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
+import org.python.antlr.op.In;
 
 /**
  * Diese Klasse implementiert den Controller der zentralen Werkbank. Die
@@ -135,6 +136,7 @@ public class Workbench {
 			view.createConsole(); // dibo 070708
 		}
 		view.createSimulationFrame();
+		view.createSettingFrame();
 		view.createEditorFrame();
 		handleWindowMenu(); // dibo 151106
 		handleExtrasMenu(); // dibo 230309
@@ -157,6 +159,63 @@ public class Workbench {
 		} else {
 			view.setOnlySimVisible(true);
 		}
+
+		createUITestFrame();
+	}
+
+	private void createUITestFrame() {
+		SwingUtilities.invokeLater(() -> {
+			JFrame frame = new JFrame("Scaled Background Example");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setSize(700, 500);
+
+			// Load the image
+			ImageIcon bgIcon = Utils.getIcon("background.jpg");
+			Image backgroundImage = bgIcon.getImage();
+
+			// Create a panel that paints the scaled background
+			JPanel backgroundPanel = new JPanel(new BorderLayout()) {
+				@Override
+				protected void paintComponent(Graphics g) {
+					super.paintComponent(g);
+					int panelWidth = getWidth();
+					int panelHeight = getHeight();
+
+					// Get original image size
+					int imgWidth = backgroundImage.getWidth(null);
+					int imgHeight = backgroundImage.getHeight(null);
+
+					// Compute scale to cover area while preserving aspect ratio
+					double scale = Math.max(
+							(double) panelWidth / imgWidth,
+							(double) panelHeight / imgHeight
+					);
+
+					int newWidth = (int) (imgWidth * scale);
+					int newHeight = (int) (imgHeight * scale);
+
+					// Center image
+					int x = (panelWidth - newWidth) / 2;
+					int y = (panelHeight - newHeight) / 2;
+
+					g.drawImage(backgroundImage, x, y, newWidth, newHeight, this);
+				}
+			};
+
+			// Add normal components on top
+			JPanel content = new JPanel();
+			content.setOpaque(false);
+			content.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+			content.add(new JButton("Click Me"));
+			content.add(new JTextField("Type here", 15));
+
+			backgroundPanel.add(content, BorderLayout.CENTER);
+
+			frame.setContentPane(backgroundPanel);
+			frame.setVisible(true);
+		});
+
+
 	}
 
 	JMenu extrasMenu;
@@ -272,6 +331,8 @@ public class Workbench {
 
 	public static JCheckBoxMenuItem winSim = null;
 
+	public static JCheckBoxMenuItem moddedDebug = null;
+
 	public static JCheckBoxMenuItem console = null;
 
 	// Scheme Martin
@@ -298,6 +359,10 @@ public class Workbench {
 		winSim.setAccelerator(KeyStroke.getKeyStroke(Utils.getResource("windows.simulation.mnemonic").charAt(0),
 				InputEvent.ALT_MASK));
 		winSim.addActionListener(new WindowVisible(view.getSimulationFrame()));
+
+		fensterMenue.add(moddedDebug = new JCheckBoxMenuItem("Mods Debugger", false));
+		moddedDebug.addActionListener(new WindowVisible(view.getSettings()));
+
 
 		if (Utils.runlocally) {
 			fensterMenue.add(console = new JCheckBoxMenuItem(Utils.getResource("windows.console"), true));

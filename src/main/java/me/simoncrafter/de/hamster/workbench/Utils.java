@@ -330,7 +330,7 @@ public class Utils {
 	 * @return Das Image
 	 */
     public static Image getImage(String name) {
-		System.out.println("Trying to fetch: " + name);
+		//System.out.println("Trying to fetch: " + name);
 		// fix for random error that is already in origenal zip
 		if (name.startsWith("resources/")) {
 			name = name.substring(9);
@@ -340,7 +340,7 @@ public class Utils {
 
         // TODO: Media Tracker?
 		URL url = ClassLoader.getSystemResource("resources/" + name);
-        System.out.println("Trying to path: " + ClassLoader.getSystemResource("resources/" + name));
+        //System.out.println("Trying to path: " + ClassLoader.getSystemResource("resources/" + name));
 		if (url == null) {
 			url = Utils.class.getClassLoader().getResource("resources/" + name);
 		}
@@ -350,7 +350,7 @@ public class Utils {
             return new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB); // placeholder
 
         } else {
-            System.out.println("Successfuly fetched: " + name);
+            //System.out.println("Successfuly fetched: " + name);
         }
 		return Toolkit.getDefaultToolkit().createImage(url);
 	}
