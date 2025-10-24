@@ -22,12 +22,16 @@ import me.simoncrafter.de.hamster.mod.UIStyleController;
 import me.simoncrafter.de.hamster.simulation.controller.SimulationController;
 import me.simoncrafter.de.hamster.simulation.model.LogEntry;
 import me.simoncrafter.de.hamster.simulation.model.SimulationModel;
+import me.simoncrafter.de.hamster.simulation.view.SimulationPanel;
+import me.simoncrafter.de.hamster.simulation.view.SimulationTools;
 import me.simoncrafter.de.hamster.workbench.Workbench;
 import me.simoncrafter.de.hamster.workbench.WorkbenchModel;
 import me.simoncrafter.de.hamster.workbench.WorkbenchView;
 import org.jruby.RubyProcess;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 
 public class CHamster extends Application {
     public Hamster hamster;
@@ -41,6 +45,8 @@ public class CHamster extends Application {
     public WorkbenchModel wbModel;
     public WorkbenchView wbView;
     public DebuggerController dbgController;
+    public SimulationTools simTools;
+    public SimulationPanel simPanel;
 
     public static void Log(String tLog)
     {
@@ -61,6 +67,8 @@ public class CHamster extends Application {
         simBody = wbBody.getSimulation();
         wbView = wbBody.getView();
         dbgController = wbBody.getDebuggerController();
+        simTools = simController.getSimulationTools();
+        simPanel = simController.getSimulationPanel();
 
         hamster = Hamster.getStandardHamster();
 
@@ -76,7 +84,9 @@ public class CHamster extends Application {
         Button button2 = new Button("New Hamster");
         Button button3 = new Button("Log");
         Button button4 = new Button("Clear Log");
-        Button button5 = new Button("Test");
+        Button button5 = new Button("Zoom In");
+        Button button6 = new Button("Zoom out");
+        Button button7  = new Button("");
         TextField textField = new TextField();
         textField.setPromptText("Debug Log...");
 
@@ -91,7 +101,13 @@ public class CHamster extends Application {
             simController.getLogPanel().clearLog();
         });
         button5.setOnAction(e -> {
-
+            simPanel.zoomIn();
+        });
+        button6.setOnAction(e -> {
+            simPanel.zoomOut();
+        });
+        button7.setOnAction(e -> {
+            
         });
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), e -> {
@@ -109,6 +125,8 @@ public class CHamster extends Application {
                 button2,
                 button3,
                 button4,
+                button5,
+                button6,
                 textField
         );
 
