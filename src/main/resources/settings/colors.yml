@@ -114,7 +114,7 @@ presetColors:
   turquoise: !color "#40E0D0"
   turquoise_transparent: !color "#40E0D080"
   indigo: !color "#4B0082"
-  indigo_transparent: !c26282eolor "#4B008280"
+  indigo_transparent: !color "#4B008280"
   maroon: !color "#800000"
   maroon_transparent: !color "#80000080"
   silver: !color "#C0C0C0"
@@ -129,8 +129,9 @@ presetColors:
   dark_mode_2: !color "#2b2d30ff"
   dark_mode_3: !color "#444951ff"
   dark_mode_4: !color "#585d66ff"
+  dark_mode_5: !color "#787f8aff"
   dark_mode_text: !color "#ffffff"
-  dark_mode_select: !color "#"
+  dark_mode_select: !color "#214283aa"
 
 
 uiStyles:
@@ -139,7 +140,7 @@ uiStyles:
     colors:
       # --- File Tree ---
       'editor.filetree':
-        bg: !color "_dark_mode_4"
+        bg: !color "_dark_mode_2"
         fg: !color "_accent_text"
         file_tree:
           selected:
@@ -147,7 +148,7 @@ uiStyles:
             bg: !color "_dark_mode_select"
           non_selected:
             fg: !color "_dark_mode_text"
-            bg: !color "_dark_mode_4"
+            bg: !color "_dark_mode_2"
 
       # --- Line Numbers ---
       'editor.texteditor.linenumbers':
@@ -160,23 +161,20 @@ uiStyles:
       # --- Text Editor Area ---
       'editor.texteditor':
         bg: !color "_dark_mode_1"
-        fg: !color "_accent_text"
         border:
-          style: "line"
-          thickness: 1
-          color: !color "_accent_border"
+          style: "empty"
         scroll:
           style: "simple"
-          bg: !color "_dark_mode_2"
-          color: !color "_dark_mode_3"
+          bg: !color "_dark_mode_3"
+          color: !color "_dark_mode_4"
           increment: 8
         active_textarea:
           bg: !color "_dark_mode_1"
-          fg: !color "#FFFFFF"
-          cursor: !color "_accent_teal"
+          fg: !color "_white"
+          cursor: !color "_white"
           selection:
-            text: !color "_dark_mode_1"
-            color: !color "_accent_teal"
+            text: !color "_blue_light"
+            color: !color "_dark_mode_select"
 
       # --- Scroll Pane ---
       'editor.texteditor.scrollpane':
@@ -184,7 +182,7 @@ uiStyles:
 
       # --- Info Bar ---
       'editor.texteditor.infobar':
-        bg: !color "_dark_mode_4"
+        bg: !color "_dark_mode_3"
         item:
           bg: !color "_dark_mode_4"
           fg: !color "#DCDCDC"
@@ -209,17 +207,17 @@ uiStyles:
 
       # --- Log Panels ---
       '!^.+\.logpanel':
-        bg: !color "_dark_mode_1"
+        bg: !color "_dark_mode_3"
         opaque: true
       '!^.+\.logpanel.text':
-        bg: !color "_dark_mode_1"
+        bg: !color "_dark_mode_3"
         fg: !color "#BEBEBE"
         opaque: true
       '!^.+\.logpanel.buffer':
         bg: !color "#1E1E1E80"
         opaque: true
       '!^.+\.logpanel.scroll':
-        bg: !color "_dark_mode_2"
+        bg: !color "_dark_mode_3"
         fg: !color "#666666"
         opaque: true
         scroll:
@@ -248,18 +246,20 @@ uiStyles:
 
       # --- Split Panels ---
       '!^.+\.splitplane':
-        bg: !color "_dark_mode_1"
+        bg: !color "_dark_mode_2"
         opaque: true
         split:
           style: "simple"
-          color: !color "_accent_border"
-          hover: !color "_accent_teal"
-          handle: !color "_accent_blue"
+          color: !color "_dark_mode_2"
+          hover: !color "_dark_mode_3"
+          handle: !color "_dark_mode_4"
 
       # --- Menu Bar ---
       'editor.menubar':
-        bg: !color "_dark_mode_4"
+        bg: !color "_dark_mode_3"
         fg: !color "#FFFFFF"
+        item:
+          fg: !color "_dark_mode_5"
 
       # --- Debugger ---
       'modded.debugger':
