@@ -114,7 +114,7 @@ presetColors:
   turquoise: !color "#40E0D0"
   turquoise_transparent: !color "#40E0D080"
   indigo: !color "#4B0082"
-  indigo_transparent: !color "#4B008280"
+  indigo_transparent: !c26282eolor "#4B008280"
   maroon: !color "#800000"
   maroon_transparent: !color "#80000080"
   silver: !color "#C0C0C0"
@@ -125,143 +125,155 @@ presetColors:
   cream_transparent: !color "#FFFDD080"
   lavender: !color "#E6E6FA"
   lavender_transparent: !color "#E6E6FA80"
+  dark_mode_1: !color "#1e1f22ff"
+  dark_mode_2: !color "#2b2d30ff"
+  dark_mode_3: !color "#444951ff"
+  dark_mode_4: !color "#585d66ff"
+  dark_mode_text: !color "#ffffff"
+  dark_mode_select: !color "#"
 
 
 uiStyles:
   darkMode:
     name: "Dark Mode"
     colors:
+      # --- File Tree ---
       'editor.filetree':
-        bg: !color "_red"
-        fg: !color "_red"
+        bg: !color "_dark_mode_4"
+        fg: !color "_accent_text"
         file_tree:
           selected:
-            fg: !color "_blue"
-            bg: !color "_pink"
+            fg: !color "_dark_mode_text"
+            bg: !color "_dark_mode_select"
           non_selected:
-            fg: !color "_red"
-            bg: !color "_blue"
+            fg: !color "_dark_mode_text"
+            bg: !color "_dark_mode_4"
 
+      # --- Line Numbers ---
       'editor.texteditor.linenumbers':
-        bg: !color "_red"
-        fg: !color "_black"
+        bg: !color "_dark_mode_2"
+        fg: !color "#858585"
         selection:
-          text: !color "_black"
-          color: !color "_red"
+          text: !color "#FFFFFF"
+          color: !color "_accent_blue"
 
-      #'editor.texteditor.infobar.col.text':
-      #  bg: !color "_red"
-      #'editor.texteditor.infobar.col.value':
-      #  bg: !color "_red"
-      #'editor.texteditor.infobar.line.value':
-      #  bg: !color "_red"
-      #'editor.texteditor.infobar.line.text':
-      #  bg: !color "_red"
-
+      # --- Text Editor Area ---
       'editor.texteditor':
-        bg: !color "_gold"
-        fg: !color "_red"
+        bg: !color "_dark_mode_1"
+        fg: !color "_accent_text"
         border:
           style: "line"
-          thickness: 10
-          color: !color "_green"
+          thickness: 1
+          color: !color "_accent_border"
         scroll:
           style: "simple"
-          bg: !color "_gold"
-          color: !color "#ffffffaa"
+          bg: !color "_dark_mode_2"
+          color: !color "_dark_mode_3"
           increment: 8
         active_textarea:
-          bg: !color "_blue"
-          fg: !color "_black"
-          cursor: !color "_red"
+          bg: !color "_dark_mode_1"
+          fg: !color "#FFFFFF"
+          cursor: !color "_accent_teal"
           selection:
-            text: !color "_purple"
-            color: !color "_red"
+            text: !color "_dark_mode_1"
+            color: !color "_accent_teal"
+
+      # --- Scroll Pane ---
       'editor.texteditor.scrollpane':
-        bg: !color "_red"
+        bg: !color "_dark_mode_1"
 
+      # --- Info Bar ---
       'editor.texteditor.infobar':
-        bg: !color "_red"
+        bg: !color "_dark_mode_4"
         item:
-          bg: !color "_blue"
+          bg: !color "_dark_mode_4"
+          fg: !color "#DCDCDC"
 
+      # --- Toolbars ---
       '!^.+\.toolbar':
-        bg: !color "_red"
+        bg: !color "_dark_mode_4"
+        fg: !color "_accent_text"
       '!^.+\.toolbar\.buttons\.[^\.]+':
-        bg: !color "_red"
+        bg: !color "_dark_mode_3"
+        fg: !color "#FFFFFF"
 
+      # --- Popup Menus ---
       'editor.filetree.popupmenu':
         item:
-          bg: !color "#00ff00"
-          fg: !color "_red"
+          bg: !color "_dark_mode_4"
+          fg: !color "#EAEAEA"
         border:
           style: "line"
-          thickness: 10
-          color: !color "#0000ff"
+          thickness: 1
+          color: !color "_accent_border"
 
-
+      # --- Log Panels ---
       '!^.+\.logpanel':
-        bg: !color "_transparent"
-        opaque: false
+        bg: !color "_dark_mode_1"
+        opaque: true
       '!^.+\.logpanel.text':
-        bg: !color "_transparent"
-        fg: !color "_transparent"
-        opaque: false
+        bg: !color "_dark_mode_1"
+        fg: !color "#BEBEBE"
+        opaque: true
       '!^.+\.logpanel.buffer':
-        bg: !color "_red_transparent"
-        opaque: false
-        border: {}
+        bg: !color "#1E1E1E80"
+        opaque: true
       '!^.+\.logpanel.scroll':
-        bg: !color "_transparent"
-        fg: !color "_transparent"
-        opaque: false
-        border: {}
+        bg: !color "_dark_mode_2"
+        fg: !color "#666666"
+        opaque: true
         scroll:
           style: "simple"
-          bg: !color "_gold"
-          color: !color "_blue"
+          bg: !color "_dark_mode_4"
+          color: !color "_accent_blue"
           increment: 16
           viewport:
-            opaque: false
-
-      'simulation.panel':
-        bg: !color "_transparent"
-        opaque: false
-      'simulation.panel.scroll':
-        bg: !color "_transparent"
-        opaque: false
-        scroll:
-          style: "simple"
-          bg: !color "_gold"
-          color: !color "_blue"
-          increment: 16
-          viewport:
-            bg: !color "_red_transparent"
             opaque: true
 
+      # --- Simulation Panel ---
+      'simulation.panel':
+        bg: !color "_dark_mode_1"
+        opaque: true
+      'simulation.panel.scroll':
+        bg: !color "_dark_mode_1"
+        opaque: true
+        scroll:
+          style: "simple"
+          bg: !color "_dark_mode_4"
+          color: !color "_accent_blue"
+          increment: 16
+          viewport:
+            bg: !color "#00000000"
+            opaque: true
+
+      # --- Split Panels ---
       '!^.+\.splitplane':
-        bg: !color "_transparent"
-        opaque: false
+        bg: !color "_dark_mode_1"
+        opaque: true
         split:
           style: "simple"
-          color: !color "_blue"
-          hover: !color "_purple"
-          handle: !color "_gold"
+          color: !color "_accent_border"
+          hover: !color "_accent_teal"
+          handle: !color "_accent_blue"
 
+      # --- Menu Bar ---
       'editor.menubar':
-        bg: !color "_green"
+        bg: !color "_dark_mode_4"
+        fg: !color "#FFFFFF"
 
+      # --- Debugger ---
       'modded.debugger':
-        bg: !color "_darkGray"
+        bg: !color "_dark_mode_2"
         item:
-          bg: !color "_gray"
+          bg: !color "_dark_mode_4"
+          fg: !color "_accent_text"
 
       'modded.debugger.scroll':
         scroll:
           style: "simple"
-          bg: !color "_gold"
-          color: !color "#ffffffaa"
+          bg: !color "_dark_mode_4"
+          color: !color "_dark_mode_3"
           increment: 8
 
       '!^.+\.debugger\.toolbar\.delay':
-        bg: !color "_red"
+        bg: !color "_dark_mode_3"

@@ -305,8 +305,8 @@ public class UIStyleController {
             public void paintTrack(Graphics g) {
                 /*Graphics2D g2d = (Graphics2D) g;
                 Stroke old = g2d.getStroke();
-                g2d.setStroke(stroke);
-                g2d.setPaint(Color.BLACK);
+                //g2d.setStroke(stroke);
+                g2d.setPaint(Color.RED);
                 if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
                     g2d.drawLine(trackRect.x, trackRect.y + trackRect.height / 2,
                             trackRect.x + trackRect.width, trackRect.y + trackRect.height / 2);
@@ -326,7 +326,7 @@ public class UIStyleController {
                 // Coordinates and size
                 int x = thumbRect.x + 2;
                 int y = thumbRect.y + 2;
-                int size = 8;
+                int size = 1;
                 int boxWidth = thumbRect.width * 100;
 
                 // Draw filled square
