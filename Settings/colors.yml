@@ -179,6 +179,8 @@ uiStyles:
       # --- Scroll Pane ---
       'editor.texteditor.scrollpane':
         bg: !color "_dark_mode_1"
+        border:
+          style: "empty"
 
       # --- Info Bar ---
       'editor.texteditor.infobar':
@@ -191,9 +193,13 @@ uiStyles:
       '!^.+\.toolbar':
         bg: !color "_dark_mode_4"
         fg: !color "_accent_text"
+        border:
+          style: "empty"
       '!^.+\.toolbar\.buttons\.[^\.]+':
         bg: !color "_dark_mode_3"
         fg: !color "#FFFFFF"
+        border:
+          style: "empty"
 
       # --- Popup Menus ---
       'editor.filetree.popupmenu':
@@ -202,13 +208,15 @@ uiStyles:
           fg: !color "#EAEAEA"
         border:
           style: "line"
-          thickness: 1
-          color: !color "_accent_border"
+          thickness: 5
+          color: !color "_green"
 
       # --- Log Panels ---
       '!^.+\.logpanel':
         bg: !color "_dark_mode_3"
         opaque: true
+        border:
+          style: "empty"
       '!^.+\.logpanel.text':
         bg: !color "_dark_mode_3"
         fg: !color "#BEBEBE"
@@ -227,11 +235,15 @@ uiStyles:
           increment: 16
           viewport:
             opaque: true
+        border:
+          style: "empty"
 
       # --- Simulation Panel ---
       'simulation.panel':
         bg: !color "_dark_mode_1"
         opaque: true
+        border:
+          style: "empty"
       'simulation.panel.scroll':
         bg: !color "_dark_mode_1"
         opaque: true
@@ -243,6 +255,8 @@ uiStyles:
           viewport:
             bg: !color "#00000000"
             opaque: true
+        border:
+          style: "empty"
 
       # --- Split Panels ---
       '!^.+\.splitplane':
@@ -253,6 +267,8 @@ uiStyles:
           color: !color "_dark_mode_2"
           hover: !color "_dark_mode_3"
           handle: !color "_dark_mode_4"
+        border:
+          style: "empty"
 
       # --- Menu Bar ---
       'editor.menubar':
@@ -260,6 +276,8 @@ uiStyles:
         fg: !color "#FFFFFF"
         item:
           fg: !color "_dark_mode_5"
+        border:
+          style: "empty"
 
       # --- Debugger ---
       'modded.debugger':

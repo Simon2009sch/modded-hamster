@@ -1,11 +1,12 @@
 package me.simoncrafter.de.hamster.styles.model;
 
 
-import com.sun.istack.internal.Nullable;
 import me.simoncrafter.de.hamster.editor.view.*;
 import me.simoncrafter.de.hamster.editor.view.TextArea;
+import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
 import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -331,8 +332,12 @@ public class UIColorStyle {
                 case "line": {
                     int thickness = Integer.parseInt(map.get("thickness").toString());
                     Color color = (Color) map.get("color");
+                    boolean rounded = (Boolean) map.getOrDefault("rounded", false);
 
-                    return (ui) -> ui.setBorder(BorderFactory.createLineBorder(color, thickness));
+                    return (ui) -> {
+                        ui.setBorder(BorderFactory.createLineBorder(color, thickness, rounded));
+                    };
+
                 }
             }
         }catch (NullPointerException e) {

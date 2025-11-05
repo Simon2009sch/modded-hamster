@@ -1,7 +1,7 @@
 package me.simoncrafter.de.hamster.styles.model;
 
-import com.sun.istack.internal.Nullable;
 import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
+import org.jetbrains.annotations.Nullable;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.constructor.AbstractConstruct;
 import org.yaml.snakeyaml.constructor.Constructor;

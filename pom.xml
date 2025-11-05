@@ -192,5 +192,15 @@
             <artifactId>autocomplete</artifactId>
             <version>3.3.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.fifesoft</groupId>
+            <artifactId>languagesupport</artifactId>
+            <version>3.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.0.1</version> <!-- latest stable version -->
+        </dependency>
     </dependencies>
 </project>

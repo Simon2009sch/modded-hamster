@@ -1,7 +1,7 @@
 package me.simoncrafter.de.hamster.styles.controller;
 
 import com.kenai.jaffl.struct.Struct;
-import com.sun.istack.internal.Nullable;
+import org.jetbrains.annotations.Nullable;
 import jsint.E;
 import me.simoncrafter.de.hamster.styles.model.UIColorStyle;
 import me.simoncrafter.de.hamster.styles.model.YamlColorObject;
