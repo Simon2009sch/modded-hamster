@@ -32,6 +32,12 @@ import org.jruby.RubyProcess;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class CHamster extends Application {
     public Hamster hamster;
@@ -61,6 +67,20 @@ public class CHamster extends Application {
     String error_code_std = "E-9265358"; // unknown error
     String error_code_nc = "E-240711"; // no common usage
     String error_code_ni = "E-2412"; // non initialized
+
+    String readFile(String path)
+    {
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = br.readLine();
+            }
+            return line;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     void cHinit()
     {
@@ -94,6 +114,16 @@ public class CHamster extends Application {
                 "Mod Menu made by Fabio, UI made by Simon\n";
     }
 
+    public boolean simulationState()
+    {
+        // switch-case is slower lol
+        if (simModel.getState() == SimulationModel.RUNNING) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static void Log(String tLog)
     {
         int i = 100;
@@ -119,6 +149,7 @@ public class CHamster extends Application {
         Button button5 = new Button("Zoom In");
         Button button6 = new Button("Zoom out");
         Button button8 = new Button("Remove Hamster");
+        Button button9 = new Button("Test");
         Button button7  = new Button("Compile & Run");
         TextField textField = new TextField();
         textField.setPromptText("Debug Log...");
@@ -152,26 +183,36 @@ public class CHamster extends Application {
 
         if(simModel.getState() == SimulationModel.RUNNING)
         {
-            Timeline timeline2 = new Timeline(new KeyFrame(Duration.millis(20), actionEvent -> {
-                if(!hamster.maulLeer())
+            if(!hamster.maulLeer())
+            {
+                switch(hamster.getAnzahlKoerner())
                 {
-                    switch(hamster.getAnzahlKoerner())
-                    {
-                        case 1:
-                            // Ca
-                        case 2:
-                            UIStyleController.init(); // C
-                        case 3:
-                            //
-                        default:
-                            Log("No common usage for Corns found. " + error_code_nc);
-                    }
+                    case 1:
+                        for (int i=0; i<10;i++)
+                        {
+                            hamster.linksUm();
+                            Log("High auf Cannabis.");
+                        }
+                    case 2:
+                        for(int i=0; i<10;i++)
+                        {
+                            UIStyleController.update();
+                            Log("High auf Koks.");
+                        }
+                    case 3:
+                        for(int i=0; i<10;i++)
+                        {
+                            while(hamster.vornFrei())
+                            {
+                                hamster.vor();
+                            }
+                        }
+                    case 4:
+
+                    default:
+
                 }
-            }));
-            timeline2.setCycleCount(
-                    spalteHamster^2 * spaltenTerritorium^2
-            );
-            timeline2.play();
+            }
         }
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), e -> {
