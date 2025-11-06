@@ -1,6 +1,5 @@
 package me.simoncrafter.de.hamster.cHamster;
 
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,7 +17,7 @@ import me.simoncrafter.de.hamster.debugger.controller.DebuggerController;
 import me.simoncrafter.de.hamster.editor.controller.EditorController;
 import me.simoncrafter.de.hamster.interpreter.Hamster;
 import me.simoncrafter.de.hamster.interpreter.Territorium;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.simulation.controller.SimulationController;
 import me.simoncrafter.de.hamster.simulation.model.LogEntry;
 import me.simoncrafter.de.hamster.simulation.model.SimulationModel;
@@ -54,6 +53,7 @@ public class CHamster extends Application {
     public SimulationTools simTools;
     public SimulationPanel simPanel;
 
+    private boolean highModeSelectedBefore = false; //by Simon
 
     int reiheHamster;
     int spalteHamster;
@@ -136,6 +136,7 @@ public class CHamster extends Application {
         cHinit();
         if (wbBody == null)  { Log("Error. " + error_code_ni); System.out.println("Error. " + error_code_ni); System.exit(0); }
 
+
         VBox layout = new VBox(10);
         Label label = new Label("CHamster V1 Main Menu");
         Button button = new Button("Update UI");
@@ -217,7 +218,11 @@ public class CHamster extends Application {
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), e -> {
             if (checkBox.isSelected()) {
-                UIStyleController.init();
+                UIStyleController.setRandomColorToEverything();
+                highModeSelectedBefore  = true;
+            } else if (highModeSelectedBefore) {
+                UIStyleController.applyStyle(false);
+                highModeSelectedBefore = false; //make it so only applies once because of performance
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);

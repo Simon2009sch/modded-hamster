@@ -165,7 +165,7 @@ uiStyles:
           style: "empty"
         scroll:
           style: "simple"
-          bg: !color "_dark_mode_3"
+          bg: !color "_dark_mode_1"
           color: !color "_dark_mode_4"
           increment: 8
         active_textarea:
@@ -225,13 +225,13 @@ uiStyles:
         bg: !color "_dark_mode_3"  # the background
         opaque: true
       '!^.+\.logpanel.scroll':
-        bg: !color "_dark_mode_3"
+        bg: !color "_dark_mode_2"
         fg: !color "#666666"
         opaque: true
         scroll:
           style: "simple"
-          bg: !color "_green"
-          color: !color "_red"
+          bg: !color "_dark_mode_2"
+          color: !color "_dark_mode_4"
           increment: 16
           viewport:
             opaque: true

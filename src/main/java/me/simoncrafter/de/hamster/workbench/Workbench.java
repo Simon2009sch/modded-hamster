@@ -17,7 +17,6 @@ import javax.swing.*;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
-import javafx.stage.Stage;
 import me.simoncrafter.de.hamster.compiler.controller.CompilerController;
 import me.simoncrafter.de.hamster.console.Console;
 import me.simoncrafter.de.hamster.debugger.controller.DebuggerController;
@@ -647,8 +646,11 @@ public class Workbench {
 			}
 			// --- end of addition
 
+            splashScreen.setVisible(false);
+            UIStyleController.init();
+            System.out.println("End abcdefg");
             CHamster.cLoadWindow(args);
-		} catch (InterruptedException e) {
+        } catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
@@ -656,8 +658,7 @@ public class Workbench {
 			e.printStackTrace();
 		}
 
-		splashScreen.setVisible(false);
-		UIStyleController.init();
+
 	}
 
 	private static boolean checkVersion() {
