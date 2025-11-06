@@ -1,32 +1,63 @@
-package me.simoncrafter.de.hamster.mod;
+package me.simoncrafter.de.hamster.styles.controller;
 
-import jscheme.JS;
 import me.simoncrafter.de.hamster.editor.view.*;
 import me.simoncrafter.de.hamster.editor.view.TextArea;
-import me.simoncrafter.de.hamster.simulation.view.LogPanel;
 import me.simoncrafter.de.hamster.simulation.view.SimulationPanel;
+import me.simoncrafter.de.hamster.styles.model.UIColorStyle;
 
 import javax.swing.*;
-import javax.swing.plaf.SliderUI;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.plaf.basic.BasicSliderUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.GeneralPath;
 import java.util.*;
-import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UIStyleController {
     private static Map<String, JComponent> uiComponents = new HashMap<>();
 
-    private static JButton updateButton;
+    private static int styleIndex = 0;
 
     public static void init() {
+
+        Pattern pattern = Pattern.compile("^(?<key>.+?)(?<brackets>\\[(?<obj>[^\\]]*)\\])?$");
+
+        applyStyle(false);
+    }
+
+    public static void applyStyle(boolean reload) {
+        Map<String, UIColorStyle> styleMap = StyleSettings.getColorStyles();
+        // Apply all styles in the map
+        for (Map.Entry<String, UIColorStyle> styleEntry : styleMap.entrySet()) {
+            UIColorStyle style = styleEntry.getValue();
+            for (Map.Entry<String, Object> entry : style.getColors().entrySet()) {
+                //JComponent comp = uiComponents.get(entry.getKey());
+                //style.apply(uiComponents.get(entry.getKey()), entry.getKey(), true);
+                System.out.println("Applying " + entry.getKey() + " to " + styleEntry.getKey());
+                if (entry.getKey().startsWith("!")) {
+                    modifyUIPropertiesForPattern(entry.getKey().substring(1), (ui, key) -> {
+                        style.apply(ui, key, entry.getKey(), reload);
+                    });
+                } else {
+                    modifyUIProperties(entry.getKey(), (ui) -> {
+                        style.apply(ui, entry.getKey(), entry.getKey(), reload);
+                    });
+                }
+
+            }
+        }
+    }
+
+
+
+
+
+    public static void setRandomColorToEverything() {
         modifyUIProperties("editor.filetree", (ui) -> {
             ui.setBackground(getRandomColor());
             ui.setForeground(getRandomColor());
@@ -67,33 +98,23 @@ public class UIStyleController {
                 ac.setBackground(getRandomColor());
                 JScrollPane scrollPane = editorText.getActiveScrollPlane();
                 scrollPane.setBackground(getRandomColor());
-                scrollPane.getVerticalScrollBar().setBackground(getRandomColor());
-                scrollPane.getHorizontalScrollBar().setBackground(getRandomColor());
+
+                scrollPane.getVerticalScrollBar().setUI(getBasicScrollBar(getRandomColor(), 5));
+                scrollPane.getHorizontalScrollBar().setUI(getBasicScrollBar(getRandomColor(), 5));
+
+
+
             }
             editorText.setOnTextAreaLock(textArea -> textArea.setBackground(Color.GRAY));
             editorText.setOnTextAreaUnLock(textArea -> textArea.setBackground(Color.WHITE));
         });
 
 
-
-        if (updateButton == null) {
-            updateButton = new JButton();
-            updateButton.setText("Update");
-            updateButton.setVisible(true);
-            updateButton.addActionListener(e -> UIStyleController.init());
-        }
-
-        modifyUIProperties("editor.texteditor.infobar", (ui) -> {
-            ui.setBackground(getRandomColor());
-            ui.remove(updateButton);
-            ui.add(updateButton, 0);
-        });
-
-        modifyUIPropertiesForPattern(".+\\.toolbar", (ui) -> {
+        modifyUIPropertiesForPattern(".+\\.toolbar", (ui, key) -> {
             ui.setBackground(getRandomColor());
         });
 
-        modifyUIPropertiesForPattern("^.+\\.toolbar\\.buttons\\.[^\\.]+$", (ui) -> {
+        modifyUIPropertiesForPattern("^.+\\.toolbar\\.buttons\\.[^\\.]+$", (ui, key) -> {
             ui.setBackground(getRandomColor());
         });
 
@@ -103,25 +124,41 @@ public class UIStyleController {
             for (Component component : popupMenu.getComponents()) {
                 component.setBackground(getRandomColor());
                 component.setForeground(getRandomColor());
+
             }
         });
 
-        modifyUIPropertiesForPattern("^.+\\.logpanel", (ui) -> {
+        modifyUIPropertiesForPattern("^.+\\.logpanel", (ui, key) -> {
             ui.setBackground(getRandomColor());
         });
 
-        modifyUIPropertiesForPattern("^.+\\.logpanel.text", (ui) -> {
+        modifyUIPropertiesForPattern("^.+\\.logpanel.text", (ui, key) -> {
             ui.setBackground(getRandomColor());
             ui.setForeground(getRandomColor());
         });
 
         modifyUIProperties("simulation.panel", (ui) -> {
-            ui.setBackground(getRandomColor());
+            SimulationPanel simPanel = (SimulationPanel) ui;
+            simPanel.setBackground(getRandomColor());
         });
 
-        modifyUIPropertiesForPattern("^.+\\.splitplane$", (ui) -> {
+        modifyUIProperties("simulation.panel.scroll", (ui) -> {
+            JScrollPane scrollPane = (JScrollPane) ui;
+            JScrollBar vScroll = scrollPane.getVerticalScrollBar();
+            JScrollBar hScroll = scrollPane.getHorizontalScrollBar();
+
+            vScroll.setUI(getBasicScrollBar(getRandomColor(), 5));
+            vScroll.setUnitIncrement(16);
+
+            hScroll.setUI(getBasicScrollBar(getRandomColor(), 5));
+            hScroll.setUnitIncrement(16);
+
+            scrollPane.setBackground(getRandomColor());
+        });
+
+        modifyUIPropertiesForPattern("^.+\\.splitplane$", (ui, key) -> {
             JSplitPane plane = (JSplitPane) ui;
-            plane.setUI(getSimpleUISlider(getRandomColor(), getRandomColor(), getRandomColor()));
+            plane.setUI(getSimpleSplitPlane(getRandomColor(), getRandomColor(), getRandomColor()));
         });
 
         modifyUIProperties("editor.menubar", (ui) -> {
@@ -132,12 +169,11 @@ public class UIStyleController {
             ui.setBackground(getRandomColor());
         });
 
-        modifyUIPropertiesForPattern("^.+\\.debugger\\.toolbar\\.delay$", (ui) -> {
+        modifyUIPropertiesForPattern("^.+\\.debugger\\.toolbar\\.delay$", (ui, key) -> {
             JSlider slider = (JSlider) ui;
             slider.setUI(getSimpleSliderUI(slider, getRandomColor(), getRandomColor()));
             slider.setBackground(getRandomColor());
         });
-
     }
 
     public static void update() {
@@ -147,6 +183,108 @@ public class UIStyleController {
     private static Color getRandomColor() {
         Random random = new Random();
         return new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+    }
+
+    public static BasicScrollBarUI getBasicScrollBar(Color thunb, int thickness) {
+        return new BasicScrollBarUI() {
+            private final Color THUMB_COLOR = thunb;
+            private final int MIN_SIZE = 10;       // Minimum thumb dimension
+            private final double SIZE_SCALE = 0.6; // Makes thumb larger overall
+            private final int TRACK_THICKNESS = thickness; // Width/thickness of scrollbar track
+
+            @Override
+            protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+                if (!c.isEnabled() || thumbBounds.isEmpty()) return;
+
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(THUMB_COLOR);
+
+                if (scrollbar.getOrientation() == Adjustable.VERTICAL) {
+                    int range = scrollbar.getMaximum() - scrollbar.getVisibleAmount();
+                    int trackHeight = thumbBounds.height;
+
+                    // Scale thumb height
+                    int thumbHeight = (int) (scrollbar.getVisibleAmount() * SIZE_SCALE);
+                    thumbHeight = Math.max(MIN_SIZE, Math.min(thumbHeight, trackHeight));
+
+                    // Position so it's anchored top/bottom properly
+                    int y;
+                    if (range <= 0) {
+                        y = thumbBounds.y;
+                        thumbHeight = trackHeight;
+                    } else {
+                        float scrollRatio = (float) scrollbar.getValue() / range;
+                        int available = trackHeight - thumbHeight;
+                        y = thumbBounds.y + Math.round(available * scrollRatio);
+                    }
+
+                    // Make the thumb wider — override its width
+                    int barWidth = Math.max(TRACK_THICKNESS, thumbBounds.width);
+                    int x = thumbBounds.x + (thumbBounds.width - barWidth) / 2;
+
+                    // Draw larger, rounder handle
+                    g2.fillRoundRect(x, y, barWidth, thumbHeight, 8, 8);
+
+                } else { // Horizontal scrollbar
+                    int range = scrollbar.getMaximum() - scrollbar.getVisibleAmount();
+                    int trackWidth = thumbBounds.width;
+
+                    int thumbWidth = (int) (scrollbar.getVisibleAmount() * SIZE_SCALE);
+                    thumbWidth = Math.max(MIN_SIZE, Math.min(thumbWidth, trackWidth));
+
+                    int x;
+                    if (range <= 0) {
+                        x = thumbBounds.x;
+                        thumbWidth = trackWidth;
+                    } else {
+                        float scrollRatio = (float) scrollbar.getValue() / range;
+                        int available = trackWidth - thumbWidth;
+                        x = thumbBounds.x + Math.round(available * scrollRatio);
+                    }
+
+                    int barHeight = Math.max(TRACK_THICKNESS, thumbBounds.height);
+                    int y = thumbBounds.y + (thumbBounds.height - barHeight) / 2;
+
+                    g2.fillRoundRect(x, y, thumbWidth, barHeight, 8, 8);
+                }
+                scrollbar.setOpaque(false);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+                //g.setColor(new Color(235, 235, 235));
+                //g.fillRect(trackBounds.x, trackBounds.y, trackBounds.width, trackBounds.height);
+            }
+
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            private JButton createZeroButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));
+                button.setMinimumSize(new Dimension(0, 0));
+                button.setMaximumSize(new Dimension(0, 0));
+                return button;
+            }
+
+            @Override
+            protected void installComponents() {
+                super.installComponents();
+                if (scrollbar != null) {
+                    scrollbar.setOpaque(false);
+                    scrollbar.setBackground(new Color(0, 0, 0, 0));
+                }
+            }
+        };
     }
 
     public static BasicSliderUI getSimpleSliderUI(JSlider slider, Color fillColor, Color edgeColor) {
@@ -167,8 +305,8 @@ public class UIStyleController {
             public void paintTrack(Graphics g) {
                 /*Graphics2D g2d = (Graphics2D) g;
                 Stroke old = g2d.getStroke();
-                g2d.setStroke(stroke);
-                g2d.setPaint(Color.BLACK);
+                //g2d.setStroke(stroke);
+                g2d.setPaint(Color.RED);
                 if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
                     g2d.drawLine(trackRect.x, trackRect.y + trackRect.height / 2,
                             trackRect.x + trackRect.width, trackRect.y + trackRect.height / 2);
@@ -188,7 +326,7 @@ public class UIStyleController {
                 // Coordinates and size
                 int x = thumbRect.x + 2;
                 int y = thumbRect.y + 2;
-                int size = 8;
+                int size = 1;
                 int boxWidth = thumbRect.width * 100;
 
                 // Draw filled square
@@ -199,7 +337,7 @@ public class UIStyleController {
         };
     }
 
-    public static BasicSplitPaneUI getSimpleUISlider(Color defaultColor, Color highlightColor, Color handleColor) {
+    public static BasicSplitPaneUI getSimpleSplitPlane(Color defaultColor, Color highlightColor, Color handleColor) {
         return new BasicSplitPaneUI() {
             @Override
             public BasicSplitPaneDivider createDefaultDivider() {
@@ -265,18 +403,19 @@ public class UIStyleController {
 
     private static void modifyUIProperties(String key, Consumer<JComponent> operation) {
         if (uiComponents == null || uiComponents.get(key) == null) {
+            System.out.println("Key not found: " + key);
             return;
         }
         operation.accept(uiComponents.get(key));
     }
 
-    private static void modifyUIPropertiesForPattern(String regex, Consumer<JComponent> operation) {
+    private static void modifyUIPropertiesForPattern(String regex, BiConsumer<JComponent, String> operation) {
         if (uiComponents == null) {
             return;
         }
         for (String key : uiComponents.keySet()) {
             if (Pattern.matches(regex, key) && uiComponents.get(key) != null) {
-                operation.accept(uiComponents.get(key));
+                operation.accept(uiComponents.get(key), key);
             }
         }
     }
@@ -284,7 +423,7 @@ public class UIStyleController {
 
     public static void putUIComponent(String key, JComponent component) {
         uiComponents.put(key, component);
-        UIStyleController.update();
+        //UIStyleController.update();
     }
 
 }

@@ -1,17 +1,22 @@
 package me.simoncrafter.de.hamster.editor.view;
 
-import java.awt.Component;
+import java.awt.*;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import me.simoncrafter.de.hamster.model.HamsterFile;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.workbench.Utils;
 
 /**
  * @author Daniel
  */
 public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
+	private Color selectedColor = Color.BLACK;
+	private Color unSelectedColor = Color.BLACK;
+	private Color foregroundColor = Color.BLACK;
+
 	public Component getTreeCellRendererComponent(JTree tree, Object value,
 			boolean sel, boolean expanded, boolean leaf, int row,
 			boolean hasFocus) {
@@ -47,10 +52,37 @@ public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 			else if (file.getType() == HamsterFile.LEGOPROGRAM) // lego
 				setIcon(Utils.getIcon("resources/Zahnrad16.gif"));
 		}
-		this.setBackgroundNonSelectionColor(tree.getBackground()); // dibo
-																	// 230309
+		//this.setBackgroundNonSelectionColor(unSelectedColor); // dibo
+		//this.setBackgroundSelectionColor(selectedColor);
+		//this.setForeground(foregroundColor);
+
 		// this.setBackgroundSelectionColor(new Color(240, 244, 246)); // dibo
 		// 230309
 		return this;
 	}
+
+
+	/*public Color getSelectedColor() {
+		return selectedColor;
+	}
+
+	public void setSelectedColor(Color selectedColor) {
+		this.selectedColor = selectedColor;
+	}
+
+	public Color getUnSelectedColor() {
+		return unSelectedColor;
+	}
+
+	public void setUnSelectedColor(Color unSelectedColor) {
+		this.unSelectedColor = unSelectedColor;
+	}
+
+	public Color getForegroundColor() {
+		return foregroundColor;
+	}
+
+	public void setForegroundColor(Color foregroundColor) {
+		this.foregroundColor = foregroundColor;
+	}*/
 }

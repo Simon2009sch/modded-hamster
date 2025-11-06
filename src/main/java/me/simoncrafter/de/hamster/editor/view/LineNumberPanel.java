@@ -1,7 +1,6 @@
 package me.simoncrafter.de.hamster.editor.view;
 
-import me.simoncrafter.de.hamster.mod.ColorManager;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 
 import java.awt.Color;
 

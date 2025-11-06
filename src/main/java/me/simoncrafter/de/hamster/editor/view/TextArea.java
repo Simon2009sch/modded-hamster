@@ -21,7 +21,6 @@ import me.simoncrafter.de.hamster.compiler.model.JavaToken;
 import me.simoncrafter.de.hamster.editor.controller.EditorController;
 import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
-import me.simoncrafter.de.hamster.mod.ColorManager;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
 import me.simoncrafter.de.hamster.workbench.Utils;
@@ -103,10 +102,6 @@ public class TextArea extends JTextPane implements UndoableEditListener,
 																		false)
 																		: new JavaDocument(
 																				false));
-		setCaretColor(Color.GREEN);
-		setSelectionColor(Color.GREEN);
-		setSelectionColor(Color.GREEN);
-		setForeground(Color.GREEN);
 		// super(new JavaDocument(false));
 		this.tabbedTextArea = tabbedTextArea;
 		this.file = file;

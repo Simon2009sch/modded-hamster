@@ -454,15 +454,10 @@ public class PrologKonsole extends JFrame {
 		if (tracing) {
 			// Aktiviere die Tracing/Debug-Buttons.
 			prologKonsole.creepButton.setEnabled(true);
-			prologKonsole.creepButton.setBackground(Color.GREEN);
 			prologKonsole.skipButton.setEnabled(true);
-			prologKonsole.skipButton.setBackground(Color.BLUE);
 			prologKonsole.retryButton.setEnabled(true);
-			prologKonsole.retryButton.setBackground(Color.ORANGE);
 			prologKonsole.failButton.setEnabled(true);
-			prologKonsole.failButton.setBackground(Color.RED);
 			prologKonsole.abortButton.setEnabled(true);
-			prologKonsole.abortButton.setBackground(Color.CYAN);
 		} else {
 			prologKonsole.creepButton.setEnabled(false);
 			prologKonsole.creepButton.setBackground(prologKonsole

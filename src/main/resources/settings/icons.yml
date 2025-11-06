@@ -1,0 +1,4 @@
+packs:
+  test:
+    "1Corn32.png": "something.png"
+    "scratch\bg.png": "test\cool.png"

@@ -1,0 +1,297 @@
+presetColors:
+  # --- Grayscale ---
+  black: !color "#000000"
+  black_transparent: !color "#00000080"
+  darkGray: !color "#333333"
+  darkGray_transparent: !color "#33333380"
+  gray: !color "#666666"
+  gray_transparent: !color "#66666680"
+  lightGray: !color "#999999"
+  lightGray_transparent: !color "#99999980"
+  white: !color "#ffffff"
+  white_transparent: !color "#ffffff80"
+
+  # --- Red ---
+  red_dark: !color "#8B0000"
+  red_dark_transparent: !color "#8B000080"
+  red: !color "#FF0000"
+  red_transparent: !color "#FF000080"
+  red_light: !color "#FFA07A"
+  red_light_transparent: !color "#FFA07A80"
+
+  # --- Blue ---
+  blue_dark: !color "#00008B"
+  blue_dark_transparent: !color "#00008B80"
+  blue: !color "#0000FF"
+  blue_transparent: !color "#0000FF80"
+  blue_light: !color "#87CEFA"
+  blue_light_transparent: !color "#87CEFA80"
+
+  # --- Green ---
+  green_dark: !color "#006400"
+  green_dark_transparent: !color "#00640080"
+  green: !color "#00FF00"
+  green_transparent: !color "#00FF0080"
+  green_light: !color "#90EE90"
+  green_light_transparent: !color "#90EE9080"
+
+  # --- Yellow ---
+  yellow_dark: !color "#CCCC00"
+  yellow_dark_transparent: !color "#CCCC0080"
+  yellow: !color "#FFFF00"
+  yellow_transparent: !color "#FFFF0080"
+  yellow_light: !color "#FFFFE0"
+  yellow_light_transparent: !color "#FFFFE080"
+
+  # --- Orange ---
+  orange_dark: !color "#FF8C00"
+  orange_dark_transparent: !color "#FF8C0080"
+  orange: !color "#FFA500"
+  orange_transparent: !color "#FFA50080"
+  orange_light: !color "#FFD580"
+  orange_light_transparent: !color "#FFD58080"
+
+  # --- Purple ---
+  purple_dark: !color "#4B0082"
+  purple_dark_transparent: !color "#4B008280"
+  purple: !color "#800080"
+  purple_transparent: !color "#80008080"
+  purple_light: !color "#D8BFD8"
+  purple_light_transparent: !color "#D8BFD880"
+
+  # --- Pink ---
+  pink_dark: !color "#C71585"
+  pink_dark_transparent: !color "#C7158580"
+  pink: !color "#FF69B4"
+  pink_transparent: !color "#FF69B480"
+  pink_light: !color "#FFB6C1"
+  pink_light_transparent: !color "#FFB6C180"
+
+  # --- Brown ---
+  brown_dark: !color "#5C4033"
+  brown_dark_transparent: !color "#5C403380"
+  brown: !color "#A52A2A"
+  brown_transparent: !color "#A52A2A80"
+  brown_light: !color "#D2B48C"
+  brown_light_transparent: !color "#D2B48C80"
+
+  # --- Cyan / Teal ---
+  cyan_dark: !color "#008B8B"
+  cyan_dark_transparent: !color "#008B8B80"
+  cyan: !color "#00FFFF"
+  cyan_transparent: !color "#00FFFF80"
+  cyan_light: !color "#E0FFFF"
+  cyan_light_transparent: !color "#E0FFFF80"
+
+  teal_dark: !color "#004C4C"
+  teal_dark_transparent: !color "#004C4C80"
+  teal: !color "#008080"
+  teal_transparent: !color "#00808080"
+  teal_light: !color "#66B2B2"
+  teal_light_transparent: !color "#66B2B280"
+
+  # --- Gold ---
+  gold_dark: !color "#B8860B"
+  gold_dark_transparent: !color "#B8860B80"
+  gold: !color "#FFD700"
+  gold_transparent: !color "#FFD70080"
+  gold_light: !color "#FFECB3"
+  gold_light_transparent: !color "#FFECB380"
+
+  # --- Violet ---
+  violet_dark: !color "#6A0DAD"
+  violet_dark_transparent: !color "#6A0DAD80"
+  violet: !color "#8A2BE2"
+  violet_transparent: !color "#8A2BE280"
+  violet_light: !color "#CBA0E3"
+  violet_light_transparent: !color "#CBA0E380"
+
+  # --- Misc / Accent ---
+  sky_blue: !color "#87CEEB"
+  sky_blue_transparent: !color "#87CEEB80"
+  mint: !color "#98FF98"
+  mint_transparent: !color "#98FF9880"
+  turquoise: !color "#40E0D0"
+  turquoise_transparent: !color "#40E0D080"
+  indigo: !color "#4B0082"
+  indigo_transparent: !color "#4B008280"
+  maroon: !color "#800000"
+  maroon_transparent: !color "#80000080"
+  silver: !color "#C0C0C0"
+  silver_transparent: !color "#C0C0C080"
+  charcoal: !color "#2F4F4F"
+  charcoal_transparent: !color "#2F4F4F80"
+  cream: !color "#FFFDD0"
+  cream_transparent: !color "#FFFDD080"
+  lavender: !color "#E6E6FA"
+  lavender_transparent: !color "#E6E6FA80"
+  dark_mode_1: !color "#1e1f22ff"
+  dark_mode_2: !color "#2b2d30ff"
+  dark_mode_3: !color "#444951ff"
+  dark_mode_4: !color "#585d66ff"
+  dark_mode_5: !color "#787f8aff"
+  dark_mode_text: !color "#ffffff"
+  dark_mode_select: !color "#214283aa"
+
+
+uiStyles:
+  darkMode:
+    name: "Dark Mode"
+    colors:
+      # --- File Tree ---
+      'editor.filetree':
+        bg: !color "_dark_mode_2"
+        fg: !color "_accent_text"
+        file_tree:
+          selected:
+            fg: !color "_dark_mode_text"
+            bg: !color "_dark_mode_select"
+          non_selected:
+            fg: !color "_dark_mode_text"
+            bg: !color "_dark_mode_2"
+
+      # --- Line Numbers ---
+      'editor.texteditor.linenumbers':
+        bg: !color "_dark_mode_2"
+        fg: !color "#858585"
+        selection:
+          text: !color "#FFFFFF"
+          color: !color "_accent_blue"
+
+      # --- Text Editor Area ---
+      'editor.texteditor':
+        bg: !color "_dark_mode_1"
+        border:
+          style: "empty"
+        scroll:
+          style: "simple"
+          bg: !color "_dark_mode_3"
+          color: !color "_dark_mode_4"
+          increment: 8
+        active_textarea:
+          bg: !color "_dark_mode_1"
+          fg: !color "_white"
+          cursor: !color "_white"
+          selection:
+            text: !color "_blue_light"
+            color: !color "_dark_mode_select"
+
+      # --- Scroll Pane ---
+      'editor.texteditor.scrollpane':
+        bg: !color "_dark_mode_1"
+        border:
+          style: "empty"
+
+      # --- Info Bar ---
+      'editor.texteditor.infobar':
+        bg: !color "_dark_mode_3"
+        item:
+          bg: !color "_dark_mode_4"
+          fg: !color "#DCDCDC"
+
+      # --- Toolbars ---
+      '!^.+\.toolbar':
+        bg: !color "_dark_mode_4"
+        fg: !color "_accent_text"
+        border:
+          style: "empty"
+      '!^.+\.toolbar\.buttons\.[^\.]+':
+        bg: !color "_dark_mode_3"
+        fg: !color "#FFFFFF"
+        border:
+          style: "empty"
+
+      # --- Popup Menus ---
+      'editor.filetree.popupmenu':
+        item:
+          bg: !color "_dark_mode_4"
+          fg: !color "#EAEAEA"
+        border:
+          style: "line"
+          thickness: 5
+          color: !color "_green"
+
+      # --- Log Panels ---
+      '!^.+\.logpanel':
+        bg: !color "_red"
+        opaque: true
+        border:
+          style: "empty"
+      '!^.+\.logpanel.text':
+        bg: !color "_dark_mode_2"
+        fg: !color "#BEBEBE"
+        opaque: true
+      '!^.+\.logpanel.buffer':
+        bg: !color "_dark_mode_3"  # the background
+        opaque: true
+      '!^.+\.logpanel.scroll':
+        bg: !color "_dark_mode_3"
+        fg: !color "#666666"
+        opaque: true
+        scroll:
+          style: "simple"
+          bg: !color "_green"
+          color: !color "_red"
+          increment: 16
+          viewport:
+            opaque: true
+        border:
+          style: "empty"
+
+      # --- Simulation Panel ---
+      'simulation.panel':
+        bg: !color "_dark_mode_1"
+        opaque: true
+        border:
+          style: "empty"
+      'simulation.panel.scroll':
+        bg: !color "_dark_mode_1"
+        opaque: true
+        scroll:
+          style: "simple"
+          bg: !color "_dark_mode_4"
+          color: !color "_accent_blue"
+          increment: 16
+          viewport:
+            bg: !color "#00000000"
+            opaque: true
+        border:
+          style: "empty"
+
+      # --- Split Panels ---
+      '!^.+\.splitplane':
+        bg: !color "_dark_mode_2"
+        opaque: true
+        split:
+          style: "simple"
+          color: !color "_dark_mode_2"
+          hover: !color "_dark_mode_3"
+          handle: !color "_dark_mode_4"
+        border:
+          style: "empty"
+
+      # --- Menu Bar ---
+      'editor.menubar':
+        bg: !color "_dark_mode_3"
+        fg: !color "#FFFFFF"
+        item:
+          fg: !color "_dark_mode_5"
+        border:
+          style: "empty"
+
+      # --- Debugger ---
+      'modded.debugger':
+        bg: !color "_dark_mode_2"
+        item:
+          bg: !color "_dark_mode_4"
+          fg: !color "_accent_text"
+
+      'modded.debugger.scroll':
+        scroll:
+          style: "simple"
+          bg: !color "_dark_mode_4"
+          color: !color "_dark_mode_3"
+          increment: 8
+
+      '!^.+\.debugger\.toolbar\.delay':
+        bg: !color "_dark_mode_3"

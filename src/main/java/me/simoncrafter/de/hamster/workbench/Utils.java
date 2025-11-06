@@ -5,7 +5,12 @@ import java.awt.image.BufferedImage;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -16,7 +21,6 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.JobName;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import me.simoncrafter.de.hamster.editor.view.FSMPanelPrintable;
 import me.simoncrafter.de.hamster.editor.view.FlowchartPanelPrintable;
@@ -24,13 +28,9 @@ import me.simoncrafter.de.hamster.editor.view.ScratchPanelPrintable;
 import me.simoncrafter.de.hamster.editor.view.TextAreaPrintable;
 import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
-import me.simoncrafter.de.hamster.mod.ColorManager;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
-import org.jruby.RubyProcess;
-import sun.java2d.SunGraphics2D;
-import sun.rmi.rmic.iiop.ClassPathLoader;
-import sun.security.provider.Sun;
 
 /**
  * Diese Klasse enthaelt Hilfsmethoden und Konstanten, die im Hamster-Simulator
@@ -57,6 +57,7 @@ public class Utils {
 
 	// TODO: Umlegen von HOME ins aktuelle Verzeichnis
 	public static String HOME = System.getProperty("user.dir") + FSEP + "Programme";
+	public static String SETTINGS = System.getProperty("user.dir") + FSEP + "Settings";
 
 	public static String LOGFOLDER = "";
 
@@ -296,7 +297,6 @@ public class Utils {
 		b.setOpaque(true);
 		b.setContentAreaFilled(true);
 		b.setBorderPainted(true);
-		b.setBackground(Color.RED);
 		b.setMargin(TOOLBAR_MARGIN);
 		return b;
 	}
@@ -330,7 +330,7 @@ public class Utils {
 	 * @return Das Image
 	 */
     public static Image getImage(String name) {
-		System.out.println("Trying to fetch: " + name);
+		//System.out.println("Trying to fetch: " + name);
 		// fix for random error that is already in origenal zip
 		if (name.startsWith("resources/")) {
 			name = name.substring(9);
@@ -340,7 +340,7 @@ public class Utils {
 
         // TODO: Media Tracker?
 		URL url = ClassLoader.getSystemResource("resources/" + name);
-        System.out.println("Trying to path: " + ClassLoader.getSystemResource("resources/" + name));
+        //System.out.println("Trying to path: " + ClassLoader.getSystemResource("resources/" + name));
 		if (url == null) {
 			url = Utils.class.getClassLoader().getResource("resources/" + name);
 		}
@@ -350,7 +350,7 @@ public class Utils {
             return new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB); // placeholder
 
         } else {
-            System.out.println("Successfuly fetched: " + name);
+            //System.out.println("Successfuly fetched: " + name);
         }
 		return Toolkit.getDefaultToolkit().createImage(url);
 	}
@@ -375,6 +375,59 @@ public class Utils {
 		File file = new File(HOME);
 		if (!file.exists())
 			file.mkdirs();
+	}
+
+	public static void ensureSettings() {
+		File file = new File(SETTINGS);
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+	}
+
+	/**
+	 * Diese Methode extrahiert eine Ressource aus dem JAR-File und speichert sie
+	 * im angegebenen Verzeichnis.
+	 *
+	 * @param resourcePath file name im jar file
+	 * @param outputPath file name und path
+	 * @return
+	 */
+	public static File extractResource(String resourcePath, String outputPath) {
+		try {
+
+			URL url = StyleSettings.class.getClassLoader().getResource(resourcePath);
+			if (url == null) {
+				System.err.println("Resource not found: " + resourcePath);
+				return null;
+			}
+
+			Path target = Paths.get(outputPath);
+			Files.createDirectories(target.getParent());
+
+			String protocol = url.getProtocol();
+
+			if ("file".equals(protocol)) {
+				// Resource is on disk (running from IDE)
+				Files.copy(Paths.get(url.toURI()), target, StandardCopyOption.REPLACE_EXISTING);
+			} else if ("jar".equals(protocol)) {
+				// Resource is inside a JAR
+				try (InputStream in = url.openStream()) {
+					Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
+				}
+			} else {
+				// Fallback (e.g., in some modular classloaders)
+				try (InputStream in = url.openStream()) {
+					Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
+				}
+			}
+
+			System.out.println("✅ Extracted: " + resourcePath + " → " + target.toAbsolutePath());
+			return target.toFile();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public static boolean ask(Component c, String key) {

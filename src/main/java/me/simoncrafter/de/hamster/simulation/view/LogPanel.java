@@ -9,8 +9,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import me.simoncrafter.de.hamster.mod.ColorManager;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterInstruction;
 import me.simoncrafter.de.hamster.simulation.model.LogEntry;
 import me.simoncrafter.de.hamster.simulation.model.LogSink;
@@ -46,10 +45,13 @@ public class LogPanel extends JPanel implements LogSink {
 		}
 		JPanel buffer = new JPanel(new BorderLayout());
 		buffer.add(BorderLayout.CENTER, textPane);
-		add(BorderLayout.CENTER, new JScrollPane(buffer));
+		JScrollPane scrollPane = new JScrollPane(buffer);
+		add(BorderLayout.CENTER, scrollPane);
 
 		UIStyleController.putUIComponent("simulation.logpanel", this);
 		UIStyleController.putUIComponent("simulation.logpanel.text", textPane);
+		UIStyleController.putUIComponent("simulation.logpanel.scroll", scrollPane);
+		UIStyleController.putUIComponent("simulation.logpanel.buffer", buffer);
     }
 
 	public void logEntry(LogEntry logEntry) {

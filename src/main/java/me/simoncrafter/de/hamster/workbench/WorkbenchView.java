@@ -11,14 +11,16 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 
+import jsint.U;
 import me.simoncrafter.de.hamster.compiler.model.CompilerModel;
 import me.simoncrafter.de.hamster.console.Console;
 import me.simoncrafter.de.hamster.debugger.model.DebuggerModel;
 import me.simoncrafter.de.hamster.lego.model.LegoModel;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.AutoCompleteDemo;
+import me.simoncrafter.de.hamster.styles.TextEditorDemo;
+import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.J3DFrame;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.OpenGLController;
@@ -74,6 +76,8 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 	 */
 	private JFrame simulation;
 
+	private JFrame settings;
+
 	/*
 	 * Console f�r Standard-Out, -Err und -In
 	 */
@@ -89,6 +93,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 	 * (StackframeViewer und VariableViewer) angeordnet.
 	 */
 	private JPanel debugPanel;
+
 
 	/**
 	 * Diese Panel enthaelt die Debugger-Komponenten, die Textflaechen und die
@@ -328,6 +333,66 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		}
 	}
 
+	public void createSettingFrame() {
+		settings = new JFrame("Settings");
+		settings.setSize(400, 500); // dibo
+		settings.setResizable(false);
+		settings.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				// workbench.close(simulation);
+				settings.setVisible(false);
+				Workbench.moddedDebug.setState(false);
+			}
+		});
+
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+		UIStyleController.putUIComponent("modded.debugger", mainPanel);
+
+		JPanel reloadPanel = new JPanel();
+		Dimension panelSize = new Dimension(380, 130);
+
+		reloadPanel.setBorder(BorderFactory.createTitledBorder("Reloading"));
+		reloadPanel.setMaximumSize(panelSize);
+		reloadPanel.setMinimumSize(panelSize);
+		reloadPanel.setPreferredSize(panelSize);
+		reloadPanel.add(Box.createHorizontalGlue());
+
+
+        //Code Editor test
+        AutoCompleteDemo testEditorWindow = new AutoCompleteDemo();
+
+        JButton showButton = new JButton("Test Editor");
+        showButton.addActionListener(e -> {
+            testEditorWindow.setVisible(true);
+        });
+        reloadPanel.add(showButton);
+
+		UIStyleController.putUIComponent("modded.debugger.reloadpanel", reloadPanel);
+
+		JButton reloadButton = new JButton("Reload");
+		reloadButton.addActionListener(e -> UIStyleController.update());
+
+		JButton reloadFileButton = new JButton("Reload File");
+		reloadFileButton.addActionListener(e -> StyleSettings.init());
+
+		reloadPanel.add(reloadButton);
+		reloadPanel.add(reloadFileButton);
+		reloadPanel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createTitledBorder("Reloading"),
+				BorderFactory.createEmptyBorder(0, 5, 5, 5) // top, left, bottom, right
+		));
+
+		// Add panels to the main panel
+		mainPanel.add(reloadPanel);
+		mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
+
+
+		JScrollPane scrollPane = new JScrollPane(mainPanel);
+		UIStyleController.putUIComponent("modded.debugger.scroll", scrollPane);
+		settings.add(scrollPane);
+	}
+
 	/**
 	 * Diese Methode erzeugt das Simulationsfenster.
 	 */
@@ -342,27 +407,57 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 				Workbench.winSim.setState(false);
 			}
 		});
+		Image bgImage = Utils.getImage("background.jpg");
+
+		JPanel backgroundPanel = new JPanel(new BorderLayout()) {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				int panelWidth = getWidth();
+				int panelHeight = getHeight();
+
+				// Get original image size
+				int imgWidth = bgImage.getWidth(null);
+				int imgHeight = bgImage.getHeight(null);
+
+				// Compute scale to cover area while preserving aspect ratio
+				double scale = Math.max(
+						(double) panelWidth / imgWidth,
+						(double) panelHeight / imgHeight
+				);
+
+				int newWidth = (int) (imgWidth * scale);
+				int newHeight = (int) (imgHeight * scale);
+
+				// Center image
+				int x = (panelWidth - newWidth) / 2;
+				int y = (panelHeight - newHeight) / 2;
+
+				g.drawImage(bgImage, x, y, newWidth, newHeight, this);
+			}
+		};
 
 		DialogTerminal.createInstance(simulation);
-
 		JPanel main = new JPanel(new BorderLayout());
-		simulation.getContentPane().add(BorderLayout.CENTER, main);
+		main.setOpaque(false);
+		backgroundPanel.add(BorderLayout.CENTER, main);
 
 		JToolBar simulationBar = findToolBar("simulation");
-		simulation.getContentPane().add(BorderLayout.NORTH, simulationBar);
+		backgroundPanel.add(BorderLayout.NORTH, simulationBar);
 
 		/*
-		 * JScrollPane scrollPane = new JScrollPane(workbench.getSimulation()
-		 * .getSimulationPanel()); main.add(BorderLayout.CENTER, scrollPane);
-		 * 
-		 * JPanel log = workbench.getSimulation().getLogPanel();
-		 * log.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		 * log.setPreferredSize(new Dimension(200, 200));
-		 * 
-		 * main.add(BorderLayout.EAST, log);
+		JScrollPane scrollPane = new JScrollPane(workbench.getSimulation().getSimulationPanel()); main.add(BorderLayout.CENTER, scrollPane);
+
+		JPanel log = workbench.getSimulation().getLogPanel();
+		log.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		log.setPreferredSize(new Dimension(200, 200));
+
+		main.add(BorderLayout.EAST, log);
 		 */
 
+
 		JScrollPane scrollPane = new JScrollPane(workbench.getSimulation().getSimulationPanel());
+		UIStyleController.putUIComponent("simulation.panel.scroll", scrollPane);
 		JPanel log = workbench.getSimulation().getLogPanel();
 		log.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		log.setPreferredSize(new Dimension(200, 200));
@@ -404,6 +499,8 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 
 			Workbench.disable3D();
 		}
+
+		simulation.setContentPane(backgroundPanel);
 
 	}
 
@@ -509,7 +606,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		JMenuBar menuBar = (JMenuBar) menuBars.get(id);
 		if (menuBar == null) {
 			menuBar = new JMenuBar();
-			UIStyleController.putUIComponent("editor.menubar", menuBar);
+			UIStyleController.putUIComponent(id + ".menubar", menuBar);
 			menuBars.put(id, menuBar);
 		}
 		return menuBar;
@@ -598,6 +695,10 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 
 	public JFrame getSimulation() {
 		return simulation;
+	}
+
+	public JFrame getSettings() {
+		return settings;
 	}
 
 	public void setSimulation(JFrame simulation) {

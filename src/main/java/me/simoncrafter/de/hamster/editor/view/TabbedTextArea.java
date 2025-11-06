@@ -18,7 +18,7 @@ import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.flowchart.controller.FlowchartHamsterFile;
 import me.simoncrafter.de.hamster.fsm.controller.FsmHamsterFile;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
 import me.simoncrafter.de.hamster.workbench.Utils;
@@ -246,7 +246,7 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 			}
 			this.tabbedPane.setSelectedComponent(scrollPane);
 
-			UIStyleController.update(); // apply the current style
+			UIStyleController.update();
 
 			return h;
 		}
@@ -329,14 +329,12 @@ public class TabbedTextArea extends JPanel implements PropertyChangeListener,
 			if (((Boolean) evt.getNewValue()).booleanValue()) {
 				this.tabbedPane.setIconAt(index, Utils.getIcon("Play16.gif"));
 				textArea.setEditable(false);
-				//textArea.setBackground(Color.RED); // getBackground());
 				onTextAreaUnLock.accept(textArea);
 				this.lock(true);
 			} else {
 				this.tabbedPane.setIconAt(index, null);
 				textArea.setEditable(true);
 				textArea.removeLineHighlight();
-				//textArea.setBackground(Color.RED);     // sets the text editor background color back to the default
 				onTextAreaUnLock.accept(textArea);
 				this.lock(false);
 			}

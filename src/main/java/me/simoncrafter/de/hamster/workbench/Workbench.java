@@ -27,8 +27,8 @@ import me.simoncrafter.de.hamster.flowchart.controller.FlowchartHamster;
 import me.simoncrafter.de.hamster.fsm.controller.FsmHamster;
 import me.simoncrafter.de.hamster.javascript.model.JavaScriptHamster;
 import me.simoncrafter.de.hamster.lego.controller.LegoController;
-import me.simoncrafter.de.hamster.mod.ColorManager;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.prolog.controller.PrologController;
 import me.simoncrafter.de.hamster.prolog.view.PrologKonsole;
@@ -41,6 +41,7 @@ import me.simoncrafter.de.hamster.scratch.ScratchHamster;
 import me.simoncrafter.de.hamster.simulation.controller.SimulationController;
 import me.simoncrafter.de.hamster.simulation.model.SimulationModel;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
+import org.python.antlr.op.In;
 
 // by fabio
 import me.simoncrafter.de.hamster.cHamster.CHamster;
@@ -141,6 +142,7 @@ public class Workbench {
 			view.createConsole(); // dibo 070708
 		}
 		view.createSimulationFrame();
+		view.createSettingFrame();
 		view.createEditorFrame();
 		handleWindowMenu(); // dibo 151106
 		handleExtrasMenu(); // dibo 230309
@@ -163,7 +165,10 @@ public class Workbench {
 		} else {
 			view.setOnlySimVisible(true);
 		}
+
 	}
+
+
 
 	JMenu extrasMenu;
 	JCheckBoxMenuItem indentMenuItem;
@@ -278,6 +283,8 @@ public class Workbench {
 
 	public static JCheckBoxMenuItem winSim = null;
 
+	public static JCheckBoxMenuItem moddedDebug = null;
+
 	public static JCheckBoxMenuItem console = null;
 
 	// Scheme Martin
@@ -304,6 +311,10 @@ public class Workbench {
 		winSim.setAccelerator(KeyStroke.getKeyStroke(Utils.getResource("windows.simulation.mnemonic").charAt(0),
 				InputEvent.ALT_MASK));
 		winSim.addActionListener(new WindowVisible(view.getSimulationFrame()));
+
+		fensterMenue.add(moddedDebug = new JCheckBoxMenuItem("Mods Debugger", false));
+		moddedDebug.addActionListener(new WindowVisible(view.getSettings()));
+
 
 		if (Utils.runlocally) {
 			fensterMenue.add(console = new JCheckBoxMenuItem(Utils.getResource("windows.console"), true));
@@ -577,13 +588,14 @@ public class Workbench {
 						Locale.setDefault(Locale.ENGLISH);
 					}
 					Utils.ensureHome();
+					Utils.ensureSettings();
+					StyleSettings.init();
 
 					handleLAF();
 
 					// Erzeugen der Werkbank.
 					Workbench wb = getWorkbench();
 
-					UIStyleController.init();
 
 					if (Utils.PYTHON) {
 						if (!PythonHamster.initPython()) {
@@ -623,7 +635,6 @@ public class Workbench {
 							Utils.SCHEME = false;
 						}
 					}
-                    System.out.println("run 1");
 				}
 			});
 
@@ -646,6 +657,7 @@ public class Workbench {
 		}
 
 		splashScreen.setVisible(false);
+		UIStyleController.init();
 	}
 
 	private static boolean checkVersion() {

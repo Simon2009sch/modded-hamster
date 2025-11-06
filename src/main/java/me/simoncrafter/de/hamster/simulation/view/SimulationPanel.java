@@ -9,8 +9,7 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
-import me.simoncrafter.de.hamster.mod.ColorManager;
-import me.simoncrafter.de.hamster.mod.UIStyleController;
+import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.simulation.model.Hamster;
 import me.simoncrafter.de.hamster.simulation.model.SimulationModel;
 import me.simoncrafter.de.hamster.workbench.Utils;
@@ -50,8 +49,8 @@ public class SimulationPanel extends JPanel implements Observer, MouseMotionList
 		this.zoom = 32;  // 3
 		this.loadImages();
 		this.createCursors();
-		this.addMouseMotionListener(this);
-		this.setBackground(Color.RED); // dibo 230309    play area background
+		this.addMouseMotionListener(this); // dibo 230309    play area background
+
 
 		UIStyleController.putUIComponent("simulation.panel", this);
 
