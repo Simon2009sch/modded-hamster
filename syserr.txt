@@ -1,0 +1,22 @@
+java.io.EOFException
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:3232)
+	at java.base/java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1713)
+	at java.base/java.io.ObjectInputStream.readObject(ObjectInputStream.java:540)
+	at java.base/java.io.ObjectInputStream.readObject(ObjectInputStream.java:498)
+	at me.simoncrafter.de.hamster.debugger.model.RemoteProcessor.process(RemoteProcessor.java:179)
+	at me.simoncrafter.de.hamster.debugger.model.IHamster.nimm(IHamster.java:106)
+	at NeuerHamster1.main(NeuerHamster1.java:3)
+	at me.simoncrafter.de.hamster.debugger.model.RemoteRunner.main(RemoteRunner.java:119)
+java.io.EOFException
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:3232)
+	at java.base/java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1713)
+	at java.base/java.io.ObjectInputStream.readObject(ObjectInputStream.java:540)
+	at java.base/java.io.ObjectInputStream.readObject(ObjectInputStream.java:498)
+	at me.simoncrafter.de.hamster.debugger.model.RemoteProcessor.process(RemoteProcessor.java:179)
+	at me.simoncrafter.de.hamster.debugger.model.IHamster.kornDa(IHamster.java:139)
+	at NeuerHamster1.main(NeuerHamster1.java:2)
+	at me.simoncrafter.de.hamster.debugger.model.RemoteRunner.main(RemoteRunner.java:119)
+java.lang.NullPointerException: Cannot invoke "java.lang.Boolean.booleanValue()" because "b" is null
+	at me.simoncrafter.de.hamster.debugger.model.IHamster.kornDa(IHamster.java:142)
+	at NeuerHamster1.main(NeuerHamster1.java:2)
+	at me.simoncrafter.de.hamster.debugger.model.RemoteRunner.main(RemoteRunner.java:119)

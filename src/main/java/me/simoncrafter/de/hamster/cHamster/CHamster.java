@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class CHamster extends Application {
     public Hamster hamster;
@@ -197,7 +199,14 @@ public class CHamster extends Application {
                     case 2:
                         for(int i=0; i<10;i++)
                         {
-                            UIStyleController.update();
+                            checkBox.setSelected(true);
+                            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+
+                            exec.schedule(new Runnable() {
+                                public void run() {
+                                    checkBox.setSelected(true);
+                                }
+                            }, 1, TimeUnit.SECONDS);
                             Log("High auf Koks.");
                         }
                     case 3:
