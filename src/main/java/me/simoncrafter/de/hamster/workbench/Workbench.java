@@ -17,6 +17,7 @@ import javax.swing.*;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
+import javafx.stage.Stage;
 import me.simoncrafter.de.hamster.compiler.controller.CompilerController;
 import me.simoncrafter.de.hamster.console.Console;
 import me.simoncrafter.de.hamster.debugger.controller.DebuggerController;
@@ -41,6 +42,9 @@ import me.simoncrafter.de.hamster.simulation.controller.SimulationController;
 import me.simoncrafter.de.hamster.simulation.model.SimulationModel;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
 import org.python.antlr.op.In;
+
+// by fabio
+import me.simoncrafter.de.hamster.cHamster.CHamster;
 
 /**
  * Diese Klasse implementiert den Controller der zentralen Werkbank. Die
@@ -100,6 +104,8 @@ public class Workbench {
 
 	// dibo
 	public static LookAndFeel startLAF;
+
+    public static CHamster chamster;
 
 	protected Workbench(boolean simulatorOnly, SimulationModel simModel) {
 		workbench = this; // Prolog
@@ -551,7 +557,8 @@ public class Workbench {
 	 *            Als Argument kann der Simulator ein ham-File entgegennehmen
 	 */
 	public static void main(String[] args) {
-        System.out.println("Hii!");
+        chamster = new CHamster();
+        System.out.println("CrackHamster V1 by Fabio und Simon");
 
 		JFrame splashScreen = new JFrame("Hamster Splashscreen");
 		URL url = ClassLoader.getSystemResource("splashscreen.gif");
@@ -561,11 +568,10 @@ public class Workbench {
 		splashScreen.pack();
 		splashScreen.setLocationRelativeTo(null);
 		splashScreen.setVisible(true);
-
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
-                    System.out.println("I'm In!");
+                    System.out.println("Main Loop running...");
 					if (!checkVersion()) {
 						return;
 					}
@@ -641,6 +647,7 @@ public class Workbench {
 			}
 			// --- end of addition
 
+            CHamster.cLoadWindow(args);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

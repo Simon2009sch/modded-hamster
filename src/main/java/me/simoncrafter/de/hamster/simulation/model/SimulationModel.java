@@ -552,7 +552,7 @@ public class SimulationModel extends Observable implements InstructionProcessor 
 		return hamster.getMouth() == 0;
 	}
 
-	private synchronized void setState(int state) {
+	public synchronized void setState(int state) {
 		this.state = state;
 		setChanged();
 		notifyObservers(STATE);
