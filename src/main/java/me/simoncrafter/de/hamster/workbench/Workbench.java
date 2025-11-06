@@ -160,63 +160,9 @@ public class Workbench {
 			view.setOnlySimVisible(true);
 		}
 
-		createUITestFrame();
 	}
 
-	private void createUITestFrame() {
-		SwingUtilities.invokeLater(() -> {
-			JFrame frame = new JFrame("Scaled Background Example");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(700, 500);
 
-			// Load the image
-			ImageIcon bgIcon = Utils.getIcon("background.jpg");
-			Image backgroundImage = bgIcon.getImage();
-
-			// Create a panel that paints the scaled background
-			JPanel backgroundPanel = new JPanel(new BorderLayout()) {
-				@Override
-				protected void paintComponent(Graphics g) {
-					super.paintComponent(g);
-					int panelWidth = getWidth();
-					int panelHeight = getHeight();
-
-					// Get original image size
-					int imgWidth = backgroundImage.getWidth(null);
-					int imgHeight = backgroundImage.getHeight(null);
-
-					// Compute scale to cover area while preserving aspect ratio
-					double scale = Math.max(
-							(double) panelWidth / imgWidth,
-							(double) panelHeight / imgHeight
-					);
-
-					int newWidth = (int) (imgWidth * scale);
-					int newHeight = (int) (imgHeight * scale);
-
-					// Center image
-					int x = (panelWidth - newWidth) / 2;
-					int y = (panelHeight - newHeight) / 2;
-
-					g.drawImage(backgroundImage, x, y, newWidth, newHeight, this);
-				}
-			};
-
-			// Add normal components on top
-			JPanel content = new JPanel();
-			content.setOpaque(false);
-			content.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
-			content.add(new JButton("Click Me"));
-			content.add(new JTextField("Type here", 15));
-
-			backgroundPanel.add(content, BorderLayout.CENTER);
-
-			frame.setContentPane(backgroundPanel);
-			frame.setVisible(true);
-		});
-
-
-	}
 
 	JMenu extrasMenu;
 	JCheckBoxMenuItem indentMenuItem;

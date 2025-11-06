@@ -213,16 +213,16 @@ uiStyles:
 
       # --- Log Panels ---
       '!^.+\.logpanel':
-        bg: !color "_dark_mode_3"
+        bg: !color "_red"
         opaque: true
         border:
           style: "empty"
       '!^.+\.logpanel.text':
-        bg: !color "_dark_mode_3"
+        bg: !color "_dark_mode_2"
         fg: !color "#BEBEBE"
         opaque: true
       '!^.+\.logpanel.buffer':
-        bg: !color "#1E1E1E80"
+        bg: !color "_dark_mode_3"  # the background
         opaque: true
       '!^.+\.logpanel.scroll':
         bg: !color "_dark_mode_3"
@@ -230,8 +230,8 @@ uiStyles:
         opaque: true
         scroll:
           style: "simple"
-          bg: !color "_dark_mode_4"
-          color: !color "_accent_blue"
+          bg: !color "_green"
+          color: !color "_red"
           increment: 16
           viewport:
             opaque: true
