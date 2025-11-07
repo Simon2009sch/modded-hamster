@@ -5,10 +5,8 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.PrintStream;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -24,6 +22,7 @@ import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.J3DFrame;
 import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.OpenGLController;
+import me.simoncrafter.de.hamster.styles.model.UIColorStyle;
 
 /**
  * Diese Klasse implementiert den View-Teil der Werkbank. Instanzen erzeugen
@@ -349,24 +348,42 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 		UIStyleController.putUIComponent("modded.debugger", mainPanel);
 
+
+
+
+
+		// Add panels to the main panel
+		mainPanel.add(createSettingsStylePanel());
+		mainPanel.add(createSettingsDebugPanel());
+		mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
+
+
+		JScrollPane scrollPane = new JScrollPane(mainPanel);
+		UIStyleController.putUIComponent("modded.debugger.scroll", scrollPane);
+		settings.add(scrollPane);
+	}
+
+	private JPanel createSettingsDebugPanel() {
 		JPanel reloadPanel = new JPanel();
 		Dimension panelSize = new Dimension(380, 130);
 
+
+
+		// reload panel
 		reloadPanel.setBorder(BorderFactory.createTitledBorder("Reloading"));
 		reloadPanel.setMaximumSize(panelSize);
 		reloadPanel.setMinimumSize(panelSize);
 		reloadPanel.setPreferredSize(panelSize);
 		reloadPanel.add(Box.createHorizontalGlue());
 
+		//Code Editor test
+		AutoCompleteDemo testEditorWindow = new AutoCompleteDemo();
 
-        //Code Editor test
-        AutoCompleteDemo testEditorWindow = new AutoCompleteDemo();
-
-        JButton showButton = new JButton("Test Editor");
-        showButton.addActionListener(e -> {
-            testEditorWindow.setVisible(true);
-        });
-        reloadPanel.add(showButton);
+		JButton showButton = new JButton("Test Editor");
+		showButton.addActionListener(e -> {
+			testEditorWindow.setVisible(true);
+		});
+		reloadPanel.add(showButton);
 
 		UIStyleController.putUIComponent("modded.debugger.reloadpanel", reloadPanel);
 
@@ -376,6 +393,20 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		JButton reloadFileButton = new JButton("Reload File");
 		reloadFileButton.addActionListener(e -> StyleSettings.init());
 
+		// reload the values in the styles dropdown
+		UIStyleController.modifyUIProperties("modded.debugger.stylepanel.styledropdown", ui -> {
+			JComboBox<String> box = (JComboBox<String>) ui;
+			box.removeAllItems();
+			List<UIColorStyle> presetColors = StyleSettings.getColorStyles().values().stream().toList();
+
+			for (UIColorStyle color : presetColors) {
+				if (color != null && color.getName() != null) {
+					box.addItem(color.getName());
+				}
+			}
+
+		});
+
 		reloadPanel.add(reloadButton);
 		reloadPanel.add(reloadFileButton);
 		reloadPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -383,14 +414,40 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 				BorderFactory.createEmptyBorder(0, 5, 5, 5) // top, left, bottom, right
 		));
 
-		// Add panels to the main panel
-		mainPanel.add(reloadPanel);
-		mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
+		return reloadPanel;
+	}
+
+	private JPanel createSettingsStylePanel() {
+		JPanel stylePlane = new JPanel();
+		Dimension panelSize = new Dimension(380, 70);
 
 
-		JScrollPane scrollPane = new JScrollPane(mainPanel);
-		UIStyleController.putUIComponent("modded.debugger.scroll", scrollPane);
-		settings.add(scrollPane);
+		stylePlane.setBorder(BorderFactory.createTitledBorder("Style"));
+		stylePlane.setMaximumSize(panelSize);
+		stylePlane.setMinimumSize(panelSize);
+		stylePlane.setPreferredSize(panelSize);
+		stylePlane.add(Box.createHorizontalGlue());
+		stylePlane.setLayout(new GridLayout(2, 0));
+		UIStyleController.putUIComponent("modded.debugger.stylepanel", stylePlane);
+
+
+		JPanel selectionPanel = new JPanel();
+		selectionPanel.setLayout(new GridLayout(1, 4));
+		String[] choices = StyleSettings.getColorStyleNames().toArray(new String[0]);
+
+		final JComboBox<String> cb = new JComboBox<String>(choices);
+
+		cb.setVisible(true);
+		UIStyleController.putUIComponent("modded.debugger.stylepanel.styledropdown", cb);
+		selectionPanel.add(cb);
+		cb.addActionListener(e -> {
+			UIStyleController.setTargetStyleIndexAndReload(cb.getSelectedIndex());
+		});
+		stylePlane.add(selectionPanel);
+
+
+
+		return stylePlane;
 	}
 
 	/**

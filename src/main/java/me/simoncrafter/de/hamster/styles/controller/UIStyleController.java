@@ -23,38 +23,39 @@ public class UIStyleController {
 
     private static int styleIndex = 0;
 
-    public static void init() {
-
-        Pattern pattern = Pattern.compile("^(?<key>.+?)(?<brackets>\\[(?<obj>[^\\]]*)\\])?$");
-
-        applyStyle(false);
-    }
-
     public static void applyStyle(boolean reload) {
         Map<String, UIColorStyle> styleMap = StyleSettings.getColorStyles();
         // Apply all styles in the map
-        for (Map.Entry<String, UIColorStyle> styleEntry : styleMap.entrySet()) {
-            UIColorStyle style = styleEntry.getValue();
-            for (Map.Entry<String, Object> entry : style.getColors().entrySet()) {
-                //JComponent comp = uiComponents.get(entry.getKey());
-                //style.apply(uiComponents.get(entry.getKey()), entry.getKey(), true);
-                System.out.println("Applying " + entry.getKey() + " to " + styleEntry.getKey());
-                if (entry.getKey().startsWith("!")) {
-                    modifyUIPropertiesForPattern(entry.getKey().substring(1), (ui, key) -> {
-                        style.apply(ui, key, entry.getKey(), reload);
-                    });
-                } else {
-                    modifyUIProperties(entry.getKey(), (ui) -> {
-                        style.apply(ui, entry.getKey(), entry.getKey(), reload);
-                    });
-                }
+        int length = Arrays.stream(styleMap.values().toArray()).toList().size();
+        if (styleIndex > length || styleIndex < 0) {
+            System.out.println("Style index out of bounds! Fixing...");
+            styleIndex = length-1;
+        }
 
+        UIColorStyle style = styleMap.entrySet().stream().toList().get(styleIndex).getValue();
+
+        for (Map.Entry<String, Object> entry : style.getColors().entrySet()) {
+            if (entry.getKey().startsWith("!")) {
+                modifyUIPropertiesForPattern(entry.getKey().substring(1), (ui, key) -> {
+                    style.apply(ui, key, entry.getKey(), reload);
+                });
+            } else {
+                modifyUIProperties(entry.getKey(), (ui) -> {
+                    style.apply(ui, entry.getKey(), entry.getKey(), reload);
+                });
             }
         }
+
     }
 
+    public static void setTargetStyleIndex(int index) {
+        styleIndex = index;
+    }
 
-
+    public static void setTargetStyleIndexAndReload(int index) {
+        styleIndex = index;
+        applyStyle(false);
+    }
 
 
     public static void setRandomColorToEverything() {
@@ -171,13 +172,13 @@ public class UIStyleController {
 
         modifyUIPropertiesForPattern("^.+\\.debugger\\.toolbar\\.delay$", (ui, key) -> {
             JSlider slider = (JSlider) ui;
-            slider.setUI(getSimpleSliderUI(slider, getRandomColor(), getRandomColor()));
+            slider.setUI(getSimpleSliderUI(slider, getRandomColor(), getRandomColor(), 10, 2));
             slider.setBackground(getRandomColor());
         });
     }
 
     public static void update() {
-        init();
+        applyStyle(false);
     }
 
     private static Color getRandomColor() {
@@ -287,7 +288,7 @@ public class UIStyleController {
         };
     }
 
-    public static BasicSliderUI getSimpleSliderUI(JSlider slider, Color fillColor, Color edgeColor) {
+    public static BasicSliderUI getSimpleSliderUI(JSlider slider, Color fillColor, Color edgeColor, int thickness, int edgeThickness) {
         return new BasicSliderUI(slider) {
 
             @Override
@@ -329,9 +330,12 @@ public class UIStyleController {
                 int size = 1;
                 int boxWidth = thumbRect.width * 100;
 
+                g2d.setPaint(edgeColor);
+                g2d.fillRect(x - boxWidth - edgeThickness/2, y + thickness/2 - edgeThickness/2, size + boxWidth + edgeThickness, thickness + edgeThickness);
+
                 // Draw filled square
                 g2d.setPaint(fillColor);
-                g2d.fillRect(x - boxWidth, y + 5, size + boxWidth, size + 5);
+                g2d.fillRect(x - boxWidth, y + 5, size + boxWidth, thickness);
 
             }
         };
@@ -401,7 +405,7 @@ public class UIStyleController {
         };
     }
 
-    private static void modifyUIProperties(String key, Consumer<JComponent> operation) {
+    public static void modifyUIProperties(String key, Consumer<JComponent> operation) {
         if (uiComponents == null || uiComponents.get(key) == null) {
             System.out.println("Key not found: " + key);
             return;
@@ -409,7 +413,7 @@ public class UIStyleController {
         operation.accept(uiComponents.get(key));
     }
 
-    private static void modifyUIPropertiesForPattern(String regex, BiConsumer<JComponent, String> operation) {
+    public static void modifyUIPropertiesForPattern(String regex, BiConsumer<JComponent, String> operation) {
         if (uiComponents == null) {
             return;
         }

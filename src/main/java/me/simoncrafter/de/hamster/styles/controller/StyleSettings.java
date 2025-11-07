@@ -1,31 +1,21 @@
 package me.simoncrafter.de.hamster.styles.controller;
 
-import com.kenai.jaffl.struct.Struct;
 import org.jetbrains.annotations.Nullable;
-import jsint.E;
 import me.simoncrafter.de.hamster.styles.model.UIColorStyle;
 import me.simoncrafter.de.hamster.styles.model.YamlColorObject;
 import me.simoncrafter.de.hamster.workbench.Utils;
-import org.jruby.RubyProcess;
-import org.python.antlr.ast.Str;
-import org.python.antlr.op.In;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import java.awt.*;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class StyleSettings {
     private static File settingsFile;
@@ -116,7 +106,16 @@ public class StyleSettings {
         return map;
     }
 
-
+    public static List<String> getColorStyleNames() {
+        List<UIColorStyle> presetColors = StyleSettings.getColorStyles().values().stream().toList();
+        List<String> colorNames = new ArrayList<>();
+        for (UIColorStyle color : presetColors) {
+            if (color != null && color.getName() != null) {
+                colorNames.add(color.getName());
+            }
+        }
+        return colorNames;
+    }
 
     public static Map<String, UIColorStyle> getColorStyles() {
         return new HashMap<>(colorStyles);

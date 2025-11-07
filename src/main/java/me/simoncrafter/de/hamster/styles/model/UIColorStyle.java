@@ -7,6 +7,7 @@ import me.simoncrafter.de.hamster.model.HamsterFile;
 import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
 import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import org.jetbrains.annotations.Nullable;
+import org.python.antlr.op.In;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -194,6 +195,13 @@ public class UIColorStyle {
                     }
                     break;
                 }
+                case "slider": {
+                    if (eObj instanceof Map<?, ?>) {
+                        Consumer<JComponent> consumer = applySlider((Map<String, Object>) eObj);
+                        applyList.add(consumer);
+                    }
+                    break;
+                }
                 case "opaque": {
                     if (eObj instanceof Boolean) {
                         Consumer<JComponent> consumer = ui -> ui.setOpaque((Boolean) eObj);
@@ -308,6 +316,68 @@ public class UIColorStyle {
                         }
                         JSplitPane splitPlane = (JSplitPane) ui;
                         splitPlane.setUI(UIStyleController.getSimpleSplitPlane((Color) color, (Color) hover, (Color) handle));
+                    };
+                }
+            }
+
+        }catch (Exception e) {
+            System.out.println("Error while loading splitplane style");
+        }
+        return (ui) -> {};
+    }
+
+    private Consumer<JComponent> applySlider(Map<String, Object> map) {
+        Object style = map.get("style");
+        try {
+            if (!(style instanceof String)) {
+                System.out.println("Style of split plane has to be string!");
+                return (ui) -> {};
+            }
+
+            switch ((String) style) {
+                case "simple": {
+                    int thickness;
+                    int edgeThickness;
+                    Color color;
+                    Color edge;
+
+                    Object c = map.get("color");
+                    Object e = map.get("edge");
+                    Object th = map.get("thickness");
+                    Object et = map.get("edgeThickness");
+
+                    if (!(th instanceof Integer)) { // ensure int
+                        thickness = 1;
+                    }else {
+                        thickness = (Integer) th;
+                    }
+
+                    if (!(et instanceof Integer)) { // ensure int
+                        edgeThickness = 1;
+                    }else {
+                        edgeThickness = (Integer) et;
+                    }
+
+
+                    if (!(c instanceof Color)) {
+                        color = Color.BLACK;
+                    } else {
+                        color = (Color) c;
+                    }
+
+                    if (!(e instanceof Color)) {
+                        edge = color;
+                    } else {
+                        edge = (Color) e;
+                    }
+
+
+                    return (ui) -> {
+                        if (!(ui instanceof JSlider)) {
+                            return;
+                        }
+                        JSlider slider = (JSlider) ui;
+                        slider.setUI(UIStyleController.getSimpleSliderUI(slider, color, edge, thickness, edgeThickness));
                     };
                 }
             }

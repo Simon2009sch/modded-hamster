@@ -272,12 +272,14 @@ uiStyles:
 
       # --- Menu Bar ---
       'editor.menubar':
-        bg: !color "_dark_mode_3"
+        bg: !color "_dark_mode_1"
         fg: !color "#FFFFFF"
         item:
           fg: !color "_dark_mode_5"
         border:
           style: "empty"
+      '!^.+\.debugger\.toolbar\.delay$':
+        bg: !color "_red"
 
       # --- Debugger ---
       'modded.debugger':

@@ -160,7 +160,7 @@ public class CHamster extends Application {
             label2.setText(calledText);
         });
         checkBox.setSelected(false);
-        button.setOnAction(e -> UIStyleController.init());
+        button.setOnAction(e -> UIStyleController.update());
         button2.setOnAction(e -> {hamster.clone();});
         button3.setOnAction(e -> {
             String msgLog = textField.getText();

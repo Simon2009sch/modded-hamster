@@ -647,7 +647,7 @@ public class Workbench {
 			// --- end of addition
 
             splashScreen.setVisible(false);
-            UIStyleController.init();
+            UIStyleController.applyStyle(true);
             System.out.println("End abcdefg");
             CHamster.cLoadWindow(args);
         } catch (InterruptedException e) {
