@@ -360,8 +360,6 @@ uiStyles:
           thickness: 10
           edgeThickness: 2
 
-
-
   blueDarkMode:
     name: "Blue Dark Mode"
     colors:
@@ -530,7 +528,6 @@ uiStyles:
           edge: !color "_blue_dark_mode_2"
           thickness: 10
           edgeThickness: 2
-
 
   greenDarkMode:
     name: "Green Dark Mode"
@@ -701,8 +698,8 @@ uiStyles:
           thickness: 10
           edgeThickness: 2
   
-
   redDarkMode:
+
     name: "Red Dark Mode"
     colors:
       # --- File Tree ---
@@ -870,6 +867,7 @@ uiStyles:
           edge: !color "_red_dark_mode_2"
           thickness: 10
           edgeThickness: 2
+  
   PurpleDarkMode:
     name: "Purple Dark Mode"
     colors:
@@ -1038,8 +1036,6 @@ uiStyles:
           edge: !color "_purple_dark_mode_2"
           thickness: 10
           edgeThickness: 2
-  
-
 
   amberDarkMode:
     name: "Amber Dark Mode"
@@ -1210,7 +1206,6 @@ uiStyles:
           thickness: 10
           edgeThickness: 2
   
-
   cyanDarkMode:
     name: "Cyan Dark Mode"
     colors:
@@ -1380,8 +1375,6 @@ uiStyles:
           thickness: 10
           edgeThickness: 2
   
-
-
   greenDarkMode:
     name: "Green Dark Mode"
     colors:
