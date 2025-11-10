@@ -117,6 +117,15 @@ public class StyleSettings {
         return colorNames;
     }
 
+    public static String getColorStyleIDByDisplayName(String name) {
+        for (Map.Entry<String, UIColorStyle> entry : colorStyles.entrySet()) {
+            if (entry.getValue().getName().equals(name)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
     public static Map<String, UIColorStyle> getColorStyles() {
         return new HashMap<>(colorStyles);
     }

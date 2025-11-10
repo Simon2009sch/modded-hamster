@@ -21,18 +21,18 @@ import java.util.regex.Pattern;
 public class UIStyleController {
     private static Map<String, JComponent> uiComponents = new HashMap<>();
 
-    private static int styleIndex = 0;
+    private static String selectedStyleName = "darkMode";
 
     public static void applyStyle(boolean reload) {
         Map<String, UIColorStyle> styleMap = StyleSettings.getColorStyles();
         // Apply all styles in the map
-        int length = Arrays.stream(styleMap.values().toArray()).toList().size();
-        if (styleIndex > length || styleIndex < 0) {
-            System.out.println("Style index out of bounds! Fixing...");
-            styleIndex = length-1;
+        UIColorStyle s = styleMap.get(selectedStyleName);
+        UIColorStyle style;
+        if (s == null) {
+            style = styleMap.values().stream().toList().getFirst();
+        } else {
+            style = s;
         }
-
-        UIColorStyle style = styleMap.entrySet().stream().toList().get(styleIndex).getValue();
 
         for (Map.Entry<String, Object> entry : style.getColors().entrySet()) {
             if (entry.getKey().startsWith("!")) {
@@ -48,12 +48,12 @@ public class UIStyleController {
 
     }
 
-    public static void setTargetStyleIndex(int index) {
-        styleIndex = index;
+    public static void setSelectedStyle(String name) {
+        selectedStyleName = name;
     }
 
-    public static void setTargetStyleIndexAndReload(int index) {
-        styleIndex = index;
+    public static void setSelectedStyleNameAndUpdate(String name) {
+        setSelectedStyle(name);
         applyStyle(false);
     }
 

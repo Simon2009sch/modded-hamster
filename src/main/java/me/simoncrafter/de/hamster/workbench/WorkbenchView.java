@@ -10,13 +10,11 @@ import java.util.List;
 
 import javax.swing.*;
 
-import jsint.U;
 import me.simoncrafter.de.hamster.compiler.model.CompilerModel;
 import me.simoncrafter.de.hamster.console.Console;
 import me.simoncrafter.de.hamster.debugger.model.DebuggerModel;
 import me.simoncrafter.de.hamster.lego.model.LegoModel;
 import me.simoncrafter.de.hamster.styles.AutoCompleteDemo;
-import me.simoncrafter.de.hamster.styles.TextEditorDemo;
 import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
 import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
@@ -441,7 +439,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		UIStyleController.putUIComponent("modded.debugger.stylepanel.styledropdown", cb);
 		selectionPanel.add(cb);
 		cb.addActionListener(e -> {
-			UIStyleController.setTargetStyleIndexAndReload(cb.getSelectedIndex());
+			UIStyleController.setSelectedStyleNameAndUpdate(StyleSettings.getColorStyleIDByDisplayName(cb.getItemAt(cb.getSelectedIndex())));
 		});
 		stylePlane.add(selectionPanel);
 
