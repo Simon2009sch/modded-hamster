@@ -14,6 +14,7 @@ import me.simoncrafter.de.hamster.compiler.model.CompilerModel;
 import me.simoncrafter.de.hamster.console.Console;
 import me.simoncrafter.de.hamster.debugger.model.DebuggerModel;
 import me.simoncrafter.de.hamster.lego.model.LegoModel;
+import me.simoncrafter.de.hamster.settings.controler.SettingsLoader;
 import me.simoncrafter.de.hamster.styles.AutoCompleteDemo;
 import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
 import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
@@ -394,6 +395,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		// reload the values in the styles dropdown
 		UIStyleController.modifyUIProperties("modded.debugger.stylepanel.styledropdown", ui -> {
 			JComboBox<String> box = (JComboBox<String>) ui;
+            String selectedItem = StyleSettings.getColorStyleIDByDisplayName(box.getSelectedItem().toString());
 			box.removeAllItems();
 			List<UIColorStyle> presetColors = StyleSettings.getColorStyles().values().stream().toList();
 
@@ -402,6 +404,16 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 					box.addItem(color.getName());
 				}
 			}
+            String[] array = new String[presetColors.size()];
+            for (int i = 0; i < presetColors.size(); i++) {
+                array[i] = presetColors.get(i).getName();
+            }
+
+            if (selectedItem == null) {
+                selectedItem = SettingsLoader.getSelectedStyle();
+            }
+
+            box.setSelectedIndex(getSelectionIndexForStyleSelectionDropdown(array, selectedItem));
 
 		});
 
@@ -414,6 +426,16 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 
 		return reloadPanel;
 	}
+
+    private int getSelectionIndexForStyleSelectionDropdown(String[] elements, String name) {
+        for (int i = 0; i < elements.length; i++) {
+
+            if (name.equals(StyleSettings.getColorStyleIDByDisplayName(elements[i]))) {
+                return i;
+            }
+        }
+        return 0;
+    }
 
 	private JPanel createSettingsStylePanel() {
 		JPanel stylePlane = new JPanel();
@@ -438,8 +460,20 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		cb.setVisible(true);
 		UIStyleController.putUIComponent("modded.debugger.stylepanel.styledropdown", cb);
 		selectionPanel.add(cb);
+        cb.setSelectedIndex(getSelectionIndexForStyleSelectionDropdown(choices, SettingsLoader.getSelectedStyle()));
+
 		cb.addActionListener(e -> {
-			UIStyleController.setSelectedStyleNameAndUpdate(StyleSettings.getColorStyleIDByDisplayName(cb.getItemAt(cb.getSelectedIndex())));
+            String name = StyleSettings.getColorStyleIDByDisplayName(cb.getItemAt(cb.getSelectedIndex()));
+            if (name == null) {
+                name = cb.getItemAt(cb.getSelectedIndex());
+            }
+
+            if (name == null) {
+                name = SettingsLoader.getSelectedStyle();
+            }
+
+			UIStyleController.setSelectedStyleNameAndUpdate(name);
+            SettingsLoader.setSelectedStyle(name);
 		});
 		stylePlane.add(selectionPanel);
 
