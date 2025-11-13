@@ -26,6 +26,7 @@ import me.simoncrafter.de.hamster.flowchart.controller.FlowchartHamster;
 import me.simoncrafter.de.hamster.fsm.controller.FsmHamster;
 import me.simoncrafter.de.hamster.javascript.model.JavaScriptHamster;
 import me.simoncrafter.de.hamster.lego.controller.LegoController;
+import me.simoncrafter.de.hamster.settings.controler.SettingsLoader;
 import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
 import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.model.HamsterFile;
@@ -589,6 +590,7 @@ public class Workbench {
 					Utils.ensureHome();
 					Utils.ensureSettings();
 					StyleSettings.init();
+                    SettingsLoader.init();
 
 					handleLAF();
 
