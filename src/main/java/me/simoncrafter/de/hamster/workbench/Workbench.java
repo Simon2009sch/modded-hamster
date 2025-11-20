@@ -41,7 +41,7 @@ import me.simoncrafter.de.hamster.scratch.ScratchHamster;
 import me.simoncrafter.de.hamster.simulation.controller.SimulationController;
 import me.simoncrafter.de.hamster.simulation.model.SimulationModel;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
-import org.python.antlr.op.In;
+
 
 // by fabio
 import me.simoncrafter.de.hamster.cHamster.CHamster;

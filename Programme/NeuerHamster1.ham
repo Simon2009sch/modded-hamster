@@ -10,7 +10,7 @@
           
 void nextWall() {
 	while (vornFrei()) {
-   		vor();
+   		vor()
    	}
 }                                                                                                                   
                                                                                                                              

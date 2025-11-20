@@ -10,7 +10,7 @@ import me.simoncrafter.de.hamster.debugger.model.Territorium;import me.simoncraf
           
 void nextWall() {
 	while (vornFrei()) {
-   		vor();
+   		vor()
    	}
 }                                                                                                                   
                                                                                                                              
