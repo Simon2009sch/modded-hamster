@@ -1,12 +1,18 @@
 /*imperative program*/void main() {
-   	while (kornDa()) {
-   		nimm();
+   	while (true) {
+   		nextWall();
+   		turnLeft();
    	}
    	
 }                                                                            
 
 
-                                                                                                                             
+          
+void nextWall() {
+	while (vornFrei()) {
+   		vor();
+   	}
+}                                                                                                                   
                                                                                                                              
             
             

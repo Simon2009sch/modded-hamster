@@ -4,6 +4,8 @@ import me.simoncrafter.de.hamster.editor.view.*;
 import me.simoncrafter.de.hamster.editor.view.TextArea;
 import me.simoncrafter.de.hamster.simulation.view.SimulationPanel;
 import me.simoncrafter.de.hamster.styles.model.UIColorStyle;
+import me.simoncrafter.de.hamster.workbench.Utils;
+import org.joda.time.field.UnsupportedDateTimeField;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -14,6 +16,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -29,7 +32,7 @@ public class UIStyleController {
         UIColorStyle s = styleMap.get(selectedStyleName);
         UIColorStyle style;
         if (s == null) {
-            style = styleMap.values().stream().toList().getFirst();
+            style = ((List<UIColorStyle>) Utils.collectionToArray(styleMap.values())).get(0);
         } else {
             style = s;
         }

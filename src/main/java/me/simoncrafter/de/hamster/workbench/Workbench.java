@@ -650,8 +650,7 @@ public class Workbench {
 
             splashScreen.setVisible(false);
             UIStyleController.applyStyle(true);
-            System.out.println("End abcdefg");
-            CHamster.cLoadWindow(args);
+            //CHamster.cLoadWindow(args);
         } catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

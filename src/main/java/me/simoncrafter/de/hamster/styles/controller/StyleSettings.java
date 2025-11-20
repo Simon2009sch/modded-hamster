@@ -107,7 +107,7 @@ public class StyleSettings {
     }
 
     public static List<String> getColorStyleNames() {
-        List<UIColorStyle> presetColors = StyleSettings.getColorStyles().values().stream().toList();
+        List<UIColorStyle> presetColors =  (List<UIColorStyle>) Utils.collectionToArray(StyleSettings.getColorStyles().values());
         List<String> colorNames = new ArrayList<>();
         for (UIColorStyle color : presetColors) {
             if (color != null && color.getName() != null) {

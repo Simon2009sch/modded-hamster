@@ -15,7 +15,6 @@ import me.simoncrafter.de.hamster.console.Console;
 import me.simoncrafter.de.hamster.debugger.model.DebuggerModel;
 import me.simoncrafter.de.hamster.lego.model.LegoModel;
 import me.simoncrafter.de.hamster.settings.controler.SettingsLoader;
-import me.simoncrafter.de.hamster.styles.AutoCompleteDemo;
 import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
 import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.simulation.view.DialogTerminal;
@@ -375,14 +374,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 		reloadPanel.setPreferredSize(panelSize);
 		reloadPanel.add(Box.createHorizontalGlue());
 
-		//Code Editor test
-		AutoCompleteDemo testEditorWindow = new AutoCompleteDemo();
 
-		JButton showButton = new JButton("Test Editor");
-		showButton.addActionListener(e -> {
-			testEditorWindow.setVisible(true);
-		});
-		reloadPanel.add(showButton);
 
 		UIStyleController.putUIComponent("modded.debugger.reloadpanel", reloadPanel);
 
@@ -397,7 +389,7 @@ public class WorkbenchView implements Observer, WindowFocusListener {
 			JComboBox<String> box = (JComboBox<String>) ui;
             String selectedItem = StyleSettings.getColorStyleIDByDisplayName(box.getSelectedItem().toString());
 			box.removeAllItems();
-			List<UIColorStyle> presetColors = StyleSettings.getColorStyles().values().stream().toList();
+			List<UIColorStyle> presetColors = (List<UIColorStyle>) Utils.collectionToArray(StyleSettings.getColorStyles().values());
 
 			for (UIColorStyle color : presetColors) {
 				if (color != null && color.getName() != null) {

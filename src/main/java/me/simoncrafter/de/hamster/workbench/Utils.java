@@ -12,10 +12,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.List;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
@@ -28,6 +26,7 @@ import me.simoncrafter.de.hamster.editor.view.ScratchPanelPrintable;
 import me.simoncrafter.de.hamster.editor.view.TextAreaPrintable;
 import me.simoncrafter.de.hamster.flowchart.FlowchartPanel;
 import me.simoncrafter.de.hamster.fsm.view.FsmPanel;
+import me.simoncrafter.de.hamster.simulation.view.multimedia.opengl.objects.Obj;
 import me.simoncrafter.de.hamster.styles.controller.StyleSettings;
 import me.simoncrafter.de.hamster.styles.controller.UIStyleController;
 import me.simoncrafter.de.hamster.scratch.ScratchPanel;
@@ -137,8 +136,26 @@ public class Utils {
 	}
 	// end of addition
 	
-	
-	
+	public static Object[] listToArray(List<?> list) {
+        Object[] newArray = new Object[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            newArray[i] = list.get(i);
+        }
+        return newArray;
+    }
+
+    public static List<?> arrayToList(Object[] array) {
+        return Arrays.asList(array);
+    }
+
+    public static List<?> collectionToArray(Collection<?> col) {
+        List<Object> list = new ArrayList<>();
+        for (Object obj : col) {
+            list.add(obj);
+        }
+        return list;
+    }
+
 	public static void print(String text) {
 		PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
 //		aset.add(OrientationRequested.LANDSCAPE);

@@ -1,0 +1,55 @@
+/*imperative program*/void main() {
+    if (!maulLeer())gib();
+    while (vornFrei()) {
+    	turnRight();
+    	if (vornFrei()) {
+    		moveForward();
+    	}
+    	turnLeft();
+    	moveForward();    
+    }
+    turnAround();
+    while (maulLeer()) {
+    	if (!vornFrei()) {
+    		turnRight();
+    		moveForward();
+    		turnLeft();
+    	}
+    	moveForward();
+    	
+    	collect();
+    }
+    turnAround();
+    
+}
+
+
+
+void turnAround() {
+	turnLeft();
+	turnLeft();
+}
+
+void collect() {
+	if (kornDa()) {
+		nimm();
+	}
+}
+
+void collectAllCorn() {
+	while (kornDa()) {
+		collect();
+	}
+}
+
+void moveForward() {
+	if (!vornFrei()) {
+		return;
+	}
+	vor();
+}
+void turnRight() {
+	turnLeft();
+	turnLeft();
+	turnLeft();	
+}
